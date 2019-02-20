@@ -2,19 +2,29 @@
 import { getStoreBuilder } from "vuex-typex"
 import Vue from 'vue'
 import Vuex, { Store } from 'vuex'
-import { InventoryState, initialInventoryState } from "./inventory/inventory"
-import { BasketState, initialBasketState } from "./basket/basket"
+import { MODULES } from "@/constants";
+import { AuthenticationState, initialAuthenticationState } from "./modules/authentication"
 
-export interface RootState
-{
-    inventory: InventoryState;
-    basket: BasketState;
+const loadModules = () => {
+    Object.keys(modulesMapping).forEach(module => {
+        getStoreBuilder<RootState>().module(module, modulesMapping[module]);
+    })
 }
 
-Vue.use(Vuex)
+const modulesMapping = {
+    [MODULES.authentication]: initialAuthenticationState,
+}
 
-getStoreBuilder<RootState>().module("basket", initialBasketState);
-getStoreBuilder<RootState>().module("inventory", initialInventoryState);
+
+
+Vue.use(Vuex)
+loadModules();
+// getStoreBuilder<RootState>().module(MODULES.authentication, initialAuthenticationState);
 
 const store: Store<RootState> = getStoreBuilder<RootState>().vuexStore();
-export default store // <-- "store" to provide to root Vue
+
+export default store
+export interface RootState
+{
+    authentication: AuthenticationState
+}
