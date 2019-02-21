@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="13px" height="14px" viewBox="0 0 13 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>tab-right</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="app" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icons" transform="translate(-450.000000, -39.000000)">
+            <g id="tab-right" transform="translate(443.000000, 24.000000)">
+                <rect id="Rectangle-5" x="0" y="0" width="26" height="44" rx="4"></rect>
+                <g id="chevron-down" transform="translate(13.000000, 22.000000) rotate(-90.000000) translate(-13.000000, -22.000000) translate(7.000000, 16.000000)">
+                    <polyline id="Shape" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="0 6 6 12 12 6"></polyline>
+                    <circle id="Oval-3" fill="#FFFFFF" cx="6" cy="2" r="2"></circle>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

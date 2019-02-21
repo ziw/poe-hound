@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>secure</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="app" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard" transform="translate(-220.000000, -72.000000)" stroke="#FFFFFF">
+            <g id="secure" transform="translate(221.000000, 73.000000)">
+                <g id="lock" transform="translate(5.260417, 3.906250)" stroke-linecap="round" stroke-linejoin="round">
+                    <rect id="Rectangle-path" x="0" y="4.73958333" width="9.47916667" height="5.79282407" rx="2"></rect>
+                    <path d="M2.10648148,4.73958333 L2.10648148,2.63310185 C2.10648148,1.17887985 3.28536134,1.12204484e-15 4.73958333,8.8817842e-16 C6.19380533,4.20445571e-16 7.37268519,1.17887985 7.37268519,2.63310185 L7.37268519,4.73958333" id="Shape"></path>
+                </g>
+                <circle id="Oval-2" cx="10" cy="10" r="10"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

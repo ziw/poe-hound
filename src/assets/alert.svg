@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="18px" viewBox="0 0 16 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>alert</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="app" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="icons" transform="translate(-148.000000, -140.000000)" stroke-width="2" stroke="#FFFFFF">
+            <g id="alert" transform="translate(149.000000, 141.000000)">
+                <polygon id="Shape" points="7.77777778 0 0 9.33333333 7 9.33333333 6.22222222 15.5555556 14 6.22222222 7 6.22222222"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>
