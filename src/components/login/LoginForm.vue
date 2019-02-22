@@ -2,8 +2,10 @@
   <div class="login-form">
     <div>Session ID:</div>
     <form v-on:submit.prevent="login">
-      <input v-model="sessionId" placeholder="session id">
-      <button type="submit" :disabled="isLoading">Log in</button>
+      <text-input v-model="sessionId" class="login-form__session-input"/>
+      <primary-button type="submit" stretch style-type="square" :disabled="loginButtonDisabled">
+        {{loginButtonLabel}}
+      </primary-button>
     </form>
 
     <div v-if="loggedIn">
@@ -15,14 +17,23 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import PrimaryButton from '@/components/shared/PrimaryButton.vue';
+import TextInput from '@/components/shared/TextInput.vue';
 import { authentication } from '@/store/modules/authentication';
+import message from '@/i18n';
 
-@Component({})
+@Component({
+  components: {
+    PrimaryButton,
+    TextInput,
+  }
+})
 export default class LoginForm extends Vue {
 
   sessionId: string = '23d42f7d21ced9400eb82a9fa6b63339';
+  loginButtonLabel: string = message.login.login_button_label;
 
-  get isLoading() {
+  get loginButtonDisabled() {
     return authentication.state.isLoading;
   }
 
@@ -44,5 +55,9 @@ export default class LoginForm extends Vue {
   .login-form{
     width: 500px;
     flex-grow: 0;
+
+    &__session-input {
+      margin-bottom: 15px;
+    }
   }
 </style>

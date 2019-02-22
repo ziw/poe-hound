@@ -51,7 +51,7 @@ body {
     justify-content: center;
     height: 100%;
     margin: auto;
-    background-image:radial-gradient(100% 100%, #620909 0%, #230202 100%);
+    background-image: radial-gradient(100% 100%, #620909 0%, #230202 100%);
     font-family: OpenSans-Regular;
 }
 

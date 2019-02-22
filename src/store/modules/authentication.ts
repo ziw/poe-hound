@@ -37,6 +37,7 @@ async function login(context: BareActionContext<AuthenticationState, RootState>,
     authentication.setSessionId(payload.sessionId);
   }
   authentication.setIsLoading(false);
+  return result;
 }
 
 export const authentication = {
@@ -46,5 +47,4 @@ export const authentication = {
   setSessionId: builder.commit(setSessionId),
 
   login: builder.dispatch(login),
-
 }

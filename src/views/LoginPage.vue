@@ -1,9 +1,9 @@
 <template>
   <div class="login-page">
-    <Logo />
+    <login-logo />
     <img src="@/assets/gradient-border.png"
          class="login-page__divider" alt="">
-    <LoginForm v-on:login="tryLogin" />
+    <login-form v-on:login="tryLogin" />
   </div>
 
 </template>
@@ -12,13 +12,13 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import Logo from '@/components/login/Logo.vue';
+import LoginLogo from '@/components/login/LoginLogo.vue';
 import LoginForm from '@/components/login/LoginForm.vue';
 import { authentication } from '@/store/modules/authentication';
 
 @Component({
   components: {
-    Logo,
+    LoginLogo,
     LoginForm,
   }
 })
