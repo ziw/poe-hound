@@ -1,5 +1,4 @@
 import { PATHS, COOKIE_NAME } from '@/constants';
-import { client } from './client';
 import  request, {FullResponse} from 'request-promise-native';
 
 const get = (url: string, sessionId: string)=> {
@@ -10,6 +9,12 @@ const get = (url: string, sessionId: string)=> {
     },
     rejectUnauthorized: true,
     resolveWithFullResponse: true,
+  }).then(resp => {
+    console.log({
+      resp,
+      url,
+    });
+    return resp;
   })
 }
 
@@ -26,4 +31,8 @@ const buildUrl = (path: string, queryObject?: any) => {
 export function authenticate(sessionId: string): Promise<string> {
   return get(buildUrl(PATHS.accountNameUrl), sessionId)
           .then((resp: FullResponse) => JSON.parse(resp.body).accountName);
+}
+
+export function loadCharacters(sessionId: string) {
+  return get(buildUrl(PATHS.charactersUrl), sessionId);
 }

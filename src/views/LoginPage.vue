@@ -25,9 +25,9 @@ import { authentication } from '@/store/modules/authentication';
 export default class LoginPage extends Vue {
 
   tryLogin(sessionId: string){
-    authentication.login({
-      sessionId
-    })
+    authentication.login({ sessionId }).then(() => {
+      this.$router.push({ path: '/main'});
+    });
   }
 }
 </script>
