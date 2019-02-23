@@ -5,17 +5,17 @@ import { authenticate } from "@/api/api";
 import message from '@/i18n';
 
 export interface AuthenticationState {
-  sessionId: string | undefined;
-  accountName: string | undefined;
+  sessionId: string;
+  accountName: string;
   isLoading: boolean;
-  errorMessage: string | undefined;
+  errorMessage: string;
 }
 
 export const initialAuthenticationState: AuthenticationState = {
-  sessionId: undefined,
+  sessionId: '',
   isLoading: false,
-  errorMessage: undefined,
-  accountName: undefined,
+  errorMessage: '',
+  accountName: '',
 }
 
 const builder = getStoreBuilder<RootState>().module(MODULES.authentication, initialAuthenticationState);
@@ -48,7 +48,8 @@ async function login(context: BareActionContext<AuthenticationState, RootState>,
   let accountName = undefined;
   try{
     accountName = await authenticate(payload.sessionId);
-  }finally{
+  }catch{}
+  finally{
     if(accountName){
       authentication.setSessionId(payload.sessionId);
       authentication.setAccountName(accountName);

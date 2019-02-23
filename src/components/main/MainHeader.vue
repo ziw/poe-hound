@@ -1,18 +1,32 @@
 <template>
   <header class="main-header">
-    <div>
-      <v-select :options="[{label: 'foo', value: 'Foo'}]"></v-select>
-    </div>
+    <v-select
+      class="main-header__league-select"
+      @input="onLeagueSwitch"
+      :options="leagues"
+      :value="currentLeague"></v-select>
   </header>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component';
+import { session } from '@/store/modules/session';
 
 @Component({
 })
 export default class MainHeader extends Vue {
+  get leagues() {
+    return session.getters.leagues;
+  }
+
+  get currentLeague() {
+    return session.state.currentLeague;
+  }
+
+  onLeagueSwitch(newValue: string) {
+    session.mutations.setCurrentLeague(newValue);
+  }
 
 }
 </script>
@@ -20,9 +34,19 @@ export default class MainHeader extends Vue {
 <style lang="scss">
   .main-header {
     height: 68px;
-    width: 100%;
     background-image: radial-gradient(100% 100%, #620909 0%, #230202 100%);
     display: flex;
     align-items: center;
+    padding: 0 20px;
+
+    &__league-select{
+      width: 150px;
+
+      .clear {
+        display: none;
+      }
+    }
+
+
   }
 </style>

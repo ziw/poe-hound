@@ -15,6 +15,7 @@ import Component from 'vue-class-component';
 import LoginLogo from '@/components/login/LoginLogo.vue';
 import LoginForm from '@/components/login/LoginForm.vue';
 import { authentication } from '@/store/modules/authentication';
+import { session } from '@/store/modules/session';
 
 @Component({
   components: {
@@ -24,10 +25,12 @@ import { authentication } from '@/store/modules/authentication';
 })
 export default class LoginPage extends Vue {
 
-  tryLogin(sessionId: string){
-    authentication.login({ sessionId }).then(() => {
-      this.$router.push({ path: '/main'});
-    });
+  async tryLogin(sessionId: string){
+    try{
+      await authentication.login({ sessionId });
+      await session.actions.loadCharacters();
+      this.$router.push('/main');
+    }catch{}
   }
 }
 </script>

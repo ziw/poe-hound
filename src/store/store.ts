@@ -4,6 +4,7 @@ import Vue from 'vue'
 import Vuex, { Store } from 'vuex'
 import { MODULES } from "@/constants";
 import { AuthenticationState, initialAuthenticationState } from "./modules/authentication"
+import { SessionState, initSession } from './modules/session'
 
 const loadModules = () => {
     Object.keys(modulesMapping).forEach(module => {
@@ -13,18 +14,17 @@ const loadModules = () => {
 
 const modulesMapping = {
     [MODULES.authentication]: initialAuthenticationState,
+    [MODULES.session]: initSession,
 }
-
-
 
 Vue.use(Vuex)
 loadModules();
-// getStoreBuilder<RootState>().module(MODULES.authentication, initialAuthenticationState);
 
 const store: Store<RootState> = getStoreBuilder<RootState>().vuexStore();
 
 export default store
 export interface RootState
 {
-    authentication: AuthenticationState
+    authentication: AuthenticationState,
+    session: SessionState,
 }

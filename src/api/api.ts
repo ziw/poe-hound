@@ -1,5 +1,6 @@
 import { PATHS, COOKIE_NAME } from '@/constants';
 import  request, {FullResponse} from 'request-promise-native';
+import Character from '@/models/character';
 
 const get = (url: string, sessionId: string)=> {
   return request.get({
@@ -34,5 +35,6 @@ export function authenticate(sessionId: string): Promise<string> {
 }
 
 export function loadCharacters(sessionId: string) {
-  return get(buildUrl(PATHS.charactersUrl), sessionId);
+  return get(buildUrl(PATHS.charactersUrl), sessionId)
+          .then((resp: FullResponse) => JSON.parse(resp.body) as Character[]);
 }
