@@ -4,6 +4,9 @@
       Log out
     </button>
     <main-header></main-header>
+    <div>
+
+    </div>
   </main>
 </template>
 
@@ -25,15 +28,16 @@ export default class Main extends Vue{
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .main-page {
     width: 100%;
     height: 100%;
     display: flex;
-
+    flex-direction: column;
     &__logout-button {
       position: absolute;
     }
+
   }
 </style>
 

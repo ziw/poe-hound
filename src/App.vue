@@ -63,7 +63,27 @@ body {
   height: 100%;
   width: 100%;
   color: #fff;
+
+  .dropdown-toggle{
+
+    border: none;
+    border-bottom: 1px solid white;
+    border-radius: 0;
+
+    .form-control,
+    .clear,
+    .selected-tag,
+    {
+      color: white;
+      opacity: 1;
+    }
+
+    i.open-indicator:before{
+        border-color: white;
+    }
+  }
 }
+
 #nav {
   padding: 30px;
   a {

@@ -13,12 +13,14 @@
   "dependencies": {
     "@types/request": "^2.48.1",
     "@types/request-promise-native": "^1.0.15",
+    "@types/vue-select": "^2.4.0",
     "i18n-ts": "^1.0.2",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
     "vue": "^2.5.22",
     "vue-class-component": "^6.3.2",
     "vue-router": "^3.0.1",
+    "vue-select": "^2.5.1",
     "vuex": "^3.0.1",
     "vuex-typex": "^3.1.4"
   },
