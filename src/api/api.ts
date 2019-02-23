@@ -23,7 +23,7 @@ const buildUrl = (path: string, queryObject?: any) => {
   return url.toString();
 }
 
-export function authenticate(sessionId: string): Promise<boolean> {
-  return get(buildUrl(PATHS.charactersUrl), sessionId)
-          .then((resp: FullResponse) => resp.statusCode === 200);
+export function authenticate(sessionId: string): Promise<string> {
+  return get(buildUrl(PATHS.accountNameUrl), sessionId)
+          .then((resp: FullResponse) => JSON.parse(resp.body).accountName);
 }

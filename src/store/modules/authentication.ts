@@ -2,9 +2,11 @@ import { getStoreBuilder, BareActionContext } from "vuex-typex";
 import { RootState } from "../store"
 import { MODULES } from "@/constants";
 import { authenticate } from "@/api/api";
+import message from '@/i18n';
 
 export interface AuthenticationState {
   sessionId: string | undefined;
+  accountName: string | undefined;
   isLoading: boolean;
   errorMessage: string | undefined;
 }
@@ -13,6 +15,7 @@ export const initialAuthenticationState: AuthenticationState = {
   sessionId: undefined,
   isLoading: false,
   errorMessage: undefined,
+  accountName: undefined,
 }
 
 const builder = getStoreBuilder<RootState>().module(MODULES.authentication, initialAuthenticationState);
@@ -29,15 +32,32 @@ function setSessionId(state: AuthenticationState, sessionId: string){
   state.sessionId = sessionId;
 }
 
+function setErrorMessage(state: AuthenticationState, error: string){
+  state.errorMessage = error;
+}
+
+function setAccountName(state: AuthenticationState, accountName: string){
+  state.accountName = accountName
+}
+
 //actions
 async function login(context: BareActionContext<AuthenticationState, RootState>, payload: { sessionId: string }){
   authentication.setIsLoading(true);
-  const result = await authenticate(payload.sessionId);
-  if(result){
-    authentication.setSessionId(payload.sessionId);
+  authentication.setErrorMessage('');
+
+  let accountName = undefined;
+  try{
+    accountName = await authenticate(payload.sessionId);
+  }finally{
+    if(accountName){
+      authentication.setSessionId(payload.sessionId);
+      authentication.setAccountName(accountName);
+    }else{
+      authentication.setErrorMessage(message.login.login_error_message);
+    }
+    authentication.setIsLoading(false);
   }
-  authentication.setIsLoading(false);
-  return result;
+  return accountName;
 }
 
 export const authentication = {
@@ -45,6 +65,8 @@ export const authentication = {
 
   setIsLoading: builder.commit(setIsLoading),
   setSessionId: builder.commit(setSessionId),
+  setErrorMessage: builder.commit(setErrorMessage),
+  setAccountName: builder.commit(setAccountName),
 
   login: builder.dispatch(login),
 }
