@@ -1,26 +1,84 @@
 import { getStoreBuilder, BareActionContext } from "vuex-typex";
 import { RootState } from "../store"
 import { MODULES } from "@/constants";
-import { loadCharacters } from "@/api/api";
+import { loadCharacters,
+        loadInventory,
+        loadLeagueStashInformation,
+} from "@/api/api";
 import message from '@/i18n';
 import { authentication } from './authentication';
 import Character from '@/models/character';
+import League from '@/models/league';
+import StashPage from '@/models/stashPage';
 
 export interface SessionState {
   characters: Character[];
-  currentLeague: string;
+  currentLeagueName: string;
+  leagues: League[];
 }
 
 export const initSession: SessionState = {
   characters: [],
-  currentLeague: '',
+  currentLeagueName: '',
+  leagues: [],
 }
 
 const builder = getStoreBuilder<RootState>().module(MODULES.session, initSession);
 
 const stateGetter = builder.state();
 
-const leaguesGetter = builder.read(state => [...new Set<string>(state.characters.map(char => char.league))], 'leaguesGetter',);
+/**
+ * Load all characters under account. Populate league list based on characters.
+ */
+const dispatchLoadCharacters = builder.dispatch(async () => {
+  try{
+    const characters = await loadCharacters(authentication.state.sessionId);
+    session.mutations.setCharacters(characters);
+    session.mutations.setLeagues([...new Set<string>(characters.map(c => c.league))].map(name => {
+      return {
+        name,
+        stashPages: [],
+        characters: characters.filter(c => c.league === name).map(c => {
+          c.itemIds = [];
+          return c;
+        }),
+      };
+    }));
+
+    if(characters.length){
+      //use first league as default leauge
+      session.mutations.setCurrentLeagueName(session.state.leagues[0].name);
+    }
+  }catch{
+  }
+}, "loadCharacters");
+
+/**
+ * Load stash tab metadata of the given league. This only loads the stash tabs name, id etc.
+ * It does not load the items of each stash tab
+ */
+const dispatchLoadLeagueStashInfo = builder.dispatch(async (context, league: string) => {
+  try{
+    const stashTabs = await loadLeagueStashInformation(authentication.state.sessionId,
+      league, authentication.state.accountName);
+    session.mutations.setLeagueStashTabs({
+      league,
+      stashTabs: stashTabs.map(stash => {
+        stash.itemIds = [];
+        return stash;
+      }),
+    });
+  }catch{}
+}, 'loadLeagueStashInfo');
+
+/**
+ * Load stash tab metadata for all leagues in this session
+ */
+const dispatchLoadAllLeagueStashInfo = builder.dispatch(async () => {
+  session.state.leagues.forEach(league => {
+    dispatchLoadLeagueStashInfo(league.name);
+  })
+}, 'dispatchLoadAllLeagueStashInfo');
 
 export const session = {
   get state() { return stateGetter() },
@@ -28,25 +86,26 @@ export const session = {
   mutations: {
     setCharacters: builder.commit((state: SessionState, chars: Character[]) => state.characters = chars, 'setCharacters'),
 
-    setCurrentLeague: builder.commit((state, league: string) => state.currentLeague = league, 'setCurrentLeague'),
+    setLeagues: builder.commit((state, leagues: League[]) => state.leagues = leagues, 'setLeagues'),
+
+    setCurrentLeagueName: builder.commit((state, league: string) => state.currentLeagueName = league, 'setCurrentLeagueName'),
+
+    setLeagueStashTabs: builder.commit((state, payload: { league: string, stashTabs: StashPage[] }) => {
+      const league = state.leagues.find(league => league.name === payload.league);
+      if(league){
+        league.stashPages = payload.stashTabs;
+      }
+    }, 'setLeagueStashTabs'),
   },
 
 
   actions: {
-    loadCharacters: builder.dispatch(async () => {
-        try{
-          const characters = await loadCharacters(authentication.state.sessionId);
-          session.mutations.setCharacters(characters);
-          if(characters.length){
-            //use first league as default leauge
-            session.mutations.setCurrentLeague(session.getters.leagues[0]);
-          }
-        }catch{
-        }
-      }, "loadCharacters"),
+    loadCharacters: dispatchLoadCharacters,
+    loadLeagueStashInfo: dispatchLoadLeagueStashInfo,
+    loadAllLeagueStashInfo: dispatchLoadAllLeagueStashInfo,
   },
 
   getters: {
-    get leagues(): string[] { return leaguesGetter() }
+
   },
 }

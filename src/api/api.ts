@@ -1,6 +1,7 @@
 import { PATHS, COOKIE_NAME } from '@/constants';
 import  request, {FullResponse} from 'request-promise-native';
 import Character from '@/models/character';
+import StashPage from '@/models/stashPage';
 
 const get = (url: string, sessionId: string)=> {
   return request.get({
@@ -37,4 +38,19 @@ export function authenticate(sessionId: string): Promise<string> {
 export function loadCharacters(sessionId: string) {
   return get(buildUrl(PATHS.charactersUrl), sessionId)
           .then((resp: FullResponse) => JSON.parse(resp.body) as Character[]);
+}
+
+export function loadInventory(sessionId: string, character: string, accountName: string){
+  return get(buildUrl(PATHS.inventoryUrl, { character, accountName }), sessionId)
+          .then((resp: FullResponse) => JSON.parse(resp.body));
+}
+
+export function loadLeagueStashInformation(sessionId: string, league: string, accountName: string){
+  const query = {
+    tabs: 1,
+    league,
+    accountName,
+  };
+  return get(buildUrl(PATHS.stashInLeagueUrl, query), sessionId)
+          .then((resp: FullResponse) => JSON.parse(resp.body).tabs as StashPage[]);
 }

@@ -6,4 +6,5 @@ export default interface Character{
   class: string;
   level: number;
   experience: number;
+  itemIds: string[];
 }

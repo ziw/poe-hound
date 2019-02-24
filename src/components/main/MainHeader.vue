@@ -3,6 +3,7 @@
     <v-select
       class="main-header__league-select"
       @input="onLeagueSwitch"
+      :searchable="false"
       :options="leagues"
       :value="currentLeague"></v-select>
   </header>
@@ -17,15 +18,15 @@ import { session } from '@/store/modules/session';
 })
 export default class MainHeader extends Vue {
   get leagues() {
-    return session.getters.leagues;
+    return session.state.leagues;
   }
 
   get currentLeague() {
-    return session.state.currentLeague;
+    return session.state.currentLeagueName;
   }
 
   onLeagueSwitch(newValue: string) {
-    session.mutations.setCurrentLeague(newValue);
+    session.mutations.setCurrentLeagueName(newValue);
   }
 
 }

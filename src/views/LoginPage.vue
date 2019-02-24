@@ -29,6 +29,7 @@ export default class LoginPage extends Vue {
     try{
       await authentication.login({ sessionId });
       await session.actions.loadCharacters();
+      await session.actions.loadLeagueStashInfo('Standard');
       this.$router.push('/main');
     }catch{}
   }
