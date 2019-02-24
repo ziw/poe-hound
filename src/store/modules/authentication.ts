@@ -48,17 +48,16 @@ async function login(context: BareActionContext<AuthenticationState, RootState>,
   let accountName = undefined;
   try{
     accountName = await authenticate(payload.sessionId);
-  }catch{}
-  finally{
+  }catch(e){
+  }finally{
+    authentication.setIsLoading(false);
     if(accountName){
       authentication.setSessionId(payload.sessionId);
       authentication.setAccountName(accountName);
     }else{
       authentication.setErrorMessage(message.login.login_error_message);
     }
-    authentication.setIsLoading(false);
   }
-  return accountName;
 }
 
 export const authentication = {

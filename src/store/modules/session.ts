@@ -10,6 +10,7 @@ import { authentication } from './authentication';
 import Character from '@/models/character';
 import League from '@/models/league';
 import StashPage from '@/models/stashPage';
+import queue from '@/utils/jobQueue';
 
 export interface SessionState {
   characters: Character[];
@@ -31,25 +32,22 @@ const stateGetter = builder.state();
  * Load all characters under account. Populate league list based on characters.
  */
 const dispatchLoadCharacters = builder.dispatch(async () => {
-  try{
-    const characters = await loadCharacters(authentication.state.sessionId);
-    session.mutations.setCharacters(characters);
-    session.mutations.setLeagues([...new Set<string>(characters.map(c => c.league))].map(name => {
-      return {
-        name,
-        stashPages: [],
-        characters: characters.filter(c => c.league === name).map(c => {
-          c.itemIds = [];
-          return c;
-        }),
-      };
-    }));
+  const characters = await loadCharacters(authentication.state.sessionId);
+  session.mutations.setCharacters(characters);
+  session.mutations.setLeagues([...new Set<string>(characters.map(c => c.league))].map(name => {
+    return {
+      name,
+      stashPages: [],
+      characters: characters.filter(c => c.league === name).map(c => {
+        c.itemIds = [];
+        return c;
+      }),
+    };
+  }));
 
-    if(characters.length){
-      //use first league as default leauge
-      session.mutations.setCurrentLeagueName(session.state.leagues[0].name);
-    }
-  }catch{
+  if(characters.length){
+    //use first league as default leauge
+    session.mutations.setCurrentLeagueName(session.state.leagues[0].name);
   }
 }, "loadCharacters");
 
@@ -58,17 +56,15 @@ const dispatchLoadCharacters = builder.dispatch(async () => {
  * It does not load the items of each stash tab
  */
 const dispatchLoadLeagueStashInfo = builder.dispatch(async (context, league: string) => {
-  try{
-    const stashTabs = await loadLeagueStashInformation(authentication.state.sessionId,
-      league, authentication.state.accountName);
-    session.mutations.setLeagueStashTabs({
-      league,
-      stashTabs: stashTabs.map(stash => {
-        stash.itemIds = [];
-        return stash;
-      }),
-    });
-  }catch{}
+  const stashTabs = await loadLeagueStashInformation(authentication.state.sessionId,
+    league, authentication.state.accountName);
+  session.mutations.setLeagueStashTabs({
+    league,
+    stashTabs: stashTabs.map(stash => {
+      stash.itemIds = [];
+      return stash;
+    }),
+  });
 }, 'loadLeagueStashInfo');
 
 /**
