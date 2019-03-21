@@ -1,8 +1,24 @@
 <template>
-  <div id="app">
+  <main id="app">
     <router-view/>
-  </div>
+    <job-banner/>
+  </main>
 </template>
+
+<script lang="ts">
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import JobBanner from '@/components/shared/JobBanner.vue';
+
+@Component({
+  components: {
+    JobBanner,
+  }
+})
+export default class LoginForm extends Vue {
+}
+</script>
+
 
 <style lang="scss">
 
@@ -63,6 +79,7 @@ body {
   height: 100%;
   width: 100%;
   color: #fff;
+  position: relative;
 
   .dropdown-toggle{
 

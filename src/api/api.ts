@@ -17,7 +17,7 @@ const get = (url: string, sessionId: string)=> {
       url,
     });
     return resp;
-  })
+  });
 }
 
 const buildUrl = (path: string, queryObject?: any) => {

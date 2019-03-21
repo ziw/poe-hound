@@ -3,6 +3,7 @@ import { RootState } from "../store"
 import { MODULES } from "@/constants";
 import { authenticate } from "@/api/api";
 import message from '@/i18n';
+import { pushApiJob } from '@/utils/jobQueue';
 
 export interface AuthenticationState {
   sessionId: string;
@@ -45,18 +46,18 @@ async function login(context: BareActionContext<AuthenticationState, RootState>,
   authentication.setIsLoading(true);
   authentication.setErrorMessage('');
 
-  let accountName = undefined;
   try{
-    accountName = await authenticate(payload.sessionId);
+    const accountName = await pushApiJob(
+      () => authenticate(payload.sessionId),
+      message.jobs.authenticate_message,
+    );
+    authentication.setSessionId(payload.sessionId);
+    authentication.setAccountName(accountName);
   }catch(e){
+    authentication.setErrorMessage(message.login.login_error_message);
+    throw(e);
   }finally{
     authentication.setIsLoading(false);
-    if(accountName){
-      authentication.setSessionId(payload.sessionId);
-      authentication.setAccountName(accountName);
-    }else{
-      authentication.setErrorMessage(message.login.login_error_message);
-    }
   }
 }
 

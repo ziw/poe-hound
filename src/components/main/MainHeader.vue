@@ -18,7 +18,7 @@ import { session } from '@/store/modules/session';
 })
 export default class MainHeader extends Vue {
   get leagues() {
-    return session.state.leagues;
+    return session.state.leagues.map(league => league.name);
   }
 
   get currentLeague() {

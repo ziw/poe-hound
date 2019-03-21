@@ -28,10 +28,12 @@ export default class LoginPage extends Vue {
   async tryLogin(sessionId: string){
     try{
       await authentication.login({ sessionId });
-      await session.actions.loadCharacters();
-      await session.actions.loadLeagueStashInfo('Standard');
-      // this.$router.push('/main');
-    }catch{}
+      await session.actions.dispatchLoadCharacters();
+      await session.actions.dispatchLoadAllLeagueStashInfo();
+      this.$router.push('/main');
+    }catch{
+
+    }
   }
 }
 </script>
@@ -44,9 +46,9 @@ export default class LoginPage extends Vue {
     justify-content: center;
     padding: 0px 35px;
 
-  &__divider{
-    margin: 0px 45px;
-  }
+    &__divider{
+      margin: 0px 45px;
+    }
 
   }
 </style>

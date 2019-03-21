@@ -1,4 +1,5 @@
 import { job as jobModule } from '@/store/modules/job';
+import msg from '@/i18n/en';
 
 /**
  * A sequential job queue to handle async jobs.
@@ -14,10 +15,18 @@ class JobQueue {
    * @param time seconds to wait
    * @param message job message while waiting
    */
-  pause(time: number, message: string = `waiting for ${time} seconds`){
+  pause(time: number, message: string = msg.jobs.wait_message(time)){
     this._push(() => {
+      let left = time;
+      const countDownId = setInterval(() => {
+        console.log(`${left} seconds left`);
+        left--;
+      }, 1000);
       return new Promise<void>((resolve) => {
-        setTimeout(() => resolve(), time * 1000);
+        setTimeout(() => {
+          clearInterval(countDownId);
+          resolve();
+        }, time * 1000);
       });
     }, message , true);
   }
@@ -27,9 +36,7 @@ class JobQueue {
     const done = new Promise<T>((resolve, reject) => {
       const job = new Job<T>(callback, jobMessage, jobId, resolve, reject);
       cutInLine ? this.queue.unshift(job) : this.queue.push(job);
-      // if(this.queue.length === 1){
-        this.run();
-      // }
+      this.run();
     });
     return {
       done,
@@ -96,6 +103,15 @@ export type JobStatus = {
   name: string,
 }
 
+/**
+ * Push an API call into the job queue.
+ * The job will resolve with response object or throw an error.
+ * In case of server throttling (status 429), this method will automatically
+ * wait and retry the job until the API call is completed or failed.
+ *
+ * @param apiTask API call to be invoked
+ * @param message job message
+ */
 export function pushApiJob<T>(apiTask: () => Promise<T>, message: string): Promise<T>{
   const { done } = queue.pushJob(apiTask, message);
   return done.catch((error) => {
@@ -122,17 +138,17 @@ class Job<T> {
   }
 
   public executeCallback(): Promise<T> {
-    this.status = 'In progress';
+    this.status = msg.jobs.in_progress;
     return this.callback();
   }
 
   public resolveWith(value: T){
-    this.status = 'Success';
+    this.status = msg.jobs.success;
     this.resolve(value);
   }
 
   public rejectWith(error: any) {
-    this.status = 'Failed';
+    this.status = msg.jobs.failed;
     this.reject(error);
   }
 
