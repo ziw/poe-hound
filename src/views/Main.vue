@@ -4,9 +4,7 @@
       Log out
     </button>
     <main-header></main-header>
-    <div>
-
-    </div>
+    <main-content></main-content>
   </main>
 </template>
 
@@ -14,10 +12,12 @@
 import Vue from 'vue'
 import Component from 'vue-class-component';
 import MainHeader from '@/components/main/MainHeader.vue';
+import MainContent from '@/components/main/MainContent.vue';
 
 @Component({
   components: {
     MainHeader,
+    MainContent,
   }
 })
 export default class Main extends Vue{

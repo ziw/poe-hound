@@ -1,5 +1,5 @@
 import { job as jobModule } from '@/store/modules/job';
-import msg from '@/i18n/en';
+import msg from '@/i18n';
 
 /**
  * A sequential job queue to handle async jobs.

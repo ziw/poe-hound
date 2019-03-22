@@ -8,3 +8,7 @@ export default interface Character{
   experience: number;
   itemIds: string[];
 }
+
+export enum CharacterType {
+  Character= 'Character',
+};

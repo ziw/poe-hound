@@ -11,6 +11,7 @@ import Character from '@/models/character';
 import League from '@/models/league';
 import StashPage from '@/models/stashPage';
 import queue, { pushApiJob } from '@/utils/jobQueue';
+import Tab from '@/models/tab';
 
 export interface SessionState {
   characters: Character[];
@@ -31,6 +32,9 @@ const stateGetter = builder.state();
 const sessionId = () => authentication.state.sessionId;
 const accountName = () => authentication.state.accountName;
 
+/************
+ * Actions *
+ ************/
 /**
  * Load all characters under account. Populate league list based on characters.
  */
@@ -44,10 +48,7 @@ const dispatchLoadCharacters = builder.dispatch(async () => {
     return {
       name,
       stashPages: [],
-      characters: characters.filter(c => c.league === name).map(c => {
-        c.itemIds = [];
-        return c;
-      }),
+      characters: characters.filter(c => c.league === name).map(c => Tab.fromCharacter(c)),
     };
   }));
 
@@ -61,15 +62,9 @@ const dispatchLoadCharacters = builder.dispatch(async () => {
  * Load stash tab metadata of the given league. This only loads the stash tabs name, id etc.
  * It does not load the items of each stash tab
  */
-const dispatchLoadLeagueStashInfo = builder.dispatch(async (context, league: string) => {
-  const stashTabs = await loadLeagueStashInformation(sessionId(), league, accountName());
-  session.mutations.setLeagueStashTabs({
-    league,
-    stashTabs: stashTabs.map(stash => {
-      stash.itemIds = [];
-      return stash;
-    }),
-  });
+const dispatchLoadLeagueStashInfo = builder.dispatch(async (context, leagueName: string) => {
+  const stashTabs = await loadLeagueStashInformation(sessionId(), leagueName, accountName());
+  session.mutations.setLeagueStashTabs({ leagueName, stashTabs });
 }, 'loadLeagueStashInfo');
 
 /**
@@ -125,6 +120,16 @@ const dispatchLogout = builder.dispatch(async () => {
 
 }, 'dispatchLogout');
 
+
+/************
+ * Getters *
+ ************/
+const getLeagueByName = builder.read(state =>
+  (leagueName: string) => state.leagues.find(league => league.name === leagueName), "getLeagueByName")
+
+/**
+ * export Session module object
+ */
 export const session = {
   get state() { return stateGetter() },
 
@@ -135,10 +140,10 @@ export const session = {
 
     setCurrentLeagueName: builder.commit((state, league: string) => state.currentLeagueName = league, 'setCurrentLeagueName'),
 
-    setLeagueStashTabs: builder.commit((state, payload: { league: string, stashTabs: StashPage[] }) => {
-      const league = state.leagues.find(league => league.name === payload.league);
+    setLeagueStashTabs: builder.commit((state, payload: { leagueName: string, stashTabs: StashPage[] }) => {
+      const league = getLeagueByName()(payload.leagueName);
       if(league){
-        league.stashPages = payload.stashTabs;
+        league.stashPages = payload.stashTabs.map(stash => Tab.fromStashPage(stash));
       }
     }, 'setLeagueStashTabs'),
   },
@@ -154,6 +159,6 @@ export const session = {
   },
 
   getters: {
-
+    getLeagueByName,
   },
 }
