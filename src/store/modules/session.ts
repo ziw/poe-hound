@@ -1,6 +1,6 @@
 import { getStoreBuilder, BareActionContext } from "vuex-typex";
 import { RootState } from "../store"
-import { MODULES } from "@/constants";
+import { MODULES, Status } from "@/constants";
 import { loadCharacters,
         loadInventory,
         loadLeagueStashInformation,
@@ -81,9 +81,31 @@ const dispatchLoadAllLeagueStashInfo = builder.dispatch(async () => {
   })
 }, 'dispatchLoadAllLeagueStashInfo');
 
-const dispatchLoadInventory = builder.dispatch(async () => {
-  const char = session.state.characters[0]
-  await pushApiJob(() => loadInventory(sessionId(), char.name, authentication.state.accountName), `loading character ${char.name}`);
+/**
+ * Load items for a given character tab
+ */
+const dispatchLoadItems = builder.dispatch(async (context, tab: Tab) => {
+  const characterName = tab.id;
+
+  session.mutations.setTabStatus({
+    tab,
+    status: Status.LOADING,
+  });
+
+  try{
+    const items = await pushApiJob(() => loadInventory(sessionId(), characterName, accountName()),
+      `loading character ${characterName}`);
+    session.mutations.setTabStatus({
+      tab,
+      status: Status.SUCCESS,
+    });
+
+  }catch{
+    session.mutations.setTabStatus({
+      tab,
+      status: Status.FAILED,
+    });
+  }
 }, 'loadInventory');
 
 const dispatchTestJob = builder.dispatch(async () => {
@@ -133,7 +155,8 @@ const getLeagueByName = builder.read(state =>
 const getCurrentLeague = builder.read(state => getLeagueByName()(state.currentLeagueName), 'getCurrentLeague');
 
 const getFilteredStashTabs = builder.read(() => {
-  return getCurrentLeague()!.characters || [];
+  const league = getCurrentLeague();
+  return league ? league.characters : [];
 }, 'getFilteredStashTabs');
 
 /**
@@ -158,6 +181,15 @@ export const session = {
     }, 'setLeagueStashTabs'),
 
     setSelectedTabId: builder.commit((state, id: string) => state.selectedTabId = id, 'setSelectedTabId'),
+
+    setTabStatus: builder.commit((state, payload: { tab: Tab, status: Status }) => {
+      payload.tab.status = payload.status;
+    }, 'setTabStatus'),
+
+    setTabItemIds: builder.commit((state, payload: { tab: Tab, itemIds: string[] }) => {
+      payload.tab.itemIds = payload.itemIds;
+    }, 'setTabItems'),
+
   },
 
 
@@ -165,7 +197,7 @@ export const session = {
     dispatchLoadCharacters,
     dispatchLoadLeagueStashInfo,
     dispatchLoadAllLeagueStashInfo,
-    dispatchLoadInventory,
+    dispatchLoadItems,
     dispatchTestJob,
     dispatchLogout,
   },

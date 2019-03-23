@@ -3,7 +3,7 @@ export * from './paths';
 
 export const COOKIE_NAME = 'POESESSID';
 
-export enum STATUS {
+export enum Status {
   INIT = 'INIT',
   FAILED = 'FAILED',
   SUCCESS = 'SUCCESS',

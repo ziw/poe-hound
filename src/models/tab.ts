@@ -1,6 +1,6 @@
 import StashPage, { StashType } from './stashPage';
 import Character, { CharacterType } from './character';
-import { STATUS } from '@/constants';
+import { Status } from '@/constants';
 
 /**
  * Represents one renderable stash tab.
@@ -8,7 +8,7 @@ import { STATUS } from '@/constants';
  */
 export default class Tab {
 
-  public status: STATUS = STATUS.INIT;
+  public status: Status = Status.INIT;
   public itemIds: string[] = [];
 
   private constructor(
