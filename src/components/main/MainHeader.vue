@@ -5,7 +5,7 @@
       @input="onLeagueSwitch"
       :searchable="false"
       :options="leagues"
-      :value="currentLeague"></v-select>
+      :value="currentLeagueName"></v-select>
   </header>
 </template>
 
@@ -21,7 +21,7 @@ export default class MainHeader extends Vue {
     return session.state.leagues.map(league => league.name);
   }
 
-  get currentLeague() {
+  get currentLeagueName() {
     return session.state.currentLeagueName;
   }
 

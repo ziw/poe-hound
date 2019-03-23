@@ -5,7 +5,7 @@
     </section>
 
     <section class="main-content__stash-section">
-
+      <tab-bar />
     </section>
   </div>
 </template>
@@ -15,7 +15,11 @@ import Vue from 'vue'
 import Component from 'vue-class-component';
 import TabBar from '@/components/main/stash/TabBar.vue';
 
-@Component({})
+@Component({
+  components: {
+    TabBar,
+  }
+})
 export default class MainContent extends Vue {
 }
 </script>

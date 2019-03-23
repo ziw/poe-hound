@@ -17,12 +17,14 @@ export interface SessionState {
   characters: Character[];
   currentLeagueName: string;
   leagues: League[];
+  selectedTabId: string;
 }
 
 export const initSession: SessionState = {
   characters: [],
   currentLeagueName: '',
   leagues: [],
+  selectedTabId: '',
 }
 
 const builder = getStoreBuilder<RootState>().module(MODULES.session, initSession);
@@ -125,7 +127,14 @@ const dispatchLogout = builder.dispatch(async () => {
  * Getters *
  ************/
 const getLeagueByName = builder.read(state =>
-  (leagueName: string) => state.leagues.find(league => league.name === leagueName), "getLeagueByName")
+  (leagueName: string) => state.leagues.find(league => league.name === leagueName),
+'getLeagueByName');
+
+const getCurrentLeague = builder.read(state => getLeagueByName()(state.currentLeagueName), 'getCurrentLeague');
+
+const getFilteredStashTabs = builder.read(() => {
+  return getCurrentLeague()!.characters || [];
+}, 'getFilteredStashTabs');
 
 /**
  * export Session module object
@@ -134,6 +143,7 @@ export const session = {
   get state() { return stateGetter() },
 
   mutations: {
+
     setCharacters: builder.commit((state: SessionState, chars: Character[]) => state.characters = chars, 'setCharacters'),
 
     setLeagues: builder.commit((state, leagues: League[]) => state.leagues = leagues, 'setLeagues'),
@@ -146,6 +156,8 @@ export const session = {
         league.stashPages = payload.stashTabs.map(stash => Tab.fromStashPage(stash));
       }
     }, 'setLeagueStashTabs'),
+
+    setSelectedTabId: builder.commit((state, id: string) => state.selectedTabId = id, 'setSelectedTabId'),
   },
 
 
@@ -159,6 +171,7 @@ export const session = {
   },
 
   getters: {
-    getLeagueByName,
+    getCurrentLeague,
+    getFilteredStashTabs,
   },
 }
