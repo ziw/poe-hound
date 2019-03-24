@@ -12,6 +12,7 @@ import League from '@/models/league';
 import StashPage from '@/models/stashPage';
 import queue, { pushApiJob } from '@/utils/jobQueue';
 import Tab from '@/models/tab';
+import ItemStore, { FilterType } from '@/indexer/itemStore';
 
 export interface SessionState {
   characters: Character[];
@@ -103,6 +104,7 @@ const dispatchLoadItems = builder.dispatch(async (context, tab: Tab) => {
       tab,
       itemIds: items.map(item => item.id),
     });
+    ItemStore.insertAll(items);
 
   }catch{
     session.mutations.setTabStatus({
