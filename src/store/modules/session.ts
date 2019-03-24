@@ -99,6 +99,10 @@ const dispatchLoadItems = builder.dispatch(async (context, tab: Tab) => {
       tab,
       status: Status.SUCCESS,
     });
+    session.mutations.setTabItemIds({
+      tab,
+      itemIds: items.map(item => item.id),
+    });
 
   }catch{
     session.mutations.setTabStatus({

@@ -2,6 +2,7 @@ import { PATHS, COOKIE_NAME } from '@/constants';
 import  request, {FullResponse} from 'request-promise-native';
 import Character from '@/models/character';
 import StashPage from '@/models/stashPage';
+import Item from '@/models/item';
 
 const get = (url: string, sessionId: string)=> {
   return request.get({
@@ -42,7 +43,7 @@ export function loadCharacters(sessionId: string) {
 
 export function loadInventory(sessionId: string, character: string, accountName: string){
   return get(buildUrl(PATHS.inventoryUrl, { character, accountName }), sessionId)
-          .then((resp: FullResponse) => JSON.parse(resp.body));
+          .then((resp: FullResponse) => (JSON.parse(resp.body) as { items: Item[] }).items);
 }
 
 export function loadLeagueStashInformation(sessionId: string, league: string, accountName: string){
