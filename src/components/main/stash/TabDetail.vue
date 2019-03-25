@@ -66,5 +66,6 @@ export default class TabDetail extends Vue {
   .tab-detail {
     margin-top: 15px;
     position: relative;
+
   }
 </style>

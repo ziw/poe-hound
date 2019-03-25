@@ -66,7 +66,7 @@ body {
     align-items: center;
     justify-content: center;
     height: 100%;
-    margin: auto;
+    margin: 0;
     background-image: radial-gradient(100% 100%, #620909 0%, #230202 100%);
     font-family: OpenSans-Regular;
 }
@@ -76,8 +76,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  height: 100%;
-  width: 100%;
+  flex-grow: 1;
   color: #fff;
   position: relative;
 

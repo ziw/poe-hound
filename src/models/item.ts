@@ -38,7 +38,20 @@ export default interface Item {
 };
 
 export enum InventoryId {
-
+  Belt= 'Belt',
+  Amulet= 'Amulet',
+  Flask= 'Flask',
+  Boots= 'Boots',
+  Helm= 'Helm',
+  Gloves= 'Gloves',
+  Ring= 'Ring',
+  Ring2= 'Ring2',
+  Weapon= 'Weapon',
+  Weapon2= 'Weapon2',
+  Offhand= 'Offhand',
+  Offhand2= 'Offhand2',
+  BodyArmour= 'BodyArmour',
+  MainInventory= 'MainInventory',
 };
 
 export interface Socket {
