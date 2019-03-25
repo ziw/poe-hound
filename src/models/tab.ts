@@ -31,7 +31,7 @@ export default class Tab {
     /**
      * background and border color
      */
-    public color: { r: number, g: number, b: number } = { r: 0, g: 0, b: 0 },
+    public color: { r: number, g: number, b: number } = { r: 255, g: 255, b: 255 },
   ){
 
   }

@@ -33,7 +33,7 @@ import message from '@/i18n';
 })
 export default class LoginForm extends Vue {
 
-  sessionId: string = '23d42f7d21ced9400eb82a9fa6b63339';
+  sessionId: string = '';
   loginButtonLabel: string = message.login.login_button_label;
 
   get loginButtonDisabled() {

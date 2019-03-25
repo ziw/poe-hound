@@ -165,6 +165,10 @@ const getFilteredStashTabs = builder.read(() => {
   return league ? league.characters : [];
 }, 'getFilteredStashTabs');
 
+const getSelectedStashTab = builder.read(state => {
+  return getFilteredStashTabs().find(tab => tab.id === stateGetter().selectedTabId);
+}, 'getSelectedStashTab');
+
 /**
  * export Session module object
  */
@@ -211,5 +215,6 @@ export const session = {
   getters: {
     getCurrentLeague,
     getFilteredStashTabs,
+    getSelectedStashTab,
   },
 }

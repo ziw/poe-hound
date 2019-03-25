@@ -13,9 +13,11 @@ class ItemStore {
     },
   ];
   private indexers: Map<FilterType, ItemIndexer>;
+  private itemDetails: Map<string, Item>;
 
   constructor() {
     this.indexers = new Map();
+    this.itemDetails = new Map();
     this.indexProperties.forEach(indexProperty => {
       this.indexers.set(
         indexProperty.filterType,
@@ -25,14 +27,19 @@ class ItemStore {
   }
 
   insert(item: Item){
+    this.itemDetails.set(item.id, item);
     this.indexers.forEach(indexer => indexer.index(item));
   }
 
-  insertAll(items: Item[]){
+  insertAll(items: Item[]) {
     items.forEach(item => this.insert(item));
   }
 
-  query(type: FilterType, keyword: string): string[] {
+  queryById(id: string) {
+    return this.itemDetails.get(id);
+  }
+
+  queryByFilter(type: FilterType, keyword: string): string[] {
     const indexer = this.indexers.get(type);
     return indexer ? indexer.query(keyword) : [];
   }

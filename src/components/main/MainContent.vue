@@ -6,6 +6,7 @@
 
     <section class="main-content__stash-section">
       <tab-bar />
+      <tab-detail />
     </section>
   </div>
 </template>
@@ -14,10 +15,12 @@
 import Vue from 'vue'
 import Component from 'vue-class-component';
 import TabBar from '@/components/main/stash/TabBar.vue';
+import TabDetail from '@/components/main/stash/TabDetail.vue';
 
 @Component({
   components: {
     TabBar,
+    TabDetail,
   }
 })
 export default class MainContent extends Vue {
