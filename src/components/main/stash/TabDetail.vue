@@ -2,7 +2,11 @@
   <div class="tab-detail"
     :style="styleObject">
     <keep-alive>
-        <component :is="selectedStashRenderer"></component>
+        <component
+          :is="selectedStashRenderer"
+          :dimension="dimension"
+          :renderingTab="renderingTab">
+        </component>
     </keep-alive>
 
   </div>
@@ -17,10 +21,12 @@ import { Status } from '@/constants';
 import { StashType } from '@/models/stashPage';
 import { CharacterType } from '@/models/character';
 import NormalStash from '@/components/main/stash/details/NormalStash.vue';
+import CharacterInventory from '@/components/main/stash/details/CharacterInventory.vue';
 
 @Component({
   components: {
     NormalStash,
+    CharacterInventory,
   }
 })
 export default class TabDetail extends Vue {
@@ -59,5 +65,6 @@ export default class TabDetail extends Vue {
 <style lang="scss">
   .tab-detail {
     margin-top: 15px;
+    position: relative;
   }
 </style>

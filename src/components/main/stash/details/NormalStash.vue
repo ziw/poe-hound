@@ -1,6 +1,6 @@
 <template>
   <div>
-
+    normal stash
   </div>
 </template>
 
