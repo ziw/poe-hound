@@ -1,11 +1,13 @@
 <template>
   <div class="character-inventory">
-    <item-container v-for="item in items"
-        :item="item.item"
+    <item-container v-for="config in renderingConfigs"
+        :item="config.item"
         :unitDimension="unitDimension"
-        :left="item.x"
-        :top="item.y"
-        :key="item.id" />
+        :left="config.x"
+        :top="config.y"
+        :w="config.w"
+        :h="config.h"
+        :key="config.item.id" />
   </div>
 
 </template>
@@ -47,9 +49,6 @@ const layoutMapping: { [key in InventoryId]?: { x: number, y: number }} = {
 
 const getPosition = (item: Item, dimension: number) => {
   const position = layoutMapping[item.inventoryId] || { x: 0, y: 500 };
-  if(item.inventoryId === InventoryId.Belt){
-
-  }
   return {
     x: position.x * (dimension / BASE_DIMENSION),
     y: position.y * (dimension / BASE_DIMENSION),
@@ -67,7 +66,7 @@ export default class CharacterInventory extends AppProps {
     return this.dimension / 14;
   }
 
-  get items() {
+  get renderingConfigs() {
     if(!this.renderingTab){
       return [];
     }
@@ -76,7 +75,7 @@ export default class CharacterInventory extends AppProps {
     return items.map(item => {
       let { x, y } = getPosition(item, this.dimension);
       if(item.inventoryId === InventoryId.Flask
-          || item.inventoryId === InventoryId.MainInventory){
+          || item.inventoryId === InventoryId.MainInventory) {
         x += (this.unitDimension) * item.x;
         y += (this.unitDimension) * item.y;
       }
@@ -84,7 +83,9 @@ export default class CharacterInventory extends AppProps {
         item,
         x,
         y,
-      }
+        w: item.w,
+        h: item.h,
+      };
     });
   }
 }
