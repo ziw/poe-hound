@@ -12,7 +12,7 @@ import League from '@/models/league';
 import StashPage from '@/models/stashPage';
 import queue, { pushApiJob } from '@/utils/jobQueue';
 import Tab from '@/models/tab';
-import ItemStore, { FilterType } from '@/indexer/itemStore';
+import ItemStore from '@/indexer/itemStore';
 
 export interface SessionState {
   characters: Character[];

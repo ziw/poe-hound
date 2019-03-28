@@ -1,18 +1,19 @@
 import ItemIndexer from './itemIndexer';
 import Item from '@/models/item';
+import { IndexerFilterType } from './filterTypes';
 
 class ItemStore {
 
   private indexProperties: ({
-    filterType: FilterType,
+    filterType: IndexerFilterType,
     filterBy: (item: Item) => string[],
    })[] = [
     {
-      filterType: FilterType.name,
-      filterBy: item => [item.name, item.typeLine],
+      filterType: IndexerFilterType.name,
+      filterBy: item => [item.name],
     },
   ];
-  private indexers: Map<FilterType, ItemIndexer>;
+  private indexers: Map<IndexerFilterType, ItemIndexer>;
   private itemDetails: Map<string, Item>;
 
   constructor() {
@@ -35,20 +36,15 @@ class ItemStore {
     items.forEach(item => this.insert(item));
   }
 
-  queryById(id: string) {
+  getItemFromId(id: string) {
     return this.itemDetails.get(id);
   }
 
-  queryByFilter(type: FilterType, keyword: string): string[] {
+  queryByFilter(type: IndexerFilterType, keyword: string): string[] {
     const indexer = this.indexers.get(type);
     return indexer ? indexer.query(keyword) : [];
   }
 
 }
-
-export enum FilterType {
-  name = 'name',
-  typeLine = 'typeLine',
-};
 
 export default new ItemStore();

@@ -71,7 +71,7 @@ export default class CharacterInventory extends AppProps {
       return [];
     }
 
-    const items = this.renderingTab.itemIds.map(id => ItemStore.queryById(id)) as Item[];
+    const items = this.renderingTab.itemIds.map(id => ItemStore.getItemFromId(id)) as Item[];
     return items.map(item => {
       let { x, y } = getPosition(item, this.dimension);
       if(item.inventoryId === InventoryId.Flask
