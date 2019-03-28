@@ -9,7 +9,7 @@ class ItemStore {
    })[] = [
     {
       filterType: FilterType.name,
-      filterBy: item => [item.name],
+      filterBy: item => [item.name, item.typeLine],
     },
   ];
   private indexers: Map<FilterType, ItemIndexer>;
