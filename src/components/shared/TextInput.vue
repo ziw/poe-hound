@@ -1,8 +1,11 @@
 <template>
   <div class="text-input">
+
     <input type="text"
           v-bind="$attrs"
           :value="value"
+          :id="id"
+          :placeholder="label"
           v-on="inputListeners" >
   </div>
 </template>
@@ -25,6 +28,8 @@ const AppProps = Vue.extend({
 
     stretch: Boolean,
     value: String,
+    id: String,
+    label: String,
   }
 })
 
@@ -44,6 +49,10 @@ export default class TextInput extends AppProps {
 
   updateValue(e: KeyboardEvent){
     this.$emit('input', (<HTMLInputElement>e.target).value);
+  }
+
+  mounted() {
+
   }
 }
 </script>

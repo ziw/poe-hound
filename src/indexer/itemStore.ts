@@ -1,6 +1,6 @@
 import ItemIndexer from './itemIndexer';
 import Item from '@/models/item';
-import { IndexerFilterType } from './filterTypes';
+import { IndexerFilterType } from '../models/filterTypes';
 
 class ItemStore {
 

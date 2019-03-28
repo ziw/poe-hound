@@ -15,7 +15,7 @@ import JobBanner from '@/components/shared/JobBanner.vue';
     JobBanner,
   }
 })
-export default class LoginForm extends Vue {
+export default class App extends Vue {
 }
 </script>
 

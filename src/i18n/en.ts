@@ -14,6 +14,10 @@ const en = {
     in_progress: 'In progress',
     success: 'Success',
     failed: 'Failed',
+  },
+  filters: {
+    name: 'Name',
+    search: 'Search',
   }
 }
 

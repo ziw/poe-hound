@@ -1,7 +1,7 @@
 <template>
   <div class="main-content">
     <section class="main-content__filter-section">
-      filters
+      <filter-form />
     </section>
 
     <section class="main-content__stash-section">
@@ -16,11 +16,13 @@ import Vue from 'vue'
 import Component from 'vue-class-component';
 import TabBar from '@/components/main/stash/TabBar.vue';
 import TabDetail from '@/components/main/stash/TabDetail.vue';
+import FilterForm from '@/components/main/filters/FilterForm.vue';
 
 @Component({
   components: {
     TabBar,
     TabDetail,
+    FilterForm,
   }
 })
 export default class MainContent extends Vue {
