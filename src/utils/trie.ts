@@ -19,7 +19,7 @@ export default class TrieNode<V> {
 
   find(key: string, exact = false): V[] {
     if(!key){
-      return [];
+      key = '';
     }
     const prefix = key.toLowerCase().split('');
     let root: TrieNode<V> = this;
