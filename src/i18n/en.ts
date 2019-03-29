@@ -18,6 +18,7 @@ const en = {
   filters: {
     name: 'Name',
     search: 'Search',
+    clear: 'Clear',
   }
 }
 

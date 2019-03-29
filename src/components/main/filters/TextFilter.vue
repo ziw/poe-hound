@@ -3,6 +3,7 @@
   <text-input
     :id="filterType"
     :label="label"
+    :value="filter.value"
     @input="inputUpdate"/>
 </template>
 
@@ -28,6 +29,12 @@ const AppProps = Vue.extend({
   }
 })
 export default class TextFilter extends AppProps {
+
+  get filter() {
+    return filters.getters.getTextFilter()(this.filterType);
+  }
+
+
   inputUpdate(value: string) {
     filters.mutations.setTextFiltersValue({
       type: this.filterType,

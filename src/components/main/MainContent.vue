@@ -41,6 +41,7 @@ export default class MainContent extends Vue {
 
     &__filter-section {
       flex-grow: 1;
+      padding: 15px;
     }
 
     &__stash-section {
