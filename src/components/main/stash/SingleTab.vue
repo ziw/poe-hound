@@ -49,6 +49,7 @@ export default class SingleTab extends AppProps {
     box-sizing: border-box;
     padding: 2px 5px;
     cursor: pointer;
+    white-space: nowrap;
 
     &:hover {
       border-bottom: 1px solid rgba(255, 255, 255, 0.5);

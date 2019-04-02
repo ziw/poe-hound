@@ -7,6 +7,7 @@ import { loadCharacters,
 } from "@/api/api";
 import message from '@/i18n';
 import { authentication } from './authentication';
+import { filters } from './filters';
 import Character from '@/models/character';
 import League from '@/models/league';
 import StashPage from '@/models/stashPage';
@@ -161,12 +162,33 @@ const getLeagueByName = builder.read(state =>
 const getCurrentLeague = builder.read(state => getLeagueByName()(state.currentLeagueName), 'getCurrentLeague');
 
 const getFilteredStashTabs = builder.read(() => {
+
   const league = getCurrentLeague();
-  return league ? league.characters : [];
+  if(!league) {
+    return [];
+  }
+  const filteredStashTabs = [...league.characters, ...league.stashPages];
+  const filterResults = filters.state.filterResults;
+  if(filters.state.filterActive) {
+    return filteredStashTabs.filter(tab => tab.itemIds.some(id => filterResults.includes(id)));
+  }
+  return filteredStashTabs;
 }, 'getFilteredStashTabs');
 
 const getSelectedStashTab = builder.read(state => {
-  return getFilteredStashTabs().find(tab => tab.id === stateGetter().selectedTabId);
+  const filteredTabs = getFilteredStashTabs();
+  if(!filteredTabs.length) {
+    return undefined;
+  }
+
+  let selectedTab = filteredTabs.find(tab => tab.id === stateGetter().selectedTabId);
+
+  if(!selectedTab) {
+    session.mutations.setSelectedTabId(filteredTabs[0].id);
+    selectedTab = filteredTabs[0];
+  }
+  return selectedTab;
+
 }, 'getSelectedStashTab');
 
 /**

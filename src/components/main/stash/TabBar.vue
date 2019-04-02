@@ -33,6 +33,6 @@ export default class TabBar extends Vue {
     position: relative;
     display: flex;
     flex-wrap: nowrap;
-    overflow: hidden;
+    overflow: auto;
   }
 </style>

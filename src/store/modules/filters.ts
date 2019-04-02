@@ -2,6 +2,7 @@ import { getStoreBuilder } from "vuex-typex";
 import { RootState } from "../store";
 import { MODULES, Status } from "@/constants";
 import { Filter, IndexerFilterType, FunctionalFilterType, createFilter } from '@/models/filterTypes';
+import itemStore from '@/indexer/itemStore';
 
 export interface FilterState {
   textFilters: Filter<IndexerFilterType>[];
@@ -9,12 +10,17 @@ export interface FilterState {
   simpleFilters: Filter<FunctionalFilterType>[];
 
   /**
-   * @type {boolean} If any filter is active.
+   * If any filter is active.
    *
    * When false, session should render all tabs/characters.
    * Otherwise only render filtered results
    */
   filterActive: boolean;
+
+  /**
+   * filter results. a list of item ids
+   */
+  filterResults: string[];
 }
 
 export const initFilters: FilterState = {
@@ -25,6 +31,7 @@ export const initFilters: FilterState = {
     createFilter(FunctionalFilterType.shaped),
   ],
   filterActive: false,
+  filterResults: [],
 }
 
 const builder = getStoreBuilder<RootState>().module(MODULES.filters, initFilters);
@@ -41,13 +48,13 @@ const getTextFilter = builder.read(state =>
 /************
  * Actions *
  ************/
-
 /**
  * Clear filter active status and reset all values
  */
 const dispatchClearFilters = builder.dispatch(() => {
   filters.mutations.resetFilterValues();
   filters.mutations.setFilterActiveStatus(false);
+  filters.mutations.setFilterResults([]);
 }, 'dispatchClearFilters');
 
 /**
@@ -56,6 +63,17 @@ const dispatchClearFilters = builder.dispatch(() => {
  */
 const dispatchFilterItems = builder.dispatch(async (context) => {
   filters.mutations.setFilterActiveStatus(true);
+  let results: string[] = [];
+  filters.state.textFilters
+    .filter(textFilter => textFilter.value)
+    .forEach(textFilter => {
+      results = [
+        ...results,
+        ...itemStore.queryByFilter(textFilter.type, textFilter.value)
+      ];
+  });
+
+  filters.mutations.setFilterResults(results);
 }, 'dispatchFilterItems');
 
 /**
@@ -81,6 +99,10 @@ export const filters = {
     resetFilterValues: builder.commit((state) => {
       state.textFilters.forEach(filter => filter.value = undefined);
     }, 'resetFilterValues'),
+
+    setFilterResults: builder.commit((state, filteredIds: string[]) => {
+      state.filterResults = filteredIds;
+    }, 'setFilterState'),
 
   },
 
