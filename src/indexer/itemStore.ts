@@ -45,6 +45,17 @@ class ItemStore {
     return indexer ? indexer.query(keyword) : [];
   }
 
+  getFilterOptions(type: IndexerFilterType): string[] {
+    const indexer = this.indexers.get(type);
+    const filterProp = this.indexProperties.find(prop => prop.filterType === type);
+    const allIds = indexer!.query('');
+
+    return allIds.map(id => {
+        const item = this.getItemFromId(id);
+        return item ? filterProp!.filterBy(item) : []
+      }).reduce((acc, val) => acc.concat(val), []);
+  }
+
 }
 
 export default new ItemStore();
