@@ -1,11 +1,22 @@
 <template>
-  <v-select
-    class="main-header__league-select"
-    @input="inputUpdate"
-    @search="onSearch"
-    :searchable="true"
-    :options="this.options"
-    :value="filter.value"></v-select>
+  <div :class="{
+      'text-filter': true,
+      ['text-filter__stretch']: this.stretch,
+    }">
+    <label>
+      {{ label }}
+    </label>
+    <v-select
+      :class="{
+        'text-filter__input': true,
+
+      }"
+      @input="inputUpdate"
+      @search="onSearch"
+      :searchable="true"
+      :options="this.options"
+      :value="filter.value"></v-select>
+  </div>
 </template>
 
 <script lang="ts">
@@ -20,7 +31,7 @@ import TextInput from '@/components/shared/TextInput.vue';
 const AppProps = Vue.extend({
   props: {
     label: String,
-
+    stretch: Boolean,
     filterType: String,
   }
 });
@@ -32,6 +43,9 @@ const AppProps = Vue.extend({
 })
 export default class TextFilter extends AppProps {
 
+  /**
+   * the auto-complete options to show in the dropdown
+   */
   options: string[] = [];
 
   get filter() {
@@ -50,3 +64,22 @@ export default class TextFilter extends AppProps {
   }
 }
 </script>
+
+<style lang="scss">
+  .text-filter {
+    display: flex;
+
+    label{
+      display: flex;
+      align-items: center;
+      width: 10%;
+      justify-content: flex-end;
+    }
+
+    &__input {
+      flex-grow: 1;
+      padding-left: 10px;
+    }
+  }
+</style>
+

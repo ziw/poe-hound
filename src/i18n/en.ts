@@ -16,7 +16,8 @@ const en = {
     failed: 'Failed',
   },
   filters: {
-    name: 'Name',
+    itemName: 'Name',
+    itemTypeLine: 'Base',
     search: 'Search',
     clear: 'Clear',
   }

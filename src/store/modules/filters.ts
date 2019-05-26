@@ -26,6 +26,7 @@ export interface FilterState {
 export const initFilters: FilterState = {
   textFilters: [
     createFilter(IndexerFilterType.name),
+    createFilter(IndexerFilterType.typeLine),
   ],
   simpleFilters: [
     createFilter(FunctionalFilterType.shaped),

@@ -1,12 +1,23 @@
 <template>
   <form v-on:submit.prevent="filterItems" class="filter-form">
-    <button type="button" @click="clearFilters">
-      {{ labels.clear }}
-    </button>
+    <div class="filter-form__block--stretch">
+      <button type="button"
+        @click="clearFilters">
+        {{ labels.clear }}
+      </button>
+    </div>
     <text-filter
+      class="filter-form__block--stretch"
+      :stretch="true"
       :filterType="indexFilterTypes.name"
-      :label="labels.name"/>
-    <div>
+      :label="labels.itemName"/>
+
+    <text-filter
+      class="filter-form__block--stretch"
+      :stretch="false"
+      :filterType="indexFilterTypes.typeLine"
+      :label="labels.itemTypeLine"/>
+    <div class="filter-form__submit-btn filter-form__block--stretch">
       <primary-button type="submit" stretch style-type="square">
         {{ labels.search }}
       </primary-button>
@@ -35,6 +46,7 @@ export default class FilterForm extends Vue {
   labels = messages.filters;
   indexFilterTypes = IndexerFilterType;
 
+
   filterItems() {
     filters.actions.dispatchFilterItems();
   }
@@ -47,7 +59,20 @@ export default class FilterForm extends Vue {
 
 <style lang="scss" scoped>
   .filter-form {
-    display: block;
+    display: flex;
+    flex-wrap: wrap;
+
+    &__submit-btn {
+      margin-top: 15px;
+    }
+
+    &__block {
+      width: 50%;
+
+      &--stretch {
+        width: 100%;
+      }
+    }
   }
 
 </style>
