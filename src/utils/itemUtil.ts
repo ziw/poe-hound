@@ -1,5 +1,10 @@
 import Item from '@/models/item';
 
+/**
+ * return a multi-lined string containing an item's
+ * basic information to display in an element 'title' tooltip
+ * @param item the item to display
+ */
 export const convertItemToTitle = (item: Item) => {
   return [
     item.name,

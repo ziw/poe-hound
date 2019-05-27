@@ -1,7 +1,14 @@
 import { getStoreBuilder } from "vuex-typex";
 import { RootState } from "../store";
 import { MODULES, Status } from "@/constants";
-import { Filter, IndexerFilterType, FunctionalFilterType, createFilter } from '@/models/filterTypes';
+import {
+  Filter,
+  IndexerFilterType,
+  FunctionalFilterType,
+  createFilter,
+  indexerFilters,
+  functionalFilters
+} from '@/models/filterTypes';
 import itemStore from '@/indexer/itemStore';
 
 export interface FilterState {
@@ -24,13 +31,11 @@ export interface FilterState {
 }
 
 export const initFilters: FilterState = {
-  textFilters: [
-    createFilter(IndexerFilterType.name),
-    createFilter(IndexerFilterType.typeLine),
-  ],
-  simpleFilters: [
-    createFilter(FunctionalFilterType.shaped),
-  ],
+
+  textFilters: indexerFilters.map(filter =>  createFilter(filter.filterType)),
+
+  simpleFilters: functionalFilters.map(filter => createFilter(filter.filterType)),
+
   filterActive: false,
   filterResults: [],
 }
@@ -65,6 +70,8 @@ const dispatchClearFilters = builder.dispatch(() => {
 const dispatchFilterItems = builder.dispatch(async (context) => {
   filters.mutations.setFilterActiveStatus(true);
   let results: string[] = [];
+
+  //first compute the results from text filter
   filters.state.textFilters
     .filter(textFilter => textFilter.value)
     .forEach(textFilter => {
@@ -73,6 +80,11 @@ const dispatchFilterItems = builder.dispatch(async (context) => {
         ...itemStore.queryByFilter(textFilter.type, textFilter.value)
       ];
   });
+
+  results = itemStore.filterByFunctions(
+    results,
+    filters.state.simpleFilters.filter(f => f.enabled)
+  );
 
   filters.mutations.setFilterResults(results);
 }, 'dispatchFilterItems');
