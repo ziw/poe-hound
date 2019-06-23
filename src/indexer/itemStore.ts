@@ -18,7 +18,7 @@ class ItemStore {
       //for each property, create an indexer trie to index
       //the item by property key
       this.indexers.set(
-        indexProperty.filterType,
+        indexProperty.type,
         new ItemIndexer(indexProperty.getIndexKeys)
       );
     });
@@ -54,7 +54,7 @@ class ItemStore {
    */
   filterByFunctions(ids: string[], filterStates: Filter<FunctionalFilterType>[]): string[] {
     const filteringFunctions = filterStates.map(filterState => {
-      const filterDef = functionalFilters.find(f => f.filterType === filterState.type);
+      const filterDef = functionalFilters.find(f => f.type === filterState.type);
       if(filterDef){
         return (item: Item) => filterDef.filter(item, filterState.value);
       }
@@ -67,7 +67,7 @@ class ItemStore {
   }
 
   /**
-   * given a filter type (e.g. name, typeLine), return a list of auto complete options
+   * given an indexer filter type (e.g. name, typeLine), return a list of auto complete options
    * for this type to be shown in filter dropdown
    * @param type the type of filter
    */
@@ -76,7 +76,7 @@ class ItemStore {
     if(!indexer){
       return [];
     }
-    const filterProp = this.indexProperties.find(prop => prop.filterType === type);
+    const filterProp = this.indexProperties.find(prop => prop.type === type);
     const allIds = indexer!.query('');
 
     const options = allIds.flatMap(id => {

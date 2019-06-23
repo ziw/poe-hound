@@ -18,6 +18,8 @@ const en = {
   filters: {
     itemName: 'Name',
     itemTypeLine: 'Base',
+    shaped: 'Shaped',
+    elder: 'Elder',
     search: 'Search',
     clear: 'Clear',
   }

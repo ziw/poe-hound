@@ -59,6 +59,7 @@ const dispatchLoadCharacters = builder.dispatch(async () => {
   if(characters.length){
     //use first league as default leauge
     session.mutations.setCurrentLeagueName(session.state.leagues[0].name);
+    loadAllCharInventoriesFromLeague(session.state.leagues[0].name);
   }
 }, "loadCharacters");
 
@@ -82,6 +83,11 @@ const dispatchLoadAllLeagueStashInfo = builder.dispatch(async () => {
     );
   })
 }, 'dispatchLoadAllLeagueStashInfo');
+
+const loadAllCharInventoriesFromLeague = builder.dispatch(async (context, leagueName: string) => {
+  const league = getLeagueByName()(leagueName)!;
+  league.characters.forEach(character => dispatchLoadItems(character));
+}, 'loadAllCharInventoriesFromLeague');
 
 /**
  * Load items for a given character tab

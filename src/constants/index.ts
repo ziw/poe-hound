@@ -10,3 +10,9 @@ export enum Status {
   SUCCESS = 'SUCCESS',
   LOADING = 'LOADING',
 }
+
+export enum FilterBooleanOptions {
+  ANY = 'ANY',
+  YES = 'YES',
+  NO = 'NO',
+}

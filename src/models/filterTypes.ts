@@ -1,4 +1,5 @@
 import Item from './item';
+import { booleanValueOf } from '@/utils';
 
 export enum IndexerFilterType {
   name= 'name',
@@ -8,6 +9,7 @@ export enum IndexerFilterType {
 export enum FunctionalFilterType {
   numSockets= 'numSockets',
   shaped= 'shaped',
+  elder= 'elder',
 }
 
 export type Filter<T> = {
@@ -16,12 +18,12 @@ export type Filter<T> = {
   enabled?: boolean,
 }
 
-export const createFilter = <T>(type: T) => {
+export const createFilter = <T>(type: T): Filter<T> => {
   return {
     type,
     value: undefined,
     enabled: true,
-  } as Filter<T>;
+  };
 }
 
 /**
@@ -29,15 +31,15 @@ export const createFilter = <T>(type: T) => {
  * value needs to be indexed by itemStore before querying.
  */
 export const indexerFilters: Array<{
-  filterType: IndexerFilterType,
+  type: IndexerFilterType,
   getIndexKeys: (item: Item) => string[],
 }> = [
   {
-    filterType: IndexerFilterType.name,
+    type: IndexerFilterType.name,
     getIndexKeys: item => [item.name],
   },
   {
-    filterType: IndexerFilterType.typeLine,
+    type: IndexerFilterType.typeLine,
     getIndexKeys: item => [item.typeLine],
   },
 ];
@@ -48,11 +50,23 @@ export const indexerFilters: Array<{
  * to indicate if an item passes this filter.
  */
 export const functionalFilters: Array<{
-  filterType: FunctionalFilterType,
+  type: FunctionalFilterType,
   filter: (item: Item, value: any) => boolean,
 }> = [
  {
-   filterType: FunctionalFilterType.shaped,
-   filter: item => item.shaper,
+   type: FunctionalFilterType.shaped,
+   filter: (item, value) => {
+     const bolValue = booleanValueOf(value);
+     return bolValue === undefined || (bolValue && item.shaper)
+              || (!bolValue && !item.shaper);
+   },
  },
+ {
+  type: FunctionalFilterType.elder,
+  filter: (item, value) => {
+    const bolValue = booleanValueOf(value);
+    return bolValue === undefined || (bolValue && item.elder)
+             || (!bolValue && !item.elder);
+  },
+ }
 ]

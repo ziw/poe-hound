@@ -12,9 +12,9 @@ import {
 import itemStore from '@/indexer/itemStore';
 
 export interface FilterState {
-  textFilters: Filter<IndexerFilterType>[];
+  indexerFilter: Filter<IndexerFilterType>[];
 
-  simpleFilters: Filter<FunctionalFilterType>[];
+  functionalFilters: Filter<FunctionalFilterType>[];
 
   /**
    * If any filter is active.
@@ -32,9 +32,9 @@ export interface FilterState {
 
 export const initFilters: FilterState = {
 
-  textFilters: indexerFilters.map(filter =>  createFilter(filter.filterType)),
+  indexerFilter: indexerFilters.map(filter =>  createFilter(filter.type)),
 
-  simpleFilters: functionalFilters.map(filter => createFilter(filter.filterType)),
+  functionalFilters: functionalFilters.map(filter => createFilter(filter.type)),
 
   filterActive: false,
   filterResults: [],
@@ -47,9 +47,17 @@ const stateGetter = builder.state();
 /************
  * Getters *
  ************/
-const getTextFilter = builder.read(state =>
-  (type: string) => state.textFilters.find(filter => filter.type === type),
-'getTextFilter');
+const getIndexerFilter = builder.read(state =>
+  (type: string) => state.indexerFilter.find(filter => filter.type === type),
+'getIndexerFilter');
+
+const getFunctionalFilter = builder.read(state =>
+  (type: string) => state.functionalFilters.find(filter => filter.type === type),
+'getFunctionalFilter');
+
+const getFilter = builder.read(() =>
+  (type: string) => getIndexerFilter()(type) || getFunctionalFilter()(type),
+'getFilter');
 
 /************
  * Actions *
@@ -72,18 +80,17 @@ const dispatchFilterItems = builder.dispatch(async (context) => {
   let results: string[] = [];
 
   //first compute the results from text filter
-  filters.state.textFilters
-    .filter(textFilter => textFilter.value)
-    .forEach(textFilter => {
+  filters.state.indexerFilter
+    // .filter(indexerFilter => indexerFilter.value)
+    .forEach(indexerFilter => {
       results = [
         ...results,
-        ...itemStore.queryByFilter(textFilter.type, textFilter.value)
+        ...itemStore.queryByFilter(indexerFilter.type, indexerFilter.value)
       ];
   });
-
   results = itemStore.filterByFunctions(
     results,
-    filters.state.simpleFilters.filter(f => f.enabled)
+    filters.state.functionalFilters.filter(f => f.enabled)
   );
 
   filters.mutations.setFilterResults(results);
@@ -97,20 +104,19 @@ export const filters = {
   get state() { return stateGetter() },
 
   mutations: {
-    setTextFiltersValue: builder.commit((state: FilterState, payload: { type: string, value: string } ) => {
-      const filter = getTextFilter()(payload.type);
+    setFilterValue: builder.commit((state: FilterState, payload: { type: string, value: string } ) => {
+      const filter = getFilter()(payload.type);
       if(filter) {
         filter.value = payload.value;
-
       }
-    }, 'setTextFiltersValue'),
+    }, 'setFilterValue'),
 
     setFilterActiveStatus: builder.commit((state, activeState: boolean) => {
       state.filterActive = activeState;
     }, 'setFilterActiveStatus'),
 
     resetFilterValues: builder.commit((state) => {
-      state.textFilters.forEach(filter => filter.value = undefined);
+      state.indexerFilter.forEach(filter => filter.value = undefined);
     }, 'resetFilterValues'),
 
     setFilterResults: builder.commit((state, filteredIds: string[]) => {
@@ -125,7 +131,9 @@ export const filters = {
   },
 
   getters: {
-    getTextFilter,
+    getIndexerFilter,
+    getFunctionalFilter,
+    getFilter,
   },
 
 };

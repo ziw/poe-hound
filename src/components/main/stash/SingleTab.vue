@@ -37,7 +37,6 @@ export default class SingleTab extends AppProps {
   setSelectedTab() {
     if(!this.isDisabled){
       session.mutations.setSelectedTabId(this.tab.id);
-      session.actions.dispatchLoadItems(this.tab);
     }
   }
 }

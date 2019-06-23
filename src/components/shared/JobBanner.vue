@@ -13,6 +13,8 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { job } from '@/store/modules/job';
+import { Watch } from 'vue-property-decorator';
+import { message } from 'ant-design-vue';
 
 const AppProps = Vue.extend({});
 
@@ -26,6 +28,12 @@ export default class JobBanner extends AppProps {
   get currentJobMessage() {
     return job.state.currentJobMessage;
   }
+
+  @Watch('isJobRunning')
+  onJobStartOrFinish(isJobRunning: boolean) {
+
+  }
+
 }
 </script>
 
