@@ -88,6 +88,7 @@ export default class TextFilter extends AppProps {
 
     &__input {
       flex-grow: 1;
+      width: 100px;
     }
   }
 </style>
