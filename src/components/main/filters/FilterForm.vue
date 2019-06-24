@@ -65,11 +65,11 @@ export default class FilterForm extends Vue {
   ];
 
   filterItems() {
-    filters.actions.dispatchFilterItems();
+    filters.actions.filterItems();
   }
 
   clearFilters() {
-    filters.actions.dispatchClearFilters();
+    filters.actions.clearFilters();
   }
 }
 </script>

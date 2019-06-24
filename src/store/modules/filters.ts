@@ -10,6 +10,7 @@ import {
   functionalFilters
 } from '@/models/filterTypes';
 import itemStore from '@/indexer/itemStore';
+import { intersection } from '@/utils';
 
 export interface FilterState {
   indexerFilter: Filter<IndexerFilterType>[];
@@ -27,7 +28,7 @@ export interface FilterState {
   /**
    * filter results. a list of item ids
    */
-  filterResults: string[];
+  filterResults: Set<string>;
 }
 
 export const initFilters: FilterState = {
@@ -37,12 +38,11 @@ export const initFilters: FilterState = {
   functionalFilters: functionalFilters.map(filter => createFilter(filter.type)),
 
   filterActive: false,
-  filterResults: [],
+  filterResults: new Set(),
 }
 
 const builder = getStoreBuilder<RootState>().module(MODULES.filters, initFilters);
 const stateGetter = builder.state();
-
 
 /************
  * Getters *
@@ -65,36 +65,40 @@ const getFilter = builder.read(() =>
 /**
  * Clear filter active status and reset all values
  */
-const dispatchClearFilters = builder.dispatch(() => {
+const clearFilters = builder.dispatch(() => {
   filters.mutations.resetFilterValues();
   filters.mutations.setFilterActiveStatus(false);
-  filters.mutations.setFilterResults([]);
-}, 'dispatchClearFilters');
+  filters.mutations.setFilterResults(new Set());
+}, 'clearFilters');
 
 /**
  * Filter items using active filter and item store.
  * Update session with filtered results
  */
-const dispatchFilterItems = builder.dispatch(async (context) => {
+const filterItems = builder.dispatch(async () => {
   filters.mutations.setFilterActiveStatus(true);
-  let results: string[] = [];
+  let resultsSet: Set<string> = new Set();
+  const validIndexerFilters = filters.state.indexerFilter.filter(indexerFilter =>
+    indexerFilter.value && indexerFilter.enabled);
 
-  //first compute the results from text filter
-  filters.state.indexerFilter
-    // .filter(indexerFilter => indexerFilter.value)
-    .forEach(indexerFilter => {
-      results = [
-        ...results,
-        ...itemStore.queryByFilter(indexerFilter.type, indexerFilter.value)
-      ];
-  });
-  results = itemStore.filterByFunctions(
-    results,
+  // first filter by indexer filters
+  if(validIndexerFilters.length){
+    validIndexerFilters.forEach((indexerFilter, i) => {
+      const filteredResult = itemStore.queryIndexerResults(indexerFilter.type, indexerFilter.value);
+      resultsSet = i === 0 ? filteredResult : intersection(resultsSet, filteredResult);
+    });
+  }else{
+    resultsSet = itemStore.getAllItemIds();
+  }
+
+  // then filter by functional filters
+  resultsSet = itemStore.filterByFunctions(
+    [...resultsSet],
     filters.state.functionalFilters.filter(f => f.enabled)
   );
 
-  filters.mutations.setFilterResults(results);
-}, 'dispatchFilterItems');
+  filters.mutations.setFilterResults(resultsSet);
+}, 'filterItems');
 
 /**
  * Exported filter module
@@ -116,18 +120,18 @@ export const filters = {
     }, 'setFilterActiveStatus'),
 
     resetFilterValues: builder.commit((state) => {
-      state.indexerFilter.forEach(filter => filter.value = undefined);
+      [...state.indexerFilter, ...state.functionalFilters].forEach(filter => filter.value = undefined);
     }, 'resetFilterValues'),
 
-    setFilterResults: builder.commit((state, filteredIds: string[]) => {
+    setFilterResults: builder.commit((state, filteredIds: Set<string>) => {
       state.filterResults = filteredIds;
     }, 'setFilterState'),
 
   },
 
   actions: {
-    dispatchClearFilters,
-    dispatchFilterItems,
+    clearFilters,
+    filterItems,
   },
 
   getters: {

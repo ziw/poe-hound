@@ -41,18 +41,22 @@ class ItemStore {
     return this.itemDetails.get(id);
   }
 
-  queryByFilter(type: IndexerFilterType, keyword: string): string[] {
+  getAllItemIds() {
+    return new Set(this.itemDetails.keys());
+  }
+
+  queryIndexerResults(type: IndexerFilterType, keyword: string): Set<string> {
     const indexer = this.indexers.get(type);
-    return indexer ? indexer.query(keyword) : [];
+    return new Set(indexer ? indexer.query(keyword) : []);
   }
 
   /**
    * pipe a list of item ids through a list of functional filters
-   * and return a filtered list of ids that passes all the functions
+   * and return a filtered set of ids that passes all the functions
    * @param ids a list of ids to filter
    * @param filterStates a list of filter type and value to filter by
    */
-  filterByFunctions(ids: string[], filterStates: Filter<FunctionalFilterType>[]): string[] {
+  filterByFunctions(ids: string[], filterStates: Filter<FunctionalFilterType>[]): Set<string> {
     const filteringFunctions = filterStates.map(filterState => {
       const filterDef = functionalFilters.find(f => f.type === filterState.type);
       if(filterDef){
@@ -61,9 +65,10 @@ class ItemStore {
       return () => true;
     });
 
-    return ids.map(id => this.getItemFromId(id))
+    const resultIds = ids.map(id => this.getItemFromId(id))
             .filter(item => item && filteringFunctions.every(f => f(item)))
             .map(item => item!.id);
+    return new Set(resultIds);
   }
 
   /**

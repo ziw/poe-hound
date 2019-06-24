@@ -176,7 +176,7 @@ const getFilteredStashTabs = builder.read(() => {
   const filteredStashTabs = [...league.characters, ...league.stashPages];
   const filterResults = filters.state.filterResults;
   if(filters.state.filterActive) {
-    return filteredStashTabs.filter(tab => tab.itemIds.some(id => filterResults.includes(id)));
+    return filteredStashTabs.filter(tab => tab.itemIds.some(id => filterResults.has(id)));
   }
   return filteredStashTabs;
 }, 'getFilteredStashTabs');

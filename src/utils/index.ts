@@ -15,3 +15,12 @@ export const booleanValueOf = (option: FilterBooleanOptions) => {
     default: return undefined;
   }
 }
+
+/**
+ * Given two sets, return a new set with elements that are in both sets
+ * @param setA Set A
+ * @param setB Set B
+ */
+export const intersection = <T>(setA: Set<T>, setB: Set<T>) => {
+  return new Set([...setA].filter(item => setB.has(item)));
+}
