@@ -22,6 +22,7 @@ const AppProps = Vue.extend({
   props: {
     item: Object as Prop<Item>,
     unitDimension: Number,
+    highlighted: Boolean,
     left: {
       type: Number,
       default: 0,
@@ -57,7 +58,8 @@ export default class ItemContainer extends AppProps {
       'background-image': `url("${item ? item.icon : ''}")`,
       'background-repeat': 'no-repeat',
       'background-size': `${width}px ${height}px`,
-      'background-color': `rgba(0,0,0,0.60)`,
+      'background-color': this.highlighted ? `rgba(255, 255,255,0.5)`: `rgba(0,0,0,0.60)`,
+      'border': this.highlighted ? '1px solid yellow' : '',
     };
   }
 
