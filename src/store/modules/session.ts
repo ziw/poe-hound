@@ -103,15 +103,16 @@ const dispatchLoadItems = builder.dispatch(async (context, tab: Tab) => {
   try{
     const items = await pushApiJob(() => loadInventory(sessionId(), characterName, accountName()),
       `loading character ${characterName}`);
+    const allItems = items.concat(items.flatMap(item => item.socketedItems || []));
     session.mutations.setTabStatus({
       tab,
       status: Status.SUCCESS,
     });
     session.mutations.setTabItemIds({
       tab,
-      itemIds: items.map(item => item.id),
+      itemIds: allItems.map(item => item.id),
     });
-    ItemStore.insertAll(items);
+    ItemStore.insertAll(allItems);
 
   }catch{
     session.mutations.setTabStatus({
@@ -120,38 +121,6 @@ const dispatchLoadItems = builder.dispatch(async (context, tab: Tab) => {
     });
   }
 }, 'loadInventory');
-
-const dispatchTestJob = builder.dispatch(async () => {
-  // const result = await pushApiJob(() => loadCharacters(authentication.state.sessionId), "loading characters");
-  // console.log('characters loaded');
-  // console.log(result);
-  let id = 1;
-  const callback: () => Promise<string> = () => {
-    return new Promise((resolve, reject)=> {
-      if(!id){
-        setTimeout(() => resolve("job done"), 1000)
-      }else{
-        setTimeout(() => {
-          id--;
-          reject("job failed");
-        }, 1000);
-      }
-    })
-  };
-
-    const { done } = queue.pushJob(callback, "print test job 1");
-    done.then(result => {
-      console.log(result);
-    })
-    .catch((error) => {
-      console.log('first error');
-      queue.pause(2);
-      const job = queue.pushJob(callback, "print test job 2");
-      job.done.then(result => {
-        console.log(result);
-      })
-    })
-}, "dispatch test job");
 
 const dispatchLogout = builder.dispatch(async () => {
 
@@ -236,7 +205,6 @@ export const session = {
     dispatchLoadLeagueStashInfo,
     dispatchLoadAllLeagueStashInfo,
     dispatchLoadItems,
-    dispatchTestJob,
     dispatchLogout,
   },
 
