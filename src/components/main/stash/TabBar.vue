@@ -3,7 +3,7 @@
     <single-tab
       v-for="tab in tabs"
       :tab="tab"
-      :key="tab.id" />
+      :key="`${tab.league}-${tab.id}`" />
   </div>
 </template>
 

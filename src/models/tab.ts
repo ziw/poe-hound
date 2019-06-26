@@ -29,6 +29,11 @@ export default class Tab {
     public id: string,
 
     /**
+     * the league of this stash/character
+     */
+    public league: string,
+
+    /**
      * background and border color
      */
     public color: { r: number, g: number, b: number } = { r: 255, g: 255, b: 255 },
@@ -36,19 +41,21 @@ export default class Tab {
 
   }
 
-  public static fromCharacter(char: Character) {
+  public static fromCharacter(char: Character, league: string) {
     return new Tab(
       char.name,
       CharacterType.Character,
       char.name,
+      league,
     );
   }
 
-  public static fromStashPage(stash: StashPage) {
+  public static fromStashPage(stash: StashPage, league: string) {
     return new Tab(
       stash.n,
       stash.type,
       stash.i.toString(),
+      league,
       stash.colour,
     );
   }

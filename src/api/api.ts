@@ -27,7 +27,7 @@ const get = (url: string, sessionId: string)=> {
     });
     return resp;
   }).catch(error => {
-    if(process.env.VUE_APP_CACHE_DIR){
+    if(error && error.statusCode !== 429 && process.env.VUE_APP_CACHE_DIR){
       return offlineCacher.read(url).then(content => ({
         body: content!
       }));
@@ -61,12 +61,25 @@ export function loadInventory(sessionId: string, character: string, accountName:
           .then((resp: {body: string}) => (JSON.parse(resp.body) as { items: Item[] }).items);
 }
 
+export function loadStash(sessionId: string, tabIndex: string, accountName: string, league: string,) {
+  const query = {
+    league,
+    tabIndex,
+    accountName,
+    tabs: 0,
+    realm: 'pc',
+    public: false,
+  }
+  return get(buildUrl(PATHS.stashUrl, query), sessionId)
+          .then((resp: {body: string}) => (JSON.parse(resp.body) as { items: Item[] }).items);
+}
+
 export function loadLeagueStashInformation(sessionId: string, league: string, accountName: string){
   const query = {
     tabs: 1,
     league,
     accountName,
   };
-  return get(buildUrl(PATHS.stashInLeagueUrl, query), sessionId)
+  return get(buildUrl(PATHS.stashMetadataUrl, query), sessionId)
           .then((resp: {body: string}) => JSON.parse(resp.body).tabs as StashPage[]);
 }

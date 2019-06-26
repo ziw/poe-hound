@@ -1,17 +1,18 @@
-import { getStoreBuilder, BareActionContext } from "vuex-typex";
+import { getStoreBuilder } from "vuex-typex";
 import { RootState } from "../store"
 import { MODULES, Status } from "@/constants";
 import { loadCharacters,
         loadInventory,
         loadLeagueStashInformation,
+        loadStash,
 } from "@/api/api";
 import message from '@/i18n';
 import { authentication } from './authentication';
 import { filters } from './filters';
-import Character from '@/models/character';
+import Character, { CharacterType } from '@/models/character';
 import League from '@/models/league';
 import StashPage from '@/models/stashPage';
-import queue, { pushApiJob } from '@/utils/jobQueue';
+import { pushApiJob } from '@/utils/jobQueue';
 import Tab from '@/models/tab';
 import ItemStore from '@/indexer/itemStore';
 
@@ -52,14 +53,15 @@ const dispatchLoadCharacters = builder.dispatch(async () => {
     return {
       name,
       stashPages: [],
-      characters: characters.filter(c => c.league === name).map(c => Tab.fromCharacter(c)),
+      characters: characters.filter(c => c.league === name).map(c => Tab.fromCharacter(c, name)),
     };
   }));
 
   if(characters.length){
     //use first league as default leauge
-    session.mutations.setCurrentLeagueName(session.state.leagues[0].name);
-    loadAllCharInventoriesFromLeague(session.state.leagues[0].name);
+    const defaultLeague = session.state.leagues[0].name;
+    session.mutations.setCurrentLeagueName(defaultLeague);
+    loadAllCharInventoriesFromLeague(defaultLeague);
   }
 }, "loadCharacters");
 
@@ -68,8 +70,15 @@ const dispatchLoadCharacters = builder.dispatch(async () => {
  * It does not load the items of each stash tab
  */
 const dispatchLoadLeagueStashInfo = builder.dispatch(async (context, leagueName: string) => {
-  const stashTabs = await loadLeagueStashInformation(sessionId(), leagueName, accountName());
+  const stashTabs = await pushApiJob(
+    () => loadLeagueStashInformation(sessionId(), leagueName, accountName()),
+    message.jobs.load_stash_metadata_message(leagueName)
+  );
   session.mutations.setLeagueStashTabs({ leagueName, stashTabs });
+  const currentLeague = session.getters.getCurrentLeague()!.name;
+  if(currentLeague === leagueName) {
+    loadAllStashItemsFromLeague(leagueName);
+  }
 }, 'loadLeagueStashInfo');
 
 /**
@@ -77,11 +86,9 @@ const dispatchLoadLeagueStashInfo = builder.dispatch(async (context, leagueName:
  */
 const dispatchLoadAllLeagueStashInfo = builder.dispatch(async () => {
   session.state.leagues.forEach(league => {
-    pushApiJob(
-      () => dispatchLoadLeagueStashInfo(league.name),
-      message.jobs.load_stash_metadata_message(league.name),
-    );
-  })
+    dispatchLoadLeagueStashInfo(league.name);
+  });
+
 }, 'dispatchLoadAllLeagueStashInfo');
 
 const loadAllCharInventoriesFromLeague = builder.dispatch(async (context, leagueName: string) => {
@@ -89,11 +96,18 @@ const loadAllCharInventoriesFromLeague = builder.dispatch(async (context, league
   league.characters.forEach(character => dispatchLoadItems(character));
 }, 'loadAllCharInventoriesFromLeague');
 
+const loadAllStashItemsFromLeague = builder.dispatch(async (context, leagueName: string) => {
+  const league = getLeagueByName()(leagueName)!;
+  league.stashPages.slice(0,50).forEach(stash => {
+    dispatchLoadItems(stash);
+  });
+}, 'loadAllStashItemsFromLeague');
+
 /**
- * Load items for a given character tab
+ * Load items for a given character tab or stash tab
  */
 const dispatchLoadItems = builder.dispatch(async (context, tab: Tab) => {
-  const characterName = tab.id;
+  const { id, name } = tab;
 
   session.mutations.setTabStatus({
     tab,
@@ -101,8 +115,9 @@ const dispatchLoadItems = builder.dispatch(async (context, tab: Tab) => {
   });
 
   try{
-    const items = await pushApiJob(() => loadInventory(sessionId(), characterName, accountName()),
-      `loading character ${characterName}`);
+    const items = tab.type === CharacterType.Character ?
+      await pushApiJob(() => loadInventory(sessionId(), id, accountName()), `loading character ${id}`)
+        : await pushApiJob(() => loadStash(sessionId(), id, accountName(), tab.league), `loading stash page ${name}`);
     const allItems = items.concat(items.flatMap(item => item.socketedItems || []));
     session.mutations.setTabStatus({
       tab,
@@ -114,7 +129,8 @@ const dispatchLoadItems = builder.dispatch(async (context, tab: Tab) => {
     });
     ItemStore.insertAll(allItems);
 
-  }catch{
+  }catch(error){
+    console.log(error);
     session.mutations.setTabStatus({
       tab,
       status: Status.FAILED,
@@ -183,7 +199,7 @@ export const session = {
     setLeagueStashTabs: builder.commit((state, payload: { leagueName: string, stashTabs: StashPage[] }) => {
       const league = getLeagueByName()(payload.leagueName);
       if(league){
-        league.stashPages = payload.stashTabs.map(stash => Tab.fromStashPage(stash));
+        league.stashPages = payload.stashTabs.map(stash => Tab.fromStashPage(stash, payload.leagueName));
       }
     }, 'setLeagueStashTabs'),
 
@@ -206,6 +222,7 @@ export const session = {
     dispatchLoadAllLeagueStashInfo,
     dispatchLoadItems,
     dispatchLogout,
+    loadAllStashItemsFromLeague,
   },
 
   getters: {

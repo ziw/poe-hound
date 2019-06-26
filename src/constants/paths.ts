@@ -7,6 +7,9 @@ export const PATHS = {
   //query ?character={0}&accountName={1}
   inventoryUrl: '/character-window/get-items/',
 
+  //query ?league={0}&tabs=0&tabIndex={1}&accountName={2}
+  stashUrl: '/character-window/get-stash-items/',
+
    //query ?league={0}&tabs=1&accountName={1}
-  stashInLeagueUrl: '/character-window/get-stash-items',
+  stashMetadataUrl: '/character-window/get-stash-items',
 }
