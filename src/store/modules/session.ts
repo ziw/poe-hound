@@ -98,7 +98,7 @@ const loadAllCharInventoriesFromLeague = builder.dispatch(async (context, league
 
 const loadAllStashItemsFromLeague = builder.dispatch(async (context, leagueName: string) => {
   const league = getLeagueByName()(leagueName)!;
-  league.stashPages.slice(0,50).forEach(stash => {
+  league.stashPages.forEach(stash => {
     dispatchLoadItems(stash);
   });
 }, 'loadAllStashItemsFromLeague');
