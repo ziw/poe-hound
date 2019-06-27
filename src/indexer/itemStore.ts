@@ -59,7 +59,9 @@ class ItemStore {
   filterByFunctions(ids: string[], filterStates: Filter<FunctionalFilterType>[]): Set<string> {
     const filteringFunctions = filterStates.map(filterState => {
       const filterDef = functionalFilters.find(f => f.type === filterState.type);
-      if(filterDef){
+      if(filterDef
+          && filterState.value !== undefined
+          && filterState.value !== null){
         return (item: Item) => filterDef.filter(item, filterState.value);
       }
       return () => true;

@@ -16,3 +16,8 @@ export enum FilterBooleanOptions {
   YES = 'YES',
   NO = 'NO',
 }
+
+export type ValueRange = {
+  min: number,
+  max: number,
+}

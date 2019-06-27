@@ -115,6 +115,13 @@ export const filters = {
       }
     }, 'setFilterValue'),
 
+    setFilterEnabledDisabled: builder.commit((state, payload: { type: string, value: boolean }) => {
+      const filter = getFilter()(payload.type);
+      if(filter) {
+        filter.enabled = payload.value;
+      }
+    }, 'setFilterEnabledDisabled'),
+
     setFilterActiveStatus: builder.commit((state, activeState: boolean) => {
       state.filterActive = activeState;
     }, 'setFilterActiveStatus'),

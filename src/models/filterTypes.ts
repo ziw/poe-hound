@@ -1,5 +1,5 @@
 import Item from './item';
-import { booleanValueOf } from '@/utils';
+import { createFunctionFilter } from '@/utils';
 
 export enum IndexerFilterType {
   name= 'name',
@@ -7,22 +7,25 @@ export enum IndexerFilterType {
 }
 
 export enum FunctionalFilterType {
-  numSockets= 'numSockets',
-  shaped= 'shaped',
-  elder= 'elder',
+  numSockets = 'numSockets',
+  shaped = 'shaped',
+  elder = 'elder',
+  corrupted = 'corrupted',
+  identified = 'identified',
+  fractured = 'fractured',
 }
 
 export type Filter<T> = {
   type: T,
   value: any,
-  enabled?: boolean,
+  enabled: boolean,
 }
 
 export const createFilter = <T>(type: T): Filter<T> => {
   return {
     type,
     value: undefined,
-    enabled: true,
+    enabled: false,
   };
 }
 
@@ -53,20 +56,16 @@ export const functionalFilters: Array<{
   type: FunctionalFilterType,
   filter: (item: Item, value: any) => boolean,
 }> = [
- {
-   type: FunctionalFilterType.shaped,
-   filter: (item, value) => {
-     const bolValue = booleanValueOf(value);
-     return bolValue === undefined || (bolValue && item.shaper)
-              || (!bolValue && !item.shaper);
-   },
- },
- {
-  type: FunctionalFilterType.elder,
-  filter: (item, value) => {
-    const bolValue = booleanValueOf(value);
-    return bolValue === undefined || (bolValue && item.elder)
-             || (!bolValue && !item.elder);
+  {
+    type: FunctionalFilterType.shaped,
+    filter: createFunctionFilter.ofBooleanValue(item => item.shaper),
   },
- }
-]
+  {
+    type: FunctionalFilterType.elder,
+    filter: createFunctionFilter.ofBooleanValue(item => item.elder),
+  },
+  {
+    type: FunctionalFilterType.corrupted,
+    filter: createFunctionFilter.ofBooleanValue(item => item.corrupted),
+  },
+];

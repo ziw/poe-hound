@@ -52,6 +52,10 @@ export default class TextFilter extends AppProps {
     if(this.filterOptions) {
       this.options = this.filterOptions.slice();
     }
+    filters.mutations.setFilterEnabledDisabled({
+      type: this.filterType,
+      value: true,
+    });
   }
 
   get filter() {
