@@ -15,7 +15,7 @@ import { session } from '@/store/modules/session';
 import { Prop } from 'vue/types/options';
 import Tab from '@/models/tab';
 import ItemStore from '@/indexer/itemStore';
-import Item from '@/models/item';
+import { Item } from '@/models/item';
 import { convertItemToTitle } from '@/utils/itemUtil';
 
 const AppProps = Vue.extend({

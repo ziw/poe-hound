@@ -1,4 +1,4 @@
-import Item from "@/models/item";
+import { Item } from "@/models/item";
 import TrieNode from '@/utils/trie';
 
 export default class ItemIndexer {

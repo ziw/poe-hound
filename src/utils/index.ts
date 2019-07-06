@@ -1,5 +1,5 @@
 import { FilterBooleanOptions, ValueRange } from '@/constants';
-import Item from '@/models/item';
+import { Item } from '@/models/item';
 
 /**
  * Filter and return an array after removing duplicate values

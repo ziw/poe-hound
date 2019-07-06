@@ -2,8 +2,9 @@ import { PATHS, COOKIE_NAME } from '@/constants';
 import  request, {FullResponse} from 'request-promise-native';
 import Character from '@/models/character';
 import StashPage from '@/models/stashPage';
-import Item from '@/models/item';
+import { Item, RawItem } from '@/models/item';
 import OfflineCache from '@/utils/offlineCache';
+import { decorateItem } from '@/utils/itemUtil';
 
 const offlineCacher = new OfflineCache(process.env.VUE_APP_CACHE_DIR as string);
 
@@ -48,17 +49,17 @@ const buildUrl = (path: string, queryObject?: any) => {
 
 export function authenticate(sessionId: string): Promise<string> {
   return get(buildUrl(PATHS.accountNameUrl), sessionId)
-          .then((resp: {body: string}) => JSON.parse(resp.body).accountName);
+          .then((resp) => JSON.parse(resp.body).accountName);
 }
 
 export function loadCharacters(sessionId: string) {
   return get(buildUrl(PATHS.charactersUrl), sessionId)
-          .then((resp: {body: string}) => JSON.parse(resp.body) as Character[]);
+          .then((resp) => JSON.parse(resp.body) as Character[]);
 }
 
 export function loadInventory(sessionId: string, character: string, accountName: string){
   return get(buildUrl(PATHS.inventoryUrl, { character, accountName }), sessionId)
-          .then((resp: {body: string}) => (JSON.parse(resp.body) as { items: Item[] }).items);
+          .then((resp) => (JSON.parse(resp.body) as { items: RawItem[] }).items.map(decorateItem));
 }
 
 export function loadStash(sessionId: string, tabIndex: string, accountName: string, league: string,) {
@@ -71,7 +72,7 @@ export function loadStash(sessionId: string, tabIndex: string, accountName: stri
     public: false,
   }
   return get(buildUrl(PATHS.stashUrl, query), sessionId)
-          .then((resp: {body: string}) => (JSON.parse(resp.body) as { items: Item[] }).items);
+          .then((resp) => (JSON.parse(resp.body) as { items: RawItem[] }).items.map(decorateItem));
 }
 
 export function loadLeagueStashInformation(sessionId: string, league: string, accountName: string){
@@ -81,5 +82,5 @@ export function loadLeagueStashInformation(sessionId: string, league: string, ac
     accountName,
   };
   return get(buildUrl(PATHS.stashMetadataUrl, query), sessionId)
-          .then((resp: {body: string}) => JSON.parse(resp.body).tabs as StashPage[]);
+          .then((resp) => JSON.parse(resp.body).tabs as StashPage[]);
 }

@@ -1,4 +1,4 @@
-import Item from './item';
+import { Item } from './item';
 import { createFunctionFilter } from '@/utils';
 
 export enum IndexerFilterType {

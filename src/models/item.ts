@@ -1,4 +1,4 @@
-export default interface Item {
+export type RawItem = {
   id: string;
   w: number;
   h: number;
@@ -29,13 +29,42 @@ export default interface Item {
 
   flavourText: string[];
 
-  properties: object[];
+  properties: ItemLineContent[];
 
 
-  socketedItems: Item[];
+  socketedItems: RawItem[];
   sockets: Socket[];
   requirements: Requirement[];
 };
+
+export type NormalizedProperties = {
+  quality?: number;
+  level?: number;
+}
+
+export type Item =
+  RawItem &
+  NormalizedProperties &
+  {
+    socketedItems: Item[],
+  };
+
+export interface ItemLineContent {
+  name: ItemPropertNameKey,
+  values: ItemPropertyTuple[],
+  displayMode: number,
+  type: number,
+}
+
+type ItemPropertyTuple = [
+  string,
+  number,
+];
+
+export enum ItemPropertNameKey {
+  Level = 'Level',
+  Quality = 'Quality',
+}
 
 export enum InventoryId {
   Belt= 'Belt',
@@ -54,10 +83,10 @@ export enum InventoryId {
   MainInventory= 'MainInventory',
 };
 
-export interface Socket {
+type Socket = {
 
 };
 
-export interface Requirement {
+type Requirement = {
 
 };

@@ -20,7 +20,7 @@ import { session } from '@/store/modules/session';
 import { Prop } from 'vue/types/options';
 import Tab from '@/models/tab';
 import ItemStore from '@/indexer/itemStore';
-import Item,{ InventoryId } from '@/models/item';
+import { Item, InventoryId } from '@/models/item';
 import ItemContainer from '@/components/main/stash/details/ItemContainer.vue';
 import { BASE_DIMENSION } from '@/constants';
 import { filters } from '@/store/modules/filters';

@@ -1,5 +1,5 @@
 import ItemIndexer from './itemIndexer';
-import Item from '@/models/item';
+import { Item } from '@/models/item';
 import { IndexerFilterType, FunctionalFilterType, indexerFilters, functionalFilters, Filter } from '../models/filterTypes';
 import {
   unique,
