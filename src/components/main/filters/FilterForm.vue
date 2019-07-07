@@ -30,9 +30,15 @@
 
     <range-filter
       class="filter-form__block--3"
-      :minFilterType="functionalFilterTypes.qualityMin"
-      :maxFilterType="functionalFilterTypes.qualityMax"
+      :minFilterType="functionalFilterTypes.minQuality"
+      :maxFilterType="functionalFilterTypes.maxQuality"
       :label="labels.quality"/>
+
+    <range-filter
+      class="filter-form__block--3"
+      :minFilterType="functionalFilterTypes.minLevel"
+      :maxFilterType="functionalFilterTypes.maxLevel"
+      :label="labels.level"/>
 
     <div class="filter-form__submit-btn filter-form__block--stretch">
       <primary-button type="submit" stretch style-type="square">

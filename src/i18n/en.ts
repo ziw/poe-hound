@@ -24,6 +24,7 @@ const en = {
     search: 'Search',
     clear: 'Clear',
     quality: 'Quality',
+    level: 'Level',
     min: 'min',
     max: 'max',
   }

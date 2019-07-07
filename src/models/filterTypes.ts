@@ -14,8 +14,10 @@ export enum FunctionalFilterType {
   corrupted = 'corrupted',
   identified = 'identified',
   fractured = 'fractured',
-  qualityMin = 'qualityMin',
-  qualityMax = 'qualityMax',
+  minQuality = 'minQuality',
+  maxQuality = 'maxQuality',
+  minLevel = 'minLevel',
+  maxLevel = 'maxLevel',
 }
 
 export type Filter<T> = {
@@ -83,11 +85,19 @@ export const functionalFilters: Array<{
     filter: createFunctionFilter.ofBooleanValue(item => item.corrupted),
   },
   {
-    type: FunctionalFilterType.qualityMin,
+    type: FunctionalFilterType.minQuality,
     filter: createFunctionFilter.ofMinValue(item => item.quality),
   },
   {
-    type: FunctionalFilterType.qualityMax,
+    type: FunctionalFilterType.maxQuality,
     filter: createFunctionFilter.ofMaxValue(item => item.quality),
   },
+  {
+    type: FunctionalFilterType.minLevel,
+    filter: createFunctionFilter.ofMinValue(item => item.level),
+  },
+  {
+    type: FunctionalFilterType.maxLevel,
+    filter: createFunctionFilter.ofMaxValue(item => item.level),
+  }
 ];
