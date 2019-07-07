@@ -94,7 +94,7 @@ const filterItems = builder.dispatch(async () => {
   // then filter by functional filters
   resultsSet = itemStore.filterByFunctions(
     [...resultsSet],
-    filters.state.functionalFilters.filter(f => f.enabled)
+    filters.state.functionalFilters.filter(f => f.enabled && f.value != undefined)
   );
 
   filters.mutations.setFilterResults(resultsSet);
@@ -108,7 +108,7 @@ export const filters = {
   get state() { return stateGetter() },
 
   mutations: {
-    setFilterValue: builder.commit((state: FilterState, payload: { type: string, value: string } ) => {
+    setFilterValue: builder.commit((state: FilterState, payload: { type: string, value: any } ) => {
       const filter = getFilter()(payload.type);
       if(filter) {
         filter.value = payload.value;

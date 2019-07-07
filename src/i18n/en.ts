@@ -15,6 +15,7 @@ const en = {
     success: 'Success',
     failed: 'Failed',
   },
+
   filters: {
     itemName: 'Name',
     itemTypeLine: 'Base',
@@ -22,6 +23,9 @@ const en = {
     elder: 'Elder',
     search: 'Search',
     clear: 'Clear',
+    quality: 'Quality',
+    min: 'min',
+    max: 'max',
   }
 }
 

@@ -9,12 +9,14 @@ export const convertItemToTitle = (item: Item) => {
   return [
     item.name,
     item.typeLine,
+    item.quality ? `Quality: +${item.quality}%` : '',
     ...(item.enchantMods || []),
     ...(item.implicitMods || []),
     ...(item.explicitMods || []),
     ...(item.craftedMods || []),
     ...(item.identified ? [] : ['Unidentified']),
     ...(item.corrupted ? ['Corrupted'] : ''),
+    item.id,
   ].join('\n');
 };
 

@@ -60,8 +60,7 @@ class ItemStore {
     const filteringFunctions = filterStates.map(filterState => {
       const filterDef = functionalFilters.find(f => f.type === filterState.type);
       if(filterDef
-          && filterState.value !== undefined
-          && filterState.value !== null){
+          && filterState.value != undefined){
         return (item: Item) => filterDef.filter(item, filterState.value);
       }
       return () => true;

@@ -13,6 +13,8 @@ export enum FunctionalFilterType {
   corrupted = 'corrupted',
   identified = 'identified',
   fractured = 'fractured',
+  qualityMin = 'qualityMin',
+  qualityMax = 'qualityMax',
 }
 
 export type Filter<T> = {
@@ -21,7 +23,7 @@ export type Filter<T> = {
   enabled: boolean,
 }
 
-export const createFilter = <T>(type: T): Filter<T> => {
+export const createFilter = <T extends (FunctionalFilterType | IndexerFilterType)>(type: T): Filter<T> => {
   return {
     type,
     value: undefined,
@@ -67,5 +69,13 @@ export const functionalFilters: Array<{
   {
     type: FunctionalFilterType.corrupted,
     filter: createFunctionFilter.ofBooleanValue(item => item.corrupted),
+  },
+  {
+    type: FunctionalFilterType.qualityMin,
+    filter: createFunctionFilter.ofMinValue(item => item.quality),
+  },
+  {
+    type: FunctionalFilterType.qualityMax,
+    filter: createFunctionFilter.ofMaxValue(item => item.quality),
   },
 ];

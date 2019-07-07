@@ -39,10 +39,13 @@ export const createFunctionFilter = {
     };
   },
 
-  ofMaxValue: (getPropValue: (some: Item) => number) =>
-                (item: Item, value: number) => value >= getPropValue(item),
-  ofMinValue: (getPropValue: (some: Item) => number) =>
-                (item: Item, value: number) => value <= getPropValue(item),
-  ofRange: (getPropValue: (some: Item) => number) =>
-              (item: Item, value: ValueRange) => value.min <= getPropValue(item) && value.max >= getPropValue(item),
+  ofMaxValue: (getPropValue: (some: Item) => number | undefined) => (item: Item, value: number) => {
+                  const propValue = getPropValue(item);
+                  return propValue == undefined ? false : value >= propValue;
+              },
+
+  ofMinValue: (getPropValue: (some: Item) => number | undefined) => (item: Item, value: number) => {
+                  const propValue = getPropValue(item);
+                  return propValue == undefined ? false : value <= propValue;
+              },
 }

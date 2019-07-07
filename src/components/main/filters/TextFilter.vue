@@ -25,7 +25,7 @@ import { filters } from '@/store/modules/filters';
 import itemStore from '@/indexer/itemStore';
 import { Filter } from '@/models/filterTypes';
 import TextInput from '@/components/shared/TextInput.vue';
-import { FilterBooleanOptions } from '../../../constants';
+import { FilterBooleanOptions } from '@/constants';
 
 const AppProps = Vue.extend({
   props: {

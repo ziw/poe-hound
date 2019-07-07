@@ -28,6 +28,12 @@
       :filterOptions="booleanWithAnyOptions"
       :label="labels.elder"/>
 
+    <range-filter
+      class="filter-form__block--3"
+      :minFilterType="functionalFilterTypes.qualityMin"
+      :maxFilterType="functionalFilterTypes.qualityMax"
+      :label="labels.quality"/>
+
     <div class="filter-form__submit-btn filter-form__block--stretch">
       <primary-button type="submit" stretch style-type="square">
         {{ labels.search }}
@@ -45,11 +51,13 @@ import messages from '@/i18n';
 import { IndexerFilterType, FunctionalFilterType } from '@/models/filterTypes';
 import TextFilter from '@/components/main/filters/TextFilter.vue';
 import PrimaryButton from '@/components/shared/PrimaryButton.vue';
-import { FilterBooleanOptions } from '../../../constants';
+import RangeFilter from '@/components/main/filters/RangeFilter.vue';
+import { FilterBooleanOptions } from '@/constants';
 
 @Component({
   components: {
     TextFilter,
+    RangeFilter,
     PrimaryButton,
   }
 })
