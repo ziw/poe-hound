@@ -1,5 +1,6 @@
-import { Item } from './item';
+import { Item, ItemType } from './item';
 import { createFunctionFilter } from '@/utils';
+import { Type } from '@/utils/enumPicker';
 
 export enum IndexerFilterType {
   name= 'name',
@@ -38,14 +39,25 @@ export const createFilter = <T extends (FunctionalFilterType | IndexerFilterType
 export const indexerFilters: Array<{
   type: IndexerFilterType,
   getIndexKeys: (item: Item) => string[],
+  shouldIndex?: (item: Item) => boolean,
 }> = [
   {
     type: IndexerFilterType.name,
-    getIndexKeys: item => [item.name],
+    getIndexKeys: item => [item.name, item.gemName],
+    shouldIndex: item => {
+      return Type.of(item).in(ItemType.UNIQUE, ItemType.GEM, ItemType.RELIC);
+    }
   },
   {
     type: IndexerFilterType.typeLine,
     getIndexKeys: item => [item.typeLine],
+    shouldIndex: item => {
+      return Type.of(item).isNot(
+        ItemType.GEM,
+        ItemType.CURRENCY,
+        ItemType.DIVINATION_CARD,
+      );
+    },
   },
 ];
 

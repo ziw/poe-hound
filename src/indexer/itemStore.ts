@@ -19,7 +19,7 @@ class ItemStore {
       //the item by property key
       this.indexers.set(
         indexProperty.type,
-        new ItemIndexer(indexProperty.getIndexKeys)
+        new ItemIndexer(indexProperty.getIndexKeys, indexProperty.shouldIndex)
       );
     });
   }

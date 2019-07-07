@@ -5,7 +5,7 @@ export type RawItem = {
   x: number;
   y: number;
   ilvl: number;
-  frameType: number;
+  frameType: ItemType;
   stackSize: number;
   maxStackSize: number;
 
@@ -15,6 +15,7 @@ export type RawItem = {
   elder: boolean;
   shaper: boolean;
   fractured: boolean;
+  isRelic: boolean;
 
   league: string;
   name: string;
@@ -42,9 +43,14 @@ export type NormalizedProperties = {
   level?: number;
 }
 
+export type DecoratedNames = {
+  gemName: string;
+}
+
 export type Item =
   RawItem &
   NormalizedProperties &
+  DecoratedNames &
   {
     socketedItems: Item[],
   };
@@ -82,6 +88,17 @@ export enum InventoryId {
   BodyArmour= 'BodyArmour',
   MainInventory= 'MainInventory',
 };
+
+export enum ItemType {
+  NORMAL = 0,
+  MAGIC = 1,
+  RARE = 2,
+  UNIQUE = 3,
+  GEM = 4,
+  CURRENCY = 5,
+  DIVINATION_CARD = 6,
+  RELIC = 9,
+}
 
 type Socket = {
 

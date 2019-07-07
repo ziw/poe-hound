@@ -1,4 +1,4 @@
-import { Item, RawItem, ItemPropertNameKey, NormalizedProperties } from '@/models/item';
+import { Item, RawItem, ItemPropertNameKey, NormalizedProperties, ItemType } from '@/models/item';
 
 /**
  * return a multi-lined string containing an item's
@@ -28,6 +28,7 @@ export const decorateItem = (raw: RawItem): Item => {
   return {
     ...raw,
     socketedItems: (raw.socketedItems || []).map(decorateItem),
+    gemName: raw.frameType === ItemType.GEM ? raw.typeLine : '',
     ...normalizeItemProperties(raw),
   };
 };
