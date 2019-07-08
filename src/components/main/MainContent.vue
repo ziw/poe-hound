@@ -40,7 +40,6 @@ export default class MainContent extends Vue {
     overflow-y: auto;
 
     &__filter-section {
-      flex-grow: 1;
       padding: 15px;
     }
 
@@ -48,10 +47,9 @@ export default class MainContent extends Vue {
       width: $stash-section-width;
       flex-basis: $stash-section-width;
       max-width: $stash-section-width;
-      flex-grow: 0;
+      flex-grow: 1;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
     }
   }
 </style>
