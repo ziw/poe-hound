@@ -21,11 +21,13 @@ import { Status } from '@/constants';
 import { StashType } from '@/models/stashPage';
 import { CharacterType } from '@/models/character';
 import NormalStash from '@/components/main/stash/details/NormalStash.vue';
+import QuadStash from '@/components/main/stash/details/QuadStash.vue';
 import CharacterInventory from '@/components/main/stash/details/CharacterInventory.vue';
 
 @Component({
   components: {
     NormalStash,
+    QuadStash,
     CharacterInventory,
   }
 })

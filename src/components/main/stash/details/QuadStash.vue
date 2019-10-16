@@ -1,16 +1,77 @@
 <template>
-  <div>
-
+  <div class="quad-stash">
+    <item-container v-for="config in renderingConfigs"
+        :item="config.item"
+        :unitDimension="unitDimension"
+        :highlighted="config.highlighted"
+        :left="config.x"
+        :top="config.y"
+        :w="config.w"
+        :h="config.h"
+        :key="config.item.id" />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component';
+import { Prop } from 'vue/types/options';
+import Tab from '@/models/tab';
+import ItemStore from '@/indexer/itemStore';
+import { Item } from '@/models/item';
+import { filters } from '@/store/modules/filters';
+import ItemContainer from '@/components/main/stash/details/ItemContainer.vue';
 
-@Component({})
-export default class QuadStash extends Vue {
+const AppProps = Vue.extend({
+  props: {
+    renderingTab: Object as Prop<Tab>,
+    dimension: Number,
+  }
+});
 
+
+@Component({
+  components: {
+    ItemContainer,
+  }
+})
+export default class QuadStash extends AppProps {
+
+  get unitDimension() {
+    return this.dimension / 24;
+  }
+
+  get renderingConfigs() {
+    if(!this.renderingTab){
+      return [];
+    }
+
+    const items = this.renderingTab.itemIds.map(id => ItemStore.getItemFromId(id))
+      //only render item with inventoryId to skip socketed gems
+      .filter(item => item && item.inventoryId) as Item[];
+    const filterResults = filters.state.filterResults;
+
+    return items.map(item => {
+      const x = (this.unitDimension) * item.x;
+      const y = (this.unitDimension) * item.y;
+
+      return {
+        item,
+        x,
+        y,
+        w: item.w,
+        h: item.h,
+        highlighted: false,
+      };
+    })
+  }
 }
 </script>
 
+<style lang="scss" scoped>
+  .quad-stash {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+</style>
