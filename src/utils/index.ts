@@ -1,5 +1,6 @@
 import { FilterBooleanOptions, ValueRange } from '@/constants';
 import { Item } from '@/models/item';
+import { filters } from '@/store/modules/filters';
 
 /**
  * Filter and return an array after removing duplicate values
@@ -48,4 +49,14 @@ export const createFunctionFilter = {
                   const propValue = getPropValue(item);
                   return propValue == undefined ? false : value <= propValue;
               },
+}
+
+/**
+ * checks whether the given item is in the current filter results
+ * @param item the item to check
+ */
+export const itemInFilterResults = (item: Item) => {
+  const filterResults = filters.state.filterResults;
+  const highlighted = filterResults.has(item.id) || (item.socketedItems || []).some(gem => filterResults.has(gem.id));
+  return highlighted;
 }

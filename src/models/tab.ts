@@ -1,6 +1,8 @@
 import StashPage, { StashType } from './stashPage';
 import Character, { CharacterType } from './character';
 import { Status } from '@/constants';
+import ItemStore from '@/indexer/itemStore';
+import { Item } from '@/models/item';
 
 /**
  * Represents one renderable stash tab.
@@ -60,4 +62,11 @@ export default class Tab {
     );
   }
 
+  /**
+   * returns an array of rendered items, aka items except socketed gems
+   */
+  get renderedItems(): Item[] {
+    return this.itemIds.map(id => ItemStore.getItemFromId(id))
+              .filter(item => item && item.inventoryId) as Item[];
+  }
 }

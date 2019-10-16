@@ -23,7 +23,7 @@ import ItemStore from '@/indexer/itemStore';
 import { Item, InventoryId } from '@/models/item';
 import ItemContainer from '@/components/main/stash/details/ItemContainer.vue';
 import { BASE_DIMENSION } from '@/constants';
-import { filters } from '@/store/modules/filters';
+import { itemInFilterResults } from '@/utils';
 
 const AppProps = Vue.extend({
   props: {
@@ -73,10 +73,7 @@ export default class CharacterInventory extends AppProps {
       return [];
     }
 
-    const items = this.renderingTab.itemIds.map(id => ItemStore.getItemFromId(id))
-      //only render item with inventoryId to skip socketed gems
-      .filter(item => item && item.inventoryId) as Item[];
-    const filterResults = filters.state.filterResults;
+    const items = this.renderingTab.renderedItems;
 
     return items.map(item => {
       let { x, y } = getPosition(item, this.dimension);
@@ -85,15 +82,14 @@ export default class CharacterInventory extends AppProps {
             x += (this.unitDimension) * item.x;
         y += (this.unitDimension) * item.y;
       }
-      const highlighted = filterResults.has(item.id) ||
-                            (item.socketedItems || []).some(gem => filterResults.has(gem.id));
+
       return {
         item,
         x,
         y,
         w: item.w,
         h: item.h,
-        highlighted,
+        highlighted: itemInFilterResults(item)
       };
     });
   }

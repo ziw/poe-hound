@@ -19,7 +19,7 @@ import { Prop } from 'vue/types/options';
 import Tab from '@/models/tab';
 import ItemStore from '@/indexer/itemStore';
 import { Item } from '@/models/item';
-import { filters } from '@/store/modules/filters';
+import { itemInFilterResults } from '@/utils';
 import ItemContainer from '@/components/main/stash/details/ItemContainer.vue';
 
 const AppProps = Vue.extend({
@@ -46,10 +46,7 @@ export default class NormalStash extends AppProps {
       return [];
     }
 
-    const items = this.renderingTab.itemIds.map(id => ItemStore.getItemFromId(id))
-      //only render item with inventoryId to skip socketed gems
-      .filter(item => item && item.inventoryId) as Item[];
-    const filterResults = filters.state.filterResults;
+    const items = this.renderingTab.renderedItems;
 
     return items.map(item => {
       const x = (this.unitDimension) * item.x;
@@ -61,7 +58,7 @@ export default class NormalStash extends AppProps {
         y,
         w: item.w,
         h: item.h,
-        highlighted: false,
+        highlighted: itemInFilterResults(item)
       };
     })
   }
