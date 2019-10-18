@@ -80,22 +80,26 @@ body {
   color: #fff;
   position: relative;
 
-  .dropdown-toggle{
+  .vs__dropdown-toggle{
 
     border: none;
     border-bottom: 1px solid white;
     border-radius: 0;
 
     .form-control,
-    .clear,
-    .selected-tag,
+    .vs__selected-tag,
+    .vs__selected
     {
       color: white;
       opacity: 1;
     }
 
-    i.open-indicator:before{
-        border-color: white;
+    svg.vs__open-indicator {
+      fill: white;
+    }
+
+    .vs__clear svg{
+      fill: white;
     }
   }
 }
