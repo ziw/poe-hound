@@ -37,6 +37,7 @@ export default class TabDetail extends Vue {
     [StashType.NormalStash]: 'NormalStash',
     [StashType.QuadStash]: 'QuadStash',
     [CharacterType.Character]: 'CharacterInventory',
+    [StashType.PremiumStash]: 'NormalStash',
   };
 
   dimension: number = 660;

@@ -25,8 +25,10 @@ export default class MainHeader extends Vue {
     return session.state.currentLeagueName;
   }
 
-  onLeagueSwitch(newValue: string) {
-    session.mutations.setCurrentLeagueName(newValue);
+  onLeagueSwitch(newLeagueName: string) {
+    session.mutations.setCurrentLeagueName(newLeagueName);
+    session.actions.loadAllCharInventoriesFromLeague(newLeagueName);
+    session.actions.loadAllStashItemsFromLeague(newLeagueName);
   }
 
 }

@@ -115,6 +115,7 @@ export type JobStatus = {
 export function pushApiJob<T>(apiTask: () => Promise<T>, message: string): Promise<T>{
   const { done } = queue.pushJob(apiTask, message);
   return done.catch((error) => {
+            console.log(`error`, error);
               if(error && error.statusCode === 429){
                 queue.pause(40);
                 return pushApiJob(apiTask, message);

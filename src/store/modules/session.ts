@@ -56,13 +56,6 @@ const dispatchLoadCharacters = builder.dispatch(async () => {
       characters: characters.filter(c => c.league === name).map(c => Tab.fromCharacter(c, name)),
     };
   }));
-
-  if(characters.length){
-    //use first league as default leauge
-    const defaultLeague = session.state.leagues[0].name;
-    session.mutations.setCurrentLeagueName(defaultLeague);
-    loadAllCharInventoriesFromLeague(defaultLeague);
-  }
 }, "loadCharacters");
 
 /**
@@ -75,10 +68,6 @@ const dispatchLoadLeagueStashInfo = builder.dispatch(async (context, leagueName:
     message.jobs.load_stash_metadata_message(leagueName)
   );
   session.mutations.setLeagueStashTabs({ leagueName, stashTabs });
-  const currentLeague = session.getters.getCurrentLeague()!.name;
-  if(currentLeague === leagueName) {
-    loadAllStashItemsFromLeague(leagueName);
-  }
 }, 'loadLeagueStashInfo');
 
 /**
@@ -107,6 +96,9 @@ const loadAllStashItemsFromLeague = builder.dispatch(async (context, leagueName:
  * Load items for a given character tab or stash tab
  */
 const dispatchLoadItems = builder.dispatch(async (context, tab: Tab) => {
+  if(tab.status === Status.LOADING || tab.status === Status.SUCCESS) {
+    return;
+  }
   const { id, name } = tab;
 
   session.mutations.setTabStatus({
@@ -223,6 +215,7 @@ export const session = {
     dispatchLoadItems,
     dispatchLogout,
     loadAllStashItemsFromLeague,
+    loadAllCharInventoriesFromLeague,
   },
 
   getters: {

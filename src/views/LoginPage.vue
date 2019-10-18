@@ -31,6 +31,10 @@ export default class LoginPage extends Vue {
       await session.actions.dispatchLoadCharacters();
       await session.actions.dispatchLoadAllLeagueStashInfo();
       this.$router.push('/main');
+
+      const currentLeagueName = session.state.currentLeagueName;
+      await session.actions.loadAllCharInventoriesFromLeague(currentLeagueName);
+      await session.actions.loadAllStashItemsFromLeague(currentLeagueName);
     }catch{
 
     }
