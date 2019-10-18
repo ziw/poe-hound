@@ -40,6 +40,9 @@ export default class OfflineCache {
   }
 
   private isCacheDirValid() {
+    if(!this.cacheDir) {
+      return Promise.resolve(false);
+    }
     return fs.stat(this.cacheDir)
              .then(stats => stats.isDirectory());
   }
