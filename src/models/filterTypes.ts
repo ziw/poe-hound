@@ -99,5 +99,9 @@ export const functionalFilters: Array<{
   {
     type: FunctionalFilterType.maxLevel,
     filter: createFunctionFilter.ofMaxValue(item => item.level),
+  },
+  {
+    type: FunctionalFilterType.corrupted,
+    filter: createFunctionFilter.ofBooleanValue(item => item.corrupted),
   }
 ];

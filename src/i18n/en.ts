@@ -24,7 +24,8 @@ const en = {
     search: 'Search',
     clear: 'Clear',
     quality: 'Quality',
-    level: 'Level',
+    level: 'Gem Level',
+    corrupted: 'Corrupted',
     min: 'min',
     max: 'max',
   }

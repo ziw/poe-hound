@@ -28,6 +28,12 @@
       :filterOptions="booleanWithAnyOptions"
       :label="labels.elder"/>
 
+    <text-filter
+      class="filter-form__block--3"
+      :filterType="functionalFilterTypes.corrupted"
+      :filterOptions="booleanWithAnyOptions"
+      :label="labels.corrupted"/>
+
     <range-filter
       class="filter-form__block--3"
       :minFilterType="functionalFilterTypes.minQuality"
@@ -113,6 +119,4 @@ export default class FilterForm extends Vue {
       }
     }
   }
-
 </style>
-
