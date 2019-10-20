@@ -1,5 +1,5 @@
 <template>
-  <a-tooltip :visible="this.item.id === 'b24c745c6fa7a00c5cc288aec77e8ecceb3373ae2386d8dcfafa202eed36f3d8'">
+  <a-tooltip :svisible="this.item.id === 'b24c745c6fa7a00c5cc288aec77e8ecceb3373ae2386d8dcfafa202eed36f3d8'">
     <template slot="title">
       <item-tooltip :item="this.item" />
     </template>

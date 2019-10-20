@@ -71,7 +71,7 @@ body {
     font-family: OpenSans-Regular;
 
   .ant-tooltip {
-    max-width: 350px;
+    max-width: 450px;
   }
 
   .ant-tooltip-inner {

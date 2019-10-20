@@ -1,6 +1,5 @@
 <template>
   <div class="item-tooltip">
-    {{this.title}}
     <div :class="this.headerClass">
       <div :class="this.itemNameClass" v-if="this.doubleHeader">
         {{this.item.name}}
@@ -10,8 +9,20 @@
       </div>
     </div>
     <div class="item-tooltip__content">
-      <div v-for="mod in explicitMods" :key="mod">
-        {{mod}}
+
+      <div v-for="enchant in enchantMods" :key="enchant"
+        class="item-tooltip__mods--enchant">
+        {{ enchant }}
+      </div>
+
+      <div v-for="impMod in implicitMods" :key="impMod"
+        class="item-tooltip__mods--implicit">
+        {{ impMod }}
+      </div>
+
+      <div v-for="expMod in explicitMods" :key="expMod"
+        class="item-tooltip__mods--explicit">
+        {{ expMod }}
       </div>
     </div>
   </div>
@@ -22,7 +33,6 @@ import Vue from 'vue'
 import Component from 'vue-class-component';
 import { Prop } from 'vue/types/options';
 import { Item, ItemType } from '@/models/item';
-import { convertItemToTitle } from '@/utils/itemUtil';
 import { Type } from '../../../../utils/enumPicker';
 
 const AppProps = Vue.extend({
@@ -44,10 +54,6 @@ export default class ItemTooltip extends AppProps {
 
   get typeClass() {
     return classMap[Type.of(this.item).enumValue] || 'normal';
-  }
-
-  get title() {
-    return this.item ? `${ convertItemToTitle(this.item)} ` : '';
   }
 
   get headerClass() {
@@ -78,6 +84,14 @@ export default class ItemTooltip extends AppProps {
   get explicitMods() {
     return this.item.explicitMods;
   }
+
+  get implicitMods() {
+    return this.item.implicitMods;
+  }
+
+  get enchantMods() {
+    return this.item.enchantMods;
+  }
 }
 </script>
 
@@ -92,6 +106,7 @@ export default class ItemTooltip extends AppProps {
   $property_label_color: #7f7f7f;
   $property_value_color: #fff;
   $mod_color: #8888FF;
+  $enchant_color: #b4b4ff;
 
   .item-tooltip{
     display: block;
@@ -189,6 +204,17 @@ export default class ItemTooltip extends AppProps {
       display: flex;
       flex-direction: column;
       align-items: center;
+    }
+
+    &__mods {
+      &--implicit,
+      &--explicit {
+        color: $mod_color;
+      }
+
+      &--enchant {
+        color: $enchant_color;
+      }
     }
   }
 </style>
