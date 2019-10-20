@@ -1,5 +1,5 @@
 <template>
-  <a-tooltip :svisible="this.item.id === 'b24c745c6fa7a00c5cc288aec77e8ecceb3373ae2386d8dcfafa202eed36f3d8'">
+  <a-tooltip>
     <template slot="title">
       <item-tooltip :item="this.item" />
     </template>
@@ -20,7 +20,6 @@ import { Prop } from 'vue/types/options';
 import Tab from '@/models/tab';
 import ItemStore from '@/indexer/itemStore';
 import { Item } from '@/models/item';
-import { convertItemToTitle } from '@/utils/itemUtil';
 import ItemTooltip from '@/components/main/stash/details/ItemTooltip.vue';
 
 const AppProps = Vue.extend({
