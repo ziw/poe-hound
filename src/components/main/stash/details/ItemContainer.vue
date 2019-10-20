@@ -1,11 +1,15 @@
 <template>
-  <div class="item-container"
-    :title="title"
-    :style="styleObject">
-    <span v-if="showStackSize">
-      {{ item.stackSize }}
-    </span>
-  </div>
+  <a-tooltip :visible="this.item.id === 'b24c745c6fa7a00c5cc288aec77e8ecceb3373ae2386d8dcfafa202eed36f3d8'">
+    <template slot="title">
+      <item-tooltip :item="this.item" />
+    </template>
+    <div class="item-container"
+      :style="styleObject">
+      <span v-if="showStackSize">
+        {{ item.stackSize }}
+      </span>
+    </div>
+  </a-tooltip>
 </template>
 
 <script lang="ts">
@@ -17,6 +21,7 @@ import Tab from '@/models/tab';
 import ItemStore from '@/indexer/itemStore';
 import { Item } from '@/models/item';
 import { convertItemToTitle } from '@/utils/itemUtil';
+import ItemTooltip from '@/components/main/stash/details/ItemTooltip.vue';
 
 const AppProps = Vue.extend({
   props: {
@@ -42,7 +47,11 @@ const AppProps = Vue.extend({
   }
 });
 
-@Component({})
+@Component({
+  components: {
+    ItemTooltip,
+  }
+})
 export default class ItemContainer extends AppProps {
 
   get styleObject() {
@@ -61,10 +70,6 @@ export default class ItemContainer extends AppProps {
       'background-color': this.highlighted ? `rgba(255, 255,255,0.5)`: `rgba(0,0,0,0.60)`,
       'border': this.highlighted ? '1px solid yellow' : '',
     };
-  }
-
-  get title() {
-    return this.item ? `${ convertItemToTitle(this.item)} ` : '';
   }
 
   get showStackSize() {

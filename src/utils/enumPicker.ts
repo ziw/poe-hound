@@ -1,7 +1,9 @@
 import { Item, ItemType } from '@/models/item';
 
 class EnumPicker<T> {
-  private value: T | undefined = undefined;
+
+  constructor(private value: T){
+  }
 
   setValue(value: T) {
     this.value = value;
@@ -21,13 +23,16 @@ class EnumPicker<T> {
   isNot(...args: T[]) {
     return !this.in(...args);
   }
+
+  get enumValue() {
+    return this.value;
+  }
 }
 
 const createEnumPicker = <T>(getEnumValue: (item: Item) => T) => {
-  const enumPicker = new EnumPicker<T>();
   return {
     of: (item: Item) => {
-      enumPicker.setValue(getEnumValue(item));
+      const enumPicker = new EnumPicker<T>(getEnumValue(item));
       return enumPicker;
     }
   }

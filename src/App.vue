@@ -53,7 +53,7 @@ export default class App extends Vue {
     font-weight: Bold;
 }
 @font-face {
-    font-family: Fontin-SmallCaps;
+    font-family: FontinSmallCaps;
     src : url('./assets/fonts/fontin-smallcaps-webfont.woff');
     font-weight: normal;
 }
@@ -69,6 +69,16 @@ body {
     margin: 0;
     background-image: radial-gradient(100% 100%, #620909 0%, #230202 100%);
     font-family: OpenSans-Regular;
+
+  .ant-tooltip {
+    max-width: 350px;
+  }
+
+  .ant-tooltip-inner {
+    border-radius: 0;
+    padding: 0;
+    background: none;
+  }
 }
 
 #app {
