@@ -77,6 +77,10 @@ export default class ItemTooltip extends AppProps {
     return `item-tooltip__font--${this.typeClass}`;
   }
 
+  get seperatorClass() {
+    return `item-tooltip__seperator item-tooltip__seperator--${this.typeClass}`;
+  }
+
   get contentClass() {
     return 'item-tooltip__content';
   }
@@ -102,6 +106,7 @@ export default class ItemTooltip extends AppProps {
   $magic_font_color: #88f;
   $currency_font_color: #aa9e82;
   $normal_font_color: #c8c8c8;
+  $gem_font_color: #1ba29b;
 
   $property_label_color: #7f7f7f;
   $property_value_color: #fff;
@@ -115,6 +120,7 @@ export default class ItemTooltip extends AppProps {
     color: $property_label_color;
 
     &__font {
+
       &--unique {
         color: $unique_font_color;
       }
@@ -127,12 +133,16 @@ export default class ItemTooltip extends AppProps {
         color: $magic_font_color;
       }
 
+      &--normal {
+        color: $normal_font_color;
+      }
+
       &--currency {
         color: $currency_font_color;
       }
 
-      &--normal {
-        color: $normal_font_color;
+      &--gem {
+        color: $gem_font_color;
       }
     }
 
@@ -155,6 +165,13 @@ export default class ItemTooltip extends AppProps {
           url('~@/assets/header-currency-left.png') top left no-repeat,
           url('~@/assets/header-currency-right.png') top right no-repeat,
           url('~@/assets/header-currency-middle.png') top center repeat-x;
+      }
+
+      &--gem {
+        background:
+          url('~@/assets/header-gem-left.png') top left no-repeat,
+          url('~@/assets/header-gem-right.png') top right no-repeat,
+          url('~@/assets/header-gem-middle.png') top center repeat-x;
       }
 
       &--normal {
@@ -197,6 +214,47 @@ export default class ItemTooltip extends AppProps {
           url('~@/assets/header-double-unique-left.png') top left no-repeat,
           url('~@/assets/header-double-unique-right.png') top right no-repeat,
           url('~@/assets/header-double-unique-middle.png') top center repeat-x;
+      }
+    }
+
+    &__seperator {
+      background-color:rgba(0, 0, 0, 0);
+      background-position-x: center;
+      background-position-y: center;
+      background-repeat: no-repeat;
+      background-attachment: scroll;
+      background-size: auto;
+      background-origin: padding-box;
+      background-clip: border-box;
+      height: 8px;
+      margin: 1px 0px;
+
+      &--gem {
+        background-image: url('~@/assets/seperator-gem.png');
+      }
+
+      &--currency {
+        background-image: url('~@/assets/seperator-currency.png');
+      }
+
+      &--normal {
+        background-image: url('~@/assets/seperator-normal.png');
+      }
+
+      &--magic {
+        background-image: url('~@/assets/seperator-magic.png');
+      }
+
+      &--rare {
+        background-image: url('~@/assets/seperator-rare.png');
+      }
+
+      &--unique {
+        background-image: url('~@/assets/seperator-unique.png');
+      }
+
+      &--relic {
+        background-image: url('~@/assets/seperator-relic.png');
       }
     }
 
