@@ -27,6 +27,11 @@ export const convertItemToTitle = (item: Item) => {
 export const decorateItem = (raw: RawItem): Item => {
   return {
     ...raw,
+    implicitMods: raw.implicitMods || [],
+    explicitMods: raw.explicitMods || [],
+    enchantMods: raw.enchantMods || [],
+    craftedMods: raw.craftedMods || [],
+    fracturedMods: raw.fracturedMods || [],
     socketedItems: (raw.socketedItems || []).map(decorateItem),
     gemName: raw.frameType === ItemType.GEM ? raw.typeLine : '',
     ...normalizeItemProperties(raw),

@@ -19,10 +19,19 @@
         class="item-tooltip__mods--implicit">
         {{ impMod }}
       </div>
-
+      <div :class="seperatorClass"
+            v-if="hasExplicitBlock && (hasImplicitBlock)"></div>
       <div v-for="expMod in explicitMods" :key="expMod"
         class="item-tooltip__mods--explicit">
         {{ expMod }}
+      </div>
+      <div v-if="!this.item.identified"
+        class="item-tooltip__font--corrupted">
+        {{ unidedLabel }}
+      </div>
+      <div v-if="this.item.corrupted"
+        class="item-tooltip__font--corrupted">
+        {{ corruptedLabel }}
       </div>
     </div>
   </div>
@@ -31,6 +40,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component';
+import message from '@/i18n';
 import { Prop } from 'vue/types/options';
 import { Item, ItemType } from '@/models/item';
 import { Type } from '../../../../utils/enumPicker';
@@ -47,10 +57,14 @@ const classMap:{ [key in keyof typeof ItemType]?: string } = {
   [ItemType.RARE]: 'rare',
   [ItemType.UNIQUE]: 'unique',
   [ItemType.CURRENCY]: 'currency',
+  [ItemType.RELIC]: 'relic',
 }
 
 @Component({})
 export default class ItemTooltip extends AppProps {
+
+  private corruptedLabel = message.mods.corrupted;
+  private unidedLabel = message.mods.unided;
 
   get typeClass() {
     return classMap[Type.of(this.item).enumValue] || 'normal';
@@ -96,6 +110,22 @@ export default class ItemTooltip extends AppProps {
   get enchantMods() {
     return this.item.enchantMods;
   }
+
+  get fracturedMods() {
+    return this.item.fracturedMods;
+  }
+
+  private get hasExplicitBlock() {
+    return this.explicitMods.length
+              || this.item.corrupted
+              || !this.item.identified;
+  }
+
+  private get hasImplicitBlock() {
+    return this.implicitMods.length
+              || this.fracturedMods.length
+              || this.enchantMods.length;
+  }
 }
 </script>
 
@@ -112,12 +142,17 @@ export default class ItemTooltip extends AppProps {
   $property_value_color: #fff;
   $mod_color: #8888FF;
   $enchant_color: #b4b4ff;
+  $corrupted_color: #d20000;
+  $unid_color: #d20000;
+  $crafted_mod_color: $enchant_color;
 
   .item-tooltip{
     display: block;
   	font-family: "FontinSmallCaps",Verdana,Arial,Helvetica,sans-serif;
     background: rgba(0,0,0,0.8);
     color: $property_label_color;
+    text-align: center;
+    min-width: 200px;
 
     &__font {
 
@@ -143,6 +178,10 @@ export default class ItemTooltip extends AppProps {
 
       &--gem {
         color: $gem_font_color;
+      }
+
+      &--corrupted {
+        color: $corrupted_color;
       }
     }
 
@@ -228,6 +267,7 @@ export default class ItemTooltip extends AppProps {
       background-clip: border-box;
       height: 8px;
       margin: 1px 0px;
+      width: 100%;
 
       &--gem {
         background-image: url('~@/assets/seperator-gem.png');
@@ -262,6 +302,7 @@ export default class ItemTooltip extends AppProps {
       display: flex;
       flex-direction: column;
       align-items: center;
+      padding: 0 6px;
     }
 
     &__mods {
