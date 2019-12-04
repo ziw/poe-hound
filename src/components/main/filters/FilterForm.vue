@@ -46,6 +46,18 @@
       :maxFilterType="functionalFilterTypes.maxLevel"
       :label="labels.level"/>
 
+    <range-filter
+      class="filter-form__block--3"
+      :minFilterType="functionalFilterTypes.minSockets"
+      :maxFilterType="functionalFilterTypes.maxSockets"
+      :label="labels.numSockets"/>
+
+    <range-filter
+      class="filter-form__block--3"
+      :minFilterType="functionalFilterTypes.minLinks"
+      :maxFilterType="functionalFilterTypes.maxLinks"
+      :label="labels.numLinks"/>
+
     <div class="filter-form__submit-btn filter-form__block--stretch">
       <primary-button type="submit" stretch style-type="square">
         {{ labels.search }}
