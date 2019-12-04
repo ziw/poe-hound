@@ -28,6 +28,9 @@ const en = {
     corrupted: 'Corrupted',
     min: 'min',
     max: 'max',
+    numSockets: 'Sockets',
+    numLinks: 'Links',
+    abyssalSocket: 'Abyssal Socket',
   },
 
   mods: {

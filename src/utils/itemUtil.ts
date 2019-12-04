@@ -1,4 +1,4 @@
-import { Item, RawItem, ItemPropertNameKey, NormalizedProperties, ItemType } from '@/models/item';
+import { Item, RawItem, ItemPropertNameKey, NormalizedProperties, ItemType, SocketProperties } from '@/models/item';
 
 /**
  * return a multi-lined string containing an item's
@@ -35,7 +35,32 @@ export const decorateItem = (raw: RawItem): Item => {
     socketedItems: (raw.socketedItems || []).map(decorateItem),
     gemName: raw.frameType === ItemType.GEM ? raw.typeLine : '',
     ...normalizeItemProperties(raw),
+    ...computedSocketsProperties(raw),
   };
+};
+
+/**
+ * Iterate the sockets field of an item and parse the links/sockets related values
+ * @param raw Raw item to parse properties
+ */
+const computedSocketsProperties = (raw: RawItem): SocketProperties  => {
+  const sockets = raw.sockets || [];
+  const numOfSockets = sockets.length;
+  let hasAbyssalSocket = false;
+  const linkGroups: { [key: number]: number} = {};
+  sockets.forEach(({ group, sColour }) => {
+    if(sColour === 'A') {
+      hasAbyssalSocket = true;
+    }
+    const count = linkGroups[group];
+    linkGroups[group] = count ? count + 1 : 1;
+  });
+
+  return {
+    numOfLinks: sockets.length ? Math.max(...Object.values(linkGroups)) : 0,
+    numOfSockets,
+    hasAbyssalSocket,
+  }
 };
 
 /**

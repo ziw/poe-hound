@@ -43,6 +43,12 @@ export type NormalizedProperties = {
   level?: number;
 }
 
+export type SocketProperties = {
+  numOfLinks: number,
+  numOfSockets: number,
+  hasAbyssalSocket: boolean,
+}
+
 export type DecoratedNames = {
   gemName: string;
 }
@@ -51,6 +57,7 @@ export type Item =
   RawItem &
   NormalizedProperties &
   DecoratedNames &
+  SocketProperties &
   {
     socketedItems: Item[],
   };
@@ -101,7 +108,8 @@ export enum ItemType {
 }
 
 type Socket = {
-
+  group: number,
+  sColour: 'R' | 'G' | 'B' | 'W' /* White */ | 'A'  /* Abyss */
 };
 
 type Requirement = {

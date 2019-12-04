@@ -8,7 +8,6 @@ export enum IndexerFilterType {
 }
 
 export enum FunctionalFilterType {
-  numSockets = 'numSockets',
   shaped = 'shaped',
   elder = 'elder',
   corrupted = 'corrupted',
@@ -18,6 +17,10 @@ export enum FunctionalFilterType {
   maxQuality = 'maxQuality',
   minLevel = 'minLevel',
   maxLevel = 'maxLevel',
+  minSockets = 'minSockets',
+  maxSockets = 'maxSockets',
+  minLinks = 'minLinks',
+  maxLinks = 'maxLinks',
 }
 
 export type Filter<T> = {
@@ -103,5 +106,21 @@ export const functionalFilters: Array<{
   {
     type: FunctionalFilterType.corrupted,
     filter: createFunctionFilter.ofBooleanValue(item => item.corrupted),
-  }
+  },
+  {
+    type: FunctionalFilterType.minSockets,
+    filter: createFunctionFilter.ofMinValue(item => item.numOfSockets),
+  },
+  {
+    type: FunctionalFilterType.maxSockets,
+    filter: createFunctionFilter.ofMaxValue(item => item.numOfSockets),
+  },
+  {
+    type: FunctionalFilterType.minLinks,
+    filter: createFunctionFilter.ofMinValue(item => item.numOfLinks),
+  },
+  {
+    type: FunctionalFilterType.maxLinks,
+    filter: createFunctionFilter.ofMaxValue(item => item.numOfLinks),
+  },
 ];
