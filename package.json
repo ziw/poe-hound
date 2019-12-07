@@ -33,7 +33,7 @@
     "@vue/cli-plugin-typescript": "^3.4.0",
     "@vue/cli-service": "^3.4.0",
     "electron": "^5.0.0",
-    "fibers": "^3.1.1",
+    "fibers": "^4.0.2",
     "sass": "^1.16.0",
     "sass-loader": "^8.0.0",
     "typescript": "^3.0.0",
