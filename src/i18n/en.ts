@@ -28,6 +28,11 @@ const en = {
     corrupted: 'Corrupted',
     min: 'min',
     max: 'max',
+  },
+
+  mods: {
+    corrupted: 'Corrupted',
+    unided: 'Unidentified',
   }
 }
 
