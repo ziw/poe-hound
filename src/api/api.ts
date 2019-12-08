@@ -8,7 +8,7 @@ import { decorateItem } from '@/utils/itemUtil';
 
 const offlineCacher = new OfflineCache(process.env.VUE_APP_CACHE_DIR as string);
 
-const fetch = (url: string, sessionId: string, method = 'GET', form ?:any)=> {
+const fetch = (url: string, sessionId: string, method = 'GET', form ?:object)=> {
   return request({
     url,
     form,
@@ -21,7 +21,7 @@ const fetch = (url: string, sessionId: string, method = 'GET', form ?:any)=> {
   })
   .then((resp: FullResponse) => {
     if(resp.statusCode === 200){
-      offlineCacher.cache(url, resp.body);
+      offlineCacher.cache(url, resp.body, form);
     }
     console.log({
       resp,

@@ -1,10 +1,11 @@
 import { promises as fs } from 'fs';
 import * as path from 'path';
 
-const toFileName = (requestUrl: string): string | undefined => {
+const toFileName = (requestUrl: string, form ?: {[k:string]: any}): string | undefined => {
   try{
     const url = new URL(requestUrl);
-    const search = url.search.replace(/\?/g, '')
+    const queryParams = form ? Object.keys(form).map(key => key + '=' + form[key]).join('&') : url.search;
+    const search = queryParams.replace(/\?/g, '')
                       .replace(/=/g, '--')
                       .replace(/&/g, '#');
     const paths = url.pathname.split('/').filter(seg => seg.trim().length).join('__');
@@ -25,15 +26,15 @@ export default class OfflineCache {
     return this;
   }
 
-  async cache(fullRequestUrl: string, content: string) {
-    const fileName = toFileName(fullRequestUrl);
+  async cache(fullRequestUrl: string, content: string, form ?:{[k:string]: any}) {
+    const fileName = toFileName(fullRequestUrl, form);
     if(fileName && await this.isCacheDirValid()) {
       return fs.writeFile(path.join(this.cacheDir, fileName), content);
     }
   }
 
-  async read(fullRequestUrl: string) {
-    const fileName = toFileName(fullRequestUrl);
+  async read(fullRequestUrl: string, form ?:{[k:string]: any}) {
+    const fileName = toFileName(fullRequestUrl, form);
     if(fileName && await this.isCacheDirValid()){
       return fs.readFile(path.join(this.cacheDir, fileName), 'utf8');
     }
