@@ -1,17 +1,18 @@
 import { PATHS, COOKIE_NAME } from '@/constants';
-import  request, {FullResponse} from 'request-promise-native';
+import  request, { FullResponse } from 'request-promise-native';
 import Character from '@/models/character';
 import StashPage from '@/models/stashPage';
-import { Item, RawItem } from '@/models/item';
+import { RawItem } from '@/models/item';
 import OfflineCache from '@/utils/offlineCache';
 import { decorateItem } from '@/utils/itemUtil';
 
 const offlineCacher = new OfflineCache(process.env.VUE_APP_CACHE_DIR as string);
 
-const get = (url: string, sessionId: string)=> {
-
-  return request.get({
+const fetch = (url: string, sessionId: string, method = 'GET', form ?:any)=> {
+  return request({
     url,
+    form,
+    method,
     headers: {
       Cookie: `${COOKIE_NAME}=${sessionId}`
     },
@@ -48,17 +49,17 @@ const buildUrl = (path: string, queryObject?: any) => {
 }
 
 export function authenticate(sessionId: string): Promise<string> {
-  return get(buildUrl(PATHS.accountNameUrl), sessionId)
+  return fetch(buildUrl(PATHS.accountNameUrl), sessionId)
           .then((resp) => JSON.parse(resp.body).accountName);
 }
 
 export function loadCharacters(sessionId: string) {
-  return get(buildUrl(PATHS.charactersUrl), sessionId)
+  return fetch(buildUrl(PATHS.charactersUrl), sessionId)
           .then((resp) => JSON.parse(resp.body) as Character[]);
 }
 
 export function loadInventory(sessionId: string, character: string, accountName: string){
-  return get(buildUrl(PATHS.inventoryUrl, { character, accountName }), sessionId)
+  return fetch(buildUrl(PATHS.inventoryUrl), sessionId, 'POST', { character, accountName })
           .then((resp) => (JSON.parse(resp.body) as { items: RawItem[] }).items.map(decorateItem));
 }
 
@@ -71,7 +72,7 @@ export function loadStash(sessionId: string, tabIndex: string, accountName: stri
     realm: 'pc',
     public: false,
   }
-  return get(buildUrl(PATHS.stashUrl, query), sessionId)
+  return fetch(buildUrl(PATHS.stashUrl, query), sessionId)
           .then((resp) => (JSON.parse(resp.body) as { items: RawItem[] }).items.map(decorateItem));
 }
 
@@ -81,6 +82,6 @@ export function loadLeagueStashInformation(sessionId: string, league: string, ac
     league,
     accountName,
   };
-  return get(buildUrl(PATHS.stashMetadataUrl, query), sessionId)
+  return fetch(buildUrl(PATHS.stashMetadataUrl, query), sessionId)
           .then((resp) => JSON.parse(resp.body).tabs as StashPage[]);
 }
