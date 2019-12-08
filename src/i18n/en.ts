@@ -36,6 +36,8 @@ const en = {
   mods: {
     corrupted: 'Corrupted',
     unided: 'Unidentified',
+    quality: 'Quality',
+    level: 'Level',
   }
 }
 
