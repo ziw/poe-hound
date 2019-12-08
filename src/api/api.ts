@@ -30,7 +30,7 @@ const fetch = (url: string, sessionId: string, method = 'GET', form ?:object)=> 
     return resp;
   }).catch(error => {
     if(error && error.statusCode !== 429 && process.env.VUE_APP_CACHE_DIR){
-      return offlineCacher.read(url).then(content => ({
+      return offlineCacher.read(url, form).then(content => ({
         body: content!
       }));
     }
