@@ -9,7 +9,14 @@
       </div>
     </div>
     <div class="item-tooltip__content">
-
+      <div v-if="this.item.level">
+        <span>{{levelLabel}}:</span>
+        <span class="item-tooltip__mods--explicit">{{this.item.level}}</span>
+      </div>
+      <div v-if="this.item.quality">
+        <span>{{qualityLabel}}:</span>
+        <span class="item-tooltip__mods--explicit">{{this.item.quality}} %</span>
+      </div>
       <div v-for="enchant in enchantMods" :key="enchant"
         class="item-tooltip__mods--enchant">
         {{ enchant }}
@@ -65,6 +72,8 @@ export default class ItemTooltip extends AppProps {
 
   private corruptedLabel = message.mods.corrupted;
   private unidedLabel = message.mods.unided;
+  private qualityLabel = message.mods.quality;
+  private levelLabel = message.mods.level;
 
   get typeClass() {
     return classMap[Type.of(this.item).enumValue] || 'normal';
