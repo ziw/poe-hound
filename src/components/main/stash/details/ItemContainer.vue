@@ -53,6 +53,17 @@ const AppProps = Vue.extend({
 })
 export default class ItemContainer extends AppProps {
 
+  specialBG: string;
+
+  constructor(){
+    super();
+    const backgroundQuery = `?w=${this.item.w}&h=${this.item.h}&x=${this.item.x}&y=${this.item.y}`;
+    this.specialBG =
+      this.item.shaper ? `http://pathofexile.com/image/inventory/ShaperBackground.png${backgroundQuery}`
+      : this.item.elder ? `http://pathofexile.com/image/inventory/ElderBackground.png${backgroundQuery}`
+      : '';
+  }
+
   get styleObject() {
     const item = this.item || {};
     const width = this.unitDimension * this.w;
@@ -63,7 +74,7 @@ export default class ItemContainer extends AppProps {
       top: `${this.top}px`,
       width: `${width}px`,
       height: `${height}px`,
-      'background-image': `url("${item ? item.icon : ''}")`,
+      'background-image': `url("${item ? item.icon : ''}"), url('${this.specialBG}')`,
       'background-repeat': 'no-repeat',
       'background-size': `${width}px ${height}px`,
       'background-color': this.highlighted ? `rgba(255, 255,255,0.5)`: `rgba(0,0,0,0.60)`,
