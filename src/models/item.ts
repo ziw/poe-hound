@@ -27,7 +27,7 @@ export type RawItem = {
   enchantMods: string[];
   craftedMods: string[];
   fracturedMods: string[];
-
+  influences: { [k in Influence]: boolean };
   flavourText: string[];
 
   properties: ItemLineContent[];
@@ -105,6 +105,15 @@ export enum ItemType {
   CURRENCY = 5,
   DIVINATION_CARD = 6,
   RELIC = 9,
+}
+
+export enum Influence {
+  Shaper = 'shaper',
+  Elder = 'elder',
+  Redeemer = 'redeemer',
+  Hunter = 'hunter',
+  Warlord = 'warlord',
+  Crusader = 'crusader',
 }
 
 type Socket = {

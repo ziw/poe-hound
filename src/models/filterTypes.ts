@@ -1,4 +1,4 @@
-import { Item, ItemType } from './item';
+import { Item, ItemType, Influence } from './item';
 import { createFunctionFilter } from '@/utils';
 import { Type } from '@/utils/enumPicker';
 
@@ -77,11 +77,11 @@ export const functionalFilters: Array<{
 }> = [
   {
     type: FunctionalFilterType.shaped,
-    filter: createFunctionFilter.ofBooleanValue(item => item.shaper),
+    filter: createFunctionFilter.ofBooleanValue(item => item.influences[Influence.Shaper]),
   },
   {
     type: FunctionalFilterType.elder,
-    filter: createFunctionFilter.ofBooleanValue(item => item.elder),
+    filter: createFunctionFilter.ofBooleanValue(item => item.influences[Influence.Elder]),
   },
   {
     type: FunctionalFilterType.corrupted,

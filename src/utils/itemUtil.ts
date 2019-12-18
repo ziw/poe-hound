@@ -34,6 +34,7 @@ export const decorateItem = (raw: RawItem): Item => {
     fracturedMods: raw.fracturedMods || [],
     socketedItems: (raw.socketedItems || []).map(decorateItem),
     gemName: raw.frameType === ItemType.GEM ? raw.typeLine : '',
+    influences: raw.influences || {},
     ...normalizeItemProperties(raw),
     ...computedSocketsProperties(raw),
   };
