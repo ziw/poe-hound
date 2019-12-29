@@ -6,57 +6,69 @@
         {{ labels.clear }}
       </button>
     </div>
-    <text-filter
-      class="filter-form__block--stretch"
-      :filterType="indexFilterTypes.name"
-      :label="labels.itemName"/>
 
-    <text-filter
-      class="filter-form__block--stretch"
-      :filterType="indexFilterTypes.typeLine"
-      :label="labels.itemTypeLine"/>
+    <filter-section :sectionTitle="labels.sections.itemNameType"
+      class="filter-form__block--stretch">
+      <text-filter
+        class="filter-form__block--stretch"
+        :filterType="indexFilterTypes.name"
+        :label="labels.itemName"/>
+      <text-filter
+        class="filter-form__block--stretch"
+        :filterType="indexFilterTypes.typeLine"
+        :label="labels.itemTypeLine"/>
+    </filter-section>
 
-    <text-filter
-      class="filter-form__block--3"
-      :filterType="functionalFilterTypes.shaped"
-      :filterOptions="booleanWithAnyOptions"
-      :label="labels.shaped"/>
+    <filter-section :sectionTitle="labels.sections.influence"
+      class="filter-form__block--stretch">
+      <text-filter
+        class="filter-form__block--3"
+        :filterType="functionalFilterTypes.shaped"
+        :filterOptions="booleanWithAnyOptions"
+        :label="labels.shaped"/>
 
-    <text-filter
-      class="filter-form__block--3"
-      :filterType="functionalFilterTypes.elder"
-      :filterOptions="booleanWithAnyOptions"
-      :label="labels.elder"/>
+      <text-filter
+        class="filter-form__block--3"
+        :filterType="functionalFilterTypes.elder"
+        :filterOptions="booleanWithAnyOptions"
+        :label="labels.elder"/>
+    </filter-section>
 
-    <text-filter
-      class="filter-form__block--3"
-      :filterType="functionalFilterTypes.corrupted"
-      :filterOptions="booleanWithAnyOptions"
-      :label="labels.corrupted"/>
+    <filter-section :sectionTitle="labels.sections.properties"
+      class="filter-form__block--stretch">
+      <text-filter
+        class="filter-form__block--3"
+        :filterType="functionalFilterTypes.corrupted"
+        :filterOptions="booleanWithAnyOptions"
+        :label="labels.corrupted"/>
 
-    <range-filter
-      class="filter-form__block--3"
-      :minFilterType="functionalFilterTypes.minQuality"
-      :maxFilterType="functionalFilterTypes.maxQuality"
-      :label="labels.quality"/>
+      <range-filter
+        class="filter-form__block--3"
+        :minFilterType="functionalFilterTypes.minQuality"
+        :maxFilterType="functionalFilterTypes.maxQuality"
+        :label="labels.quality"/>
 
-    <range-filter
-      class="filter-form__block--3"
-      :minFilterType="functionalFilterTypes.minLevel"
-      :maxFilterType="functionalFilterTypes.maxLevel"
-      :label="labels.level"/>
+      <range-filter
+        class="filter-form__block--3"
+        :minFilterType="functionalFilterTypes.minLevel"
+        :maxFilterType="functionalFilterTypes.maxLevel"
+        :label="labels.level"/>
+    </filter-section>
 
-    <range-filter
-      class="filter-form__block--3"
-      :minFilterType="functionalFilterTypes.minSockets"
-      :maxFilterType="functionalFilterTypes.maxSockets"
-      :label="labels.numSockets"/>
+    <filter-section :sectionTitle="labels.sections.sockets"
+      class="filter-form__block--stretch">
+      <range-filter
+        class="filter-form__block--3"
+        :minFilterType="functionalFilterTypes.minSockets"
+        :maxFilterType="functionalFilterTypes.maxSockets"
+        :label="labels.numSockets"/>
 
-    <range-filter
-      class="filter-form__block--3"
-      :minFilterType="functionalFilterTypes.minLinks"
-      :maxFilterType="functionalFilterTypes.maxLinks"
-      :label="labels.numLinks"/>
+      <range-filter
+        class="filter-form__block--3"
+        :minFilterType="functionalFilterTypes.minLinks"
+        :maxFilterType="functionalFilterTypes.maxLinks"
+        :label="labels.numLinks"/>
+    </filter-section>
 
     <div class="filter-form__submit-btn filter-form__block--stretch">
       <primary-button type="submit" stretch style-type="square">
@@ -76,6 +88,7 @@ import { IndexerFilterType, FunctionalFilterType } from '@/models/filterTypes';
 import TextFilter from '@/components/main/filters/TextFilter.vue';
 import PrimaryButton from '@/components/shared/PrimaryButton.vue';
 import RangeFilter from '@/components/main/filters/RangeFilter.vue';
+import FilterSection from '@/components/main/filters/FilterSection.vue';
 import { FilterBooleanOptions } from '@/constants';
 
 @Component({
@@ -83,6 +96,7 @@ import { FilterBooleanOptions } from '@/constants';
     TextFilter,
     RangeFilter,
     PrimaryButton,
+    FilterSection,
   }
 })
 export default class FilterForm extends Vue {
