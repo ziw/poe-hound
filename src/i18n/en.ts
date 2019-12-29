@@ -31,6 +31,13 @@ const en = {
     numSockets: 'Sockets',
     numLinks: 'Links',
     abyssalSocket: 'Abyssal Socket',
+
+    sections: {
+      itemNameType: 'Name and Type',
+      sockets: 'Links and Sockets',
+      influence: 'Influence',
+      properties: 'Properties',
+    }
   },
 
   mods: {
