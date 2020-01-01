@@ -32,6 +32,30 @@
         :filterType="functionalFilterTypes.elder"
         :filterOptions="booleanWithAnyOptions"
         :label="labels.elder"/>
+
+      <text-filter
+        class="filter-form__block--3"
+        :filterType="functionalFilterTypes.hunter"
+        :filterOptions="booleanWithAnyOptions"
+        :label="labels.hunter"/>
+
+      <text-filter
+        class="filter-form__block--3"
+        :filterType="functionalFilterTypes.redeemer"
+        :filterOptions="booleanWithAnyOptions"
+        :label="labels.redeemer"/>
+
+      <text-filter
+        class="filter-form__block--3"
+        :filterType="functionalFilterTypes.warlord"
+        :filterOptions="booleanWithAnyOptions"
+        :label="labels.warlord"/>
+
+      <text-filter
+        class="filter-form__block--3"
+        :filterType="functionalFilterTypes.crusader"
+        :filterOptions="booleanWithAnyOptions"
+        :label="labels.crusader"/>
     </filter-section>
 
     <filter-section :sectionTitle="labels.sections.properties"
