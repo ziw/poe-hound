@@ -47,6 +47,7 @@ export type SocketProperties = {
   numOfLinks: number,
   numOfSockets: number,
   hasAbyssalSocket: boolean,
+  hasWhiteSocket: boolean,
 }
 
 export type DecoratedNames = {

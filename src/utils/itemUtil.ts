@@ -48,10 +48,14 @@ const computedSocketsProperties = (raw: RawItem): SocketProperties  => {
   const sockets = raw.sockets || [];
   const numOfSockets = sockets.length;
   let hasAbyssalSocket = false;
+  let hasWhiteSocket = false;
   const linkGroups: { [key: number]: number} = {};
   sockets.forEach(({ group, sColour }) => {
     if(sColour === 'A') {
       hasAbyssalSocket = true;
+    }
+    if(sColour === 'W') {
+      hasWhiteSocket = true;
     }
     const count = linkGroups[group];
     linkGroups[group] = count ? count + 1 : 1;
@@ -61,6 +65,7 @@ const computedSocketsProperties = (raw: RawItem): SocketProperties  => {
     numOfLinks: sockets.length ? Math.max(...Object.values(linkGroups)) : 0,
     numOfSockets,
     hasAbyssalSocket,
+    hasWhiteSocket,
   }
 };
 

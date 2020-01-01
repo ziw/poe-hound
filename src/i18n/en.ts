@@ -31,6 +31,7 @@ const en = {
     numSockets: 'Sockets',
     numLinks: 'Links',
     abyssalSocket: 'Abyssal Socket',
+    whiteSocket: 'White Socket',
 
     sections: {
       itemNameType: 'Name and Type',

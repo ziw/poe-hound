@@ -68,6 +68,18 @@
         :minFilterType="functionalFilterTypes.minLinks"
         :maxFilterType="functionalFilterTypes.maxLinks"
         :label="labels.numLinks"/>
+
+      <text-filter
+        class="filter-form__block--3"
+        :filterType="functionalFilterTypes.hasAbyssalSocket"
+        :filterOptions="booleanWithAnyOptions"
+        :label="labels.abyssalSocket"/>
+
+      <text-filter
+        class="filter-form__block--3"
+        :filterType="functionalFilterTypes.hasWhiteSocket"
+        :filterOptions="booleanWithAnyOptions"
+        :label="labels.whiteSocket"/>
     </filter-section>
 
     <div class="filter-form__submit-btn filter-form__block--stretch">
