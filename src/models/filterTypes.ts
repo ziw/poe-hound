@@ -25,6 +25,8 @@ export enum FunctionalFilterType {
   maxSockets = 'maxSockets',
   minLinks = 'minLinks',
   maxLinks = 'maxLinks',
+  hasWhiteSocket = 'hasWhiteSocket',
+  hasAbyssalSocket = 'hasAbyssalSocket',
 }
 
 export type Filter<T> = {
@@ -142,5 +144,13 @@ export const functionalFilters: Array<{
   {
     type: FunctionalFilterType.maxLinks,
     filter: createFunctionFilter.ofMaxValue(item => item.numOfLinks),
+  },
+  {
+    type: FunctionalFilterType.hasAbyssalSocket,
+    filter: createFunctionFilter.ofBooleanValue(item => item.hasAbyssalSocket),
+  },
+  {
+    type: FunctionalFilterType.hasWhiteSocket,
+    filter: createFunctionFilter.ofBooleanValue(item => item.hasWhiteSocket),
   },
 ];
