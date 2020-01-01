@@ -5,6 +5,10 @@ import { Type } from '@/utils/enumPicker';
 export enum IndexerFilterType {
   name= 'name',
   typeLine= 'typeLine',
+  craftedMod = 'crafted',
+  explicit = 'explicit',
+  implicit = 'implicit',
+  fractured = 'fractured',
 }
 
 export enum FunctionalFilterType {
@@ -55,20 +59,44 @@ export const indexerFilters: Array<{
   {
     type: IndexerFilterType.name,
     getIndexKeys: item => [item.name, item.gemName],
-    shouldIndex: item => {
-      return Type.of(item).in(ItemType.UNIQUE, ItemType.GEM, ItemType.RELIC);
-    }
+    shouldIndex: item => Type.of(item).in(ItemType.UNIQUE, ItemType.GEM, ItemType.RELIC)
   },
   {
     type: IndexerFilterType.typeLine,
     getIndexKeys: item => [item.typeLine],
-    shouldIndex: item => {
-      return Type.of(item).isNot(
+    shouldIndex: item => Type.of(item).isNot(
         ItemType.GEM,
         ItemType.CURRENCY,
         ItemType.DIVINATION_CARD,
-      );
-    },
+    ),
+
+  },
+  {
+    type: IndexerFilterType.implicit,
+    getIndexKeys: item => item.implicitMods,
+    shouldIndex: item => Type.of(item).isNot(
+      ItemType.GEM,
+      ItemType.CURRENCY,
+      ItemType.DIVINATION_CARD,
+    ),
+  },
+  {
+    type: IndexerFilterType.explicit,
+    getIndexKeys: item => item.explicitMods,
+    shouldIndex: item => Type.of(item).isNot(
+      ItemType.GEM,
+      ItemType.CURRENCY,
+      ItemType.DIVINATION_CARD,
+    ),
+  },
+  {
+    type: IndexerFilterType.craftedMod,
+    getIndexKeys: item => item.craftedMods,
+    shouldIndex: item => Type.of(item).isNot(
+      ItemType.GEM,
+      ItemType.CURRENCY,
+      ItemType.DIVINATION_CARD,
+    ),
   },
 ];
 
