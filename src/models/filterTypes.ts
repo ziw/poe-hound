@@ -10,6 +10,10 @@ export enum IndexerFilterType {
 export enum FunctionalFilterType {
   shaped = 'shaped',
   elder = 'elder',
+  hunter = 'hunter',
+  redeemer = 'redeemer',
+  warlord = 'warlord',
+  crusader = 'crusader',
   corrupted = 'corrupted',
   identified = 'identified',
   fractured = 'fractured',
@@ -82,6 +86,22 @@ export const functionalFilters: Array<{
   {
     type: FunctionalFilterType.elder,
     filter: createFunctionFilter.ofBooleanValue(item => item.influences[Influence.Elder]),
+  },
+  {
+    type: FunctionalFilterType.hunter,
+    filter: createFunctionFilter.ofBooleanValue(item => item.influences[Influence.Hunter]),
+  },
+  {
+    type: FunctionalFilterType.redeemer,
+    filter: createFunctionFilter.ofBooleanValue(item => item.influences[Influence.Redeemer]),
+  },
+  {
+    type: FunctionalFilterType.warlord,
+    filter: createFunctionFilter.ofBooleanValue(item => item.influences[Influence.Warlord]),
+  },
+  {
+    type: FunctionalFilterType.crusader,
+    filter: createFunctionFilter.ofBooleanValue(item => item.influences[Influence.Crusader]),
   },
   {
     type: FunctionalFilterType.corrupted,

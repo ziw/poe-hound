@@ -19,8 +19,12 @@ const en = {
   filters: {
     itemName: 'Name',
     itemTypeLine: 'Base',
-    shaped: 'Shaped',
+    shaped: 'Shaper',
     elder: 'Elder',
+    hunter: 'Hunter',
+    redeemer: 'Redeemer',
+    warlord: 'Warlord',
+    crusader: 'Crusader',
     search: 'Search',
     clear: 'Clear',
     quality: 'Quality',
