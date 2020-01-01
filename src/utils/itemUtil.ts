@@ -1,4 +1,4 @@
-import { Item, RawItem, ItemPropertNameKey, NormalizedProperties, ItemType, SocketProperties } from '@/models/item';
+import { Item, RawItem, ItemPropertyNameKey, NormalizedProperties, ItemType, SocketProperties, ItemLineContent } from '@/models/item';
 
 /**
  * return a multi-lined string containing an item's
@@ -78,11 +78,33 @@ const normalizeItemProperties = (raw: RawItem): NormalizedProperties => {
   if(!raw.properties) {
     return properties;
   }
-  raw.properties.forEach(prop => {
-    if(prop.name === ItemPropertNameKey.Quality) {
-      properties.quality = parseFloat(prop.values[0][0]) || undefined;
-    }else if(prop.name === ItemPropertNameKey.Level) {
-      properties.level = parseInt(prop.values[0][0]) || undefined;
+
+  const parsePropValue = (prop: ItemLineContent, defaultValue?: number) => parseInt(prop.values[0][0]) || defaultValue;
+  const propertyMapper: { [k in keyof typeof ItemPropertyNameKey]?: keyof NormalizedProperties } = {
+    [ItemPropertyNameKey.Level]: 'level',
+    [ItemPropertyNameKey.Quality]: 'quality',
+  };
+
+  const requirementMapper: { [k in keyof typeof ItemPropertyNameKey]?: keyof NormalizedProperties } = {
+    [ItemPropertyNameKey.Str]: 'requiredStr',
+    [ItemPropertyNameKey.Dex]: 'requiredDex',
+    [ItemPropertyNameKey.Int]: 'requiredInt',
+    [ItemPropertyNameKey.Level]: 'requiredLevel',
+  };
+
+  //parse properites. e.g. quality, gem level, evasion, armor or ES
+  (raw.properties || []).forEach(prop => {
+    const propKey = propertyMapper[prop.name];
+    if(propKey){
+      properties[propKey] = parsePropValue(prop);
+    }
+  });
+
+  //parse requirements. e.g. character level, str, dex or int
+  (raw.requirements || []).forEach(req => {
+    const reqKey = requirementMapper[req.name];
+    if(reqKey) {
+      properties[reqKey] = parsePropValue(req);
     }
   });
   return properties;

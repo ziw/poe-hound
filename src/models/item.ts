@@ -31,16 +31,18 @@ export type RawItem = {
   flavourText: string[];
 
   properties: ItemLineContent[];
-
-
   socketedItems: RawItem[];
   sockets: Socket[];
-  requirements: Requirement[];
+  requirements: ItemLineContent[];
 };
 
 export type NormalizedProperties = {
   quality?: number;
   level?: number;
+  requiredLevel?: number,
+  requiredStr?: number,
+  requiredDex?: number,
+  requiredInt?: number,
 }
 
 export type SocketProperties = {
@@ -64,7 +66,7 @@ export type Item =
   };
 
 export interface ItemLineContent {
-  name: ItemPropertNameKey,
+  name: ItemPropertyNameKey,
   values: ItemPropertyTuple[],
   displayMode: number,
   type: number,
@@ -75,9 +77,12 @@ type ItemPropertyTuple = [
   number,
 ];
 
-export enum ItemPropertNameKey {
+export enum ItemPropertyNameKey {
   Level = 'Level',
   Quality = 'Quality',
+  Dex = 'Dex',
+  Int = 'Int',
+  Str = 'Str',
 }
 
 export enum InventoryId {
@@ -120,8 +125,4 @@ export enum Influence {
 type Socket = {
   group: number,
   sColour: 'R' | 'G' | 'B' | 'W' /* White */ | 'A'  /* Abyss */
-};
-
-type Requirement = {
-
 };
