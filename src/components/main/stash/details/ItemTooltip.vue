@@ -32,6 +32,10 @@
         class="item-tooltip__mods--explicit">
         {{ expMod }}
       </div>
+      <div v-for="craftedMod in craftedMods" :key="craftedMod"
+        class="item-tooltip__mods--enchant">
+        {{ craftedMod }}
+      </div>
       <div v-if="!this.item.identified"
         class="item-tooltip__font--corrupted">
         {{ unidedLabel }}
@@ -110,6 +114,10 @@ export default class ItemTooltip extends AppProps {
 
   get explicitMods() {
     return this.item.explicitMods;
+  }
+
+  get craftedMods() {
+    return this.item.craftedMods;
   }
 
   get implicitMods() {
