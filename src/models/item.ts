@@ -72,7 +72,7 @@ export type Item =
     }
   };
 
-export type ItemLineContent {
+export type ItemLineContent = {
   name: ItemPropertyNameKey,
   values: ItemPropertyTuple[],
   displayMode: number,
@@ -142,7 +142,7 @@ export enum ItemModType {
   Fractured = 'fractured',
 }
 
-export type ItemMod {
+export type ItemMod = {
   type: ItemModType,
   id: string,
   fullText: string,
