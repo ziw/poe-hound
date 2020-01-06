@@ -19,6 +19,26 @@
         :label="labels.itemTypeLine"/>
     </filter-section>
 
+    <filter-section :sectionTitle="labels.sections.mods"
+      class="filter-form__block--stretch">
+      <text-filter
+        class="filter-form__block--stretch"
+        :filterType="indexFilterTypes.explicitMods"
+        :label="labels.explicitMods"/>
+      <text-filter
+        class="filter-form__block--stretch"
+        :filterType="indexFilterTypes.implicitMods"
+        :label="labels.implicitMods"/>
+      <text-filter
+        class="filter-form__block--stretch"
+        :filterType="indexFilterTypes.enchantedMods"
+        :label="labels.enchantedMods"/>
+      <text-filter
+        class="filter-form__block--stretch"
+        :filterType="indexFilterTypes.craftedMods"
+        :label="labels.craftedMods"/>
+    </filter-section>
+
     <filter-section :sectionTitle="labels.sections.influence"
       class="filter-form__block--stretch">
       <text-filter
