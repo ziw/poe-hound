@@ -63,9 +63,16 @@ export type Item =
   SocketProperties &
   {
     socketedItems: Item[],
+    parsedMods: {
+      explicitMods: ItemMod[],
+      implicitMods: ItemMod[],
+      craftedMods: ItemMod[],
+      enchantedMods: ItemMod[],
+      fracturedMods: ItemMod[],
+    }
   };
 
-export interface ItemLineContent {
+export type ItemLineContent {
   name: ItemPropertyNameKey,
   values: ItemPropertyTuple[],
   displayMode: number,
@@ -126,3 +133,19 @@ type Socket = {
   group: number,
   sColour: 'R' | 'G' | 'B' | 'W' /* White */ | 'A'  /* Abyss */
 };
+
+export enum ItemModType {
+  Explicit = 'explicit',
+  Implicit = 'implicit',
+  Crafted = 'crafted',
+  Enchanted = 'enchanted',
+  Fractured = 'fractured',
+}
+
+export type ItemMod {
+  type: ItemModType,
+  id: string,
+  fullText: string,
+  values: number[],
+  averageValue: number,
+}

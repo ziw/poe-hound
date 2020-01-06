@@ -1,42 +1,38 @@
-import { Item, RawItem, ItemPropertyNameKey, NormalizedProperties, ItemType, SocketProperties, ItemLineContent } from '@/models/item';
+import { Item, RawItem, ItemPropertyNameKey, NormalizedProperties, ItemType, SocketProperties, ItemLineContent, ItemMod, ItemModType } from '@/models/item';
 
 /**
- * return a multi-lined string containing an item's
- * basic information to display in an element 'title' tooltip
- * @param item the item to display
+ * Initialize potential missing properties with default values before decorating the item
+ * @param raw raw item to init
  */
-export const convertItemToTitle = (item: Item) => {
-  return [
-    item.name,
-    item.typeLine,
-    item.quality ? `Quality: +${item.quality}%` : '',
-    ...(item.enchantMods || []),
-    ...(item.implicitMods || []),
-    ...(item.explicitMods || []),
-    ...(item.craftedMods || []),
-    ...(item.identified ? [] : ['Unidentified']),
-    ...(item.corrupted ? ['Corrupted'] : ''),
-    item.id,
-  ].join('\n');
-};
+const initDefaultValue = (raw: RawItem): RawItem => ({
+  ...raw,
+  implicitMods: raw.implicitMods || [],
+  explicitMods: raw.explicitMods || [],
+  enchantMods: raw.enchantMods || [],
+  craftedMods: raw.craftedMods || [],
+  fracturedMods: raw.fracturedMods || [],
+  influences: raw.influences || {},
+});
 
 /**
  * Given an raw item from response json, decorate the item with more computed properties
  * @param raw Raw item to decorate
  */
 export const decorateItem = (raw: RawItem): Item => {
+  raw = initDefaultValue(raw);
   return {
     ...raw,
-    implicitMods: raw.implicitMods || [],
-    explicitMods: raw.explicitMods || [],
-    enchantMods: raw.enchantMods || [],
-    craftedMods: raw.craftedMods || [],
-    fracturedMods: raw.fracturedMods || [],
     socketedItems: (raw.socketedItems || []).map(decorateItem),
     gemName: raw.frameType === ItemType.GEM ? raw.typeLine : '',
-    influences: raw.influences || {},
     ...normalizeItemProperties(raw),
     ...computedSocketsProperties(raw),
+    parsedMods: {
+      explicitMods: parseItemMods(raw.explicitMods, ItemModType.Explicit),
+      implicitMods: parseItemMods(raw.implicitMods, ItemModType.Implicit),
+      craftedMods: parseItemMods(raw.craftedMods, ItemModType.Crafted),
+      enchantedMods: parseItemMods(raw.enchantMods, ItemModType.Enchanted, true),
+      fracturedMods: parseItemMods(raw.fracturedMods, ItemModType.Fractured),
+    }
   };
 };
 
@@ -108,4 +104,34 @@ const normalizeItemProperties = (raw: RawItem): NormalizedProperties => {
     }
   });
   return properties;
+}
+
+/**
+ *
+ * @param rawMods array containing the raw mod strings
+ * @param modType type of mod from enum ItemModType
+ * @param skipParseValue whether parser should skip parsing the numeric value of the mod. If true, the entire mod string will be returned as is.
+ */
+const parseItemMods = (rawMods: string[], type: ItemModType, skipParseValue = false): ItemMod[] => {
+  const regex = /(\d+(\.\d+)?)/g;
+  return rawMods.map(rawModString => {
+    const id = rawModString.replace(regex, '#');
+    const values: number[] = [];
+    const averageValue = 0;
+
+    if(!skipParseValue) {
+      let m;
+      while((m = regex.exec(rawModString))!= null ){
+        values.push(parseFloat(m[0]));
+      }
+    }
+
+    return {
+      type,
+      id,
+      values,
+      fullText: rawModString,
+      averageValue,
+    }
+  });
 }

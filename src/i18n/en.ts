@@ -36,9 +36,14 @@ const en = {
     numLinks: 'Links',
     abyssalSocket: 'Abyssal Socket',
     whiteSocket: 'White Socket',
+    explicitMods: 'Explicit',
+    craftedMods: 'Crafted',
+    implicitMods: 'Implicit',
+    enchantedMods: 'Enchanted',
 
     sections: {
       itemNameType: 'Name and Type',
+      mods: 'Item Mods',
       sockets: 'Links and Sockets',
       influence: 'Influence',
       properties: 'Properties',
