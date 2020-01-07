@@ -45,6 +45,12 @@
         {{ corruptedLabel }}
       </div>
     </div>
+    <div>
+      <div v-for="gem in gems" :key="gem.gemName"
+        class="item-tooltip__font--gem">
+        {{`${gem.gemName}  [${gem.level}/${gem.quality ? gem.quality : 0}%]`}}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -122,6 +128,10 @@ export default class ItemTooltip extends AppProps {
 
   get implicitMods() {
     return this.item.implicitMods;
+  }
+
+  get gems() {
+    return this.item.socketedItems.filter(socketed => socketed.frameType === ItemType.GEM);
   }
 
   get enchantMods() {
