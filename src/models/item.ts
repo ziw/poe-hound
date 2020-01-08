@@ -43,6 +43,9 @@ export type NormalizedProperties = {
   requiredStr?: number,
   requiredDex?: number,
   requiredInt?: number,
+  armour?: number,
+  evasion?: number,
+  energyShield?: number,
 }
 
 export type SocketProperties = {
@@ -73,7 +76,7 @@ export type Item =
   };
 
 export type ItemLineContent = {
-  name: ItemPropertyNameKey,
+  name: string,
   values: ItemPropertyTuple[],
   displayMode: number,
   type: number,
@@ -83,14 +86,6 @@ type ItemPropertyTuple = [
   string,
   number,
 ];
-
-export enum ItemPropertyNameKey {
-  Level = 'Level',
-  Quality = 'Quality',
-  Dex = 'Dex',
-  Int = 'Int',
-  Str = 'Str',
-}
 
 export enum InventoryId {
   Belt= 'Belt',

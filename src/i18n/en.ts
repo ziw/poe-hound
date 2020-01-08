@@ -40,6 +40,9 @@ const en = {
     craftedMods: 'Crafted',
     implicitMods: 'Implicit',
     enchantedMods: 'Enchanted',
+    armor: 'Armor',
+    evasion: 'Evasion',
+    energyShield: 'Energy Shield',
 
     sections: {
       itemNameType: 'Name and Type',

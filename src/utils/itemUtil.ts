@@ -1,4 +1,4 @@
-import { Item, RawItem, ItemPropertyNameKey, NormalizedProperties, ItemType, SocketProperties, ItemLineContent, ItemMod, ItemModType } from '@/models/item';
+import { Item, RawItem, NormalizedProperties, ItemType, SocketProperties, ItemLineContent, ItemMod, ItemModType } from '@/models/item';
 
 /**
  * Initialize potential missing properties with default values before decorating the item
@@ -76,21 +76,25 @@ const normalizeItemProperties = (raw: RawItem): NormalizedProperties => {
   }
 
   const parsePropValue = (prop: ItemLineContent, defaultValue?: number) => parseInt(prop.values[0][0]) || defaultValue;
-  const propertyMapper: { [k in keyof typeof ItemPropertyNameKey]?: keyof NormalizedProperties } = {
-    [ItemPropertyNameKey.Level]: 'level',
-    [ItemPropertyNameKey.Quality]: 'quality',
+  const propertyMapper: { [k: string]: keyof NormalizedProperties } = {
+    Level: 'level',
+    Quality: 'quality',
+    Armour: 'armour',
+    EnergyShield: 'energyShield',
+    EvasionRating: 'evasion',
   };
 
-  const requirementMapper: { [k in keyof typeof ItemPropertyNameKey]?: keyof NormalizedProperties } = {
-    [ItemPropertyNameKey.Str]: 'requiredStr',
-    [ItemPropertyNameKey.Dex]: 'requiredDex',
-    [ItemPropertyNameKey.Int]: 'requiredInt',
-    [ItemPropertyNameKey.Level]: 'requiredLevel',
+  const requirementMapper: { [k: string]: keyof NormalizedProperties } = {
+    Str: 'requiredStr',
+    Dex: 'requiredDex',
+    Int: 'requiredInt',
+    Level: 'requiredLevel',
   };
 
   //parse properites. e.g. quality, gem level, evasion, armor or ES
   (raw.properties || []).forEach(prop => {
-    const propKey = propertyMapper[prop.name];
+    const name = prop.name.replace(/\s+/, '');
+    const propKey = propertyMapper[name];
     if(propKey){
       properties[propKey] = parsePropValue(prop);
     }
