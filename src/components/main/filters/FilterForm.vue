@@ -97,6 +97,21 @@
         :minFilterType="functionalFilterTypes.minLevel"
         :maxFilterType="functionalFilterTypes.maxLevel"
         :label="labels.level"/>
+      <range-filter
+        class="filter-form__block--3"
+        :minFilterType="functionalFilterTypes.minArmor"
+        :maxFilterType="functionalFilterTypes.maxArmor"
+        :label="labels.armor"/>
+      <range-filter
+        class="filter-form__block--3"
+        :minFilterType="functionalFilterTypes.minEvasion"
+        :maxFilterType="functionalFilterTypes.maxEvasion"
+        :label="labels.evasion"/>
+      <range-filter
+        class="filter-form__block--3"
+        :minFilterType="functionalFilterTypes.minEnergyShield"
+        :maxFilterType="functionalFilterTypes.maxEnergyShield"
+        :label="labels.energyShield"/>
     </filter-section>
 
     <filter-section :sectionTitle="labels.sections.sockets"

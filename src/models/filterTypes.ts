@@ -32,6 +32,12 @@ export enum FunctionalFilterType {
   maxLinks = 'maxLinks',
   hasWhiteSocket = 'hasWhiteSocket',
   hasAbyssalSocket = 'hasAbyssalSocket',
+  minArmor = 'minArmor',
+  maxArmor = 'maxArmor',
+  minEvasion = 'minEvasion',
+  maxEvasion = 'maxEvasion',
+  minEnergyShield = 'minEnergyShield',
+  maxEnergyShield = 'maxEnergyShield',
 }
 
 export type Filter<T> = {
@@ -189,5 +195,29 @@ export const functionalFilters: Array<{
   {
     type: FunctionalFilterType.hasWhiteSocket,
     filter: createFunctionFilter.ofBooleanValue(item => item.hasWhiteSocket),
+  },
+  {
+    type: FunctionalFilterType.minArmor,
+    filter: createFunctionFilter.ofMinValue(item => item.armour),
+  },
+  {
+    type: FunctionalFilterType.maxArmor,
+    filter: createFunctionFilter.ofMaxValue(item => item.armour),
+  },
+  {
+    type: FunctionalFilterType.minEvasion,
+    filter: createFunctionFilter.ofMinValue(item => item.evasion),
+  },
+  {
+    type: FunctionalFilterType.maxEvasion,
+    filter: createFunctionFilter.ofMaxValue(item => item.evasion),
+  },
+  {
+    type: FunctionalFilterType.minEnergyShield,
+    filter: createFunctionFilter.ofMinValue(item => item.energyShield),
+  },
+  {
+    type: FunctionalFilterType.maxEnergyShield,
+    filter: createFunctionFilter.ofMaxValue(item => item.energyShield),
   },
 ];
