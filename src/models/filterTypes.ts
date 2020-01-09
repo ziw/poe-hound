@@ -70,7 +70,7 @@ export const indexerFilters: Array<{
   },
   {
     type: IndexerFilterType.typeLine,
-    getIndexKeys: item => [item.typeLine],
+    getIndexKeys: item => [item.parsedTypeLine],
     shouldIndex: item => Type.of(item).isNot(
         ItemType.GEM,
         ItemType.CURRENCY,
