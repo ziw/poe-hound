@@ -1,4 +1,14 @@
-import { Item, RawItem, NormalizedProperties, ItemType, SocketProperties, ItemLineContent, ItemMod, ItemModType } from '@/models/item';
+import {
+  Item,
+  ItemLineContent,
+  ItemMod,
+  ItemModType,
+  ItemType,
+  NormalizedProperties,
+  RawItem,
+  SocketProperties,
+} from '@/models/item';
+import { RECOVERY_FLASKS } from '@/constants';
 
 /**
  * Initialize potential missing properties with default values before decorating the item
@@ -24,6 +34,7 @@ export const decorateItem = (raw: RawItem): Item => {
     ...raw,
     socketedItems: (raw.socketedItems || []).map(decorateItem),
     gemName: raw.frameType === ItemType.GEM ? raw.typeLine : '',
+    parsedTypeLine: parseTypeLine(raw),
     ...normalizeItemProperties(raw),
     ...computedSocketsProperties(raw),
     parsedMods: {
@@ -35,6 +46,32 @@ export const decorateItem = (raw: RawItem): Item => {
     }
   };
 };
+
+/**
+ * Given a raw item, return a parsed typeLine name
+ * 1) Return a parsed flask name without prefix/suffix if item is flask
+ * 2) //TODO parse non-flask typeLine of magic rarity
+ * @param raw raw item to parse
+ */
+const parseTypeLine = (raw: RawItem) => {
+  const { descrText, typeLine } = raw;
+  if(descrText && descrText.includes('Right click to drink')) {
+    //item is a flask
+    const matchedRecoveryFlask = RECOVERY_FLASKS.find(flaskBaseName => typeLine.includes(flaskBaseName));
+    const words = typeLine.split(' ');
+    const index = words.indexOf('Flask');
+    const flaskNames = matchedRecoveryFlask ?
+                        //recovery flask has an extra base name modifier. e.g. small, large, divine, eternal etc.
+                        [ words[index -2], words[index -1], 'Flask' ]
+
+                        //utility flask
+                        : [ words[index -1], 'Flask' ];
+    return flaskNames.join(' ');
+  }
+
+  //non-flask item
+  return typeLine;
+}
 
 /**
  * Iterate the sockets field of an item and parse the links/sockets related values
