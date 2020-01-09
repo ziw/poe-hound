@@ -45,8 +45,9 @@ const layoutMapping: { [key in InventoryId]?: { x: number, y: number }} = {
   Offhand2: { x: 500, y: 17 },
   Belt: { x: 259, y: 231 },
   Amulet: { x: 351, y: 97 },
-  Flask: { x: 195, y: 281 },
+  Flask: { x: 15, y: 281 },
   MainInventory: { x: 55, y: 377 },
+  PassiveJewels: { x: 259, y: 281 },
 };
 
 const getPosition = (item: Item, dimension: number) => {
@@ -74,6 +75,7 @@ export default class CharacterInventory extends AppProps {
     }
 
     const items = this.renderingTab.renderedItems;
+    let jewelCount = 0 ;
 
     return items.map(item => {
       let { x, y } = getPosition(item, this.dimension);
@@ -81,6 +83,8 @@ export default class CharacterInventory extends AppProps {
           || item.inventoryId === InventoryId.MainInventory) {
             x += (this.unitDimension) * item.x;
         y += (this.unitDimension) * item.y;
+      }else if(item.inventoryId === InventoryId.PassiveJewels) {
+        x += (this.unitDimension) * (jewelCount++);
       }
 
       return {
