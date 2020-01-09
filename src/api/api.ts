@@ -63,6 +63,11 @@ export function loadInventory(sessionId: string, character: string, accountName:
           .then((resp) => (JSON.parse(resp.body) as { items: RawItem[] }).items.map(decorateItem));
 }
 
+export function loadPassiveSkills(sessionId: string, character: string, accountName: string){
+  return fetch(buildUrl(PATHS.passiveTreeUrl, { character, accountName }), sessionId)
+          .then(resp => (JSON.parse(resp.body) as { items: RawItem[] }).items.map(decorateItem));
+}
+
 export function loadStash(sessionId: string, tabIndex: string, accountName: string, league: string,) {
   const query = {
     league,
