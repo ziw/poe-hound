@@ -1,14 +1,14 @@
 <template>
   <div class="item-tooltip">
-    <div :class="this.headerClass">
+    <section :class="this.headerClass">
       <div :class="this.itemNameClass" v-if="this.doubleHeader">
         {{this.item.name}}
       </div>
       <div :class="this.itemTypeClass">
         {{this.item.typeLine}}
       </div>
-    </div>
-    <div class="item-tooltip__content">
+    </section>
+    <section class="item-tooltip__content">
       <div v-if="this.item.level">
         <span>{{levelLabel}}:</span>
         <span class="item-tooltip__mods--explicit">{{this.item.level}}</span>
@@ -44,13 +44,12 @@
         class="item-tooltip__font--corrupted">
         {{ corruptedLabel }}
       </div>
-    </div>
-    <div>
-      <div v-for="gem in gems" :key="gem.gemName"
-        class="item-tooltip__font--gem">
-        {{`${gem.gemName}  [${gem.level}/${gem.quality ? gem.quality : 0}%]`}}
-      </div>
-    </div>
+    </section>
+    <section v-for="gem in gems" :key="gem.gemName"
+      class="item-tooltip__font--gem">
+      {{`${gem.gemName}  [${gem.level}/${gem.quality ? gem.quality : 0}%]`}}
+    </section>
+    <section v-if="influences" class="item-tooltip__font--influence">{{ influences }}</section>
   </div>
 </template>
 
@@ -142,6 +141,10 @@ export default class ItemTooltip extends AppProps {
     return this.item.fracturedMods;
   }
 
+  get influences() {
+    return Object.keys(this.item.influences).join(' | ');
+  }
+
   private get hasExplicitBlock() {
     return this.explicitMods.length
               || this.item.corrupted
@@ -209,6 +212,10 @@ export default class ItemTooltip extends AppProps {
 
       &--corrupted {
         color: $corrupted_color;
+      }
+
+      &--influence {
+        color: $property_value_color;
       }
     }
 
