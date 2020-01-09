@@ -5,6 +5,7 @@ import { loadCharacters,
         loadInventory,
         loadLeagueStashInformation,
         loadStash,
+        loadPassiveSkills,
 } from "@/api/api";
 import message from '@/i18n';
 import { authentication } from './authentication';
@@ -108,7 +109,12 @@ const dispatchLoadItems = builder.dispatch(async (context, tab: Tab) => {
 
   try{
     const items = tab.type === CharacterType.Character ?
-      await pushApiJob(() => loadInventory(sessionId(), id, accountName()), `loading character ${id}`)
+      await Promise.all(
+            [
+              pushApiJob(() => loadInventory(sessionId(), id, accountName()), `loading character ${id}`),
+              pushApiJob(() => loadPassiveSkills(sessionId(), id, accountName()), `loading character passives ${id}`)
+            ]
+          ).then(([inventoryItems, passiveTreeItems]) => inventoryItems.concat(passiveTreeItems))
         : await pushApiJob(() => loadStash(sessionId(), id, accountName(), tab.league), `loading stash page ${name}`);
     const allItems = items.concat(items.flatMap(item => item.socketedItems || []));
     session.mutations.setTabStatus({

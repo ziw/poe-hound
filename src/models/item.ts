@@ -102,6 +102,7 @@ export enum InventoryId {
   Offhand2= 'Offhand2',
   BodyArmour= 'BodyArmour',
   MainInventory= 'MainInventory',
+  PassiveJewels = 'PassiveJewels',
 };
 
 export enum ItemType {
