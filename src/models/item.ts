@@ -114,6 +114,7 @@ export enum ItemType {
   GEM = 4,
   CURRENCY = 5,
   DIVINATION_CARD = 6,
+  PROPHECY = 8,
   RELIC = 9,
 }
 
