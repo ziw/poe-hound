@@ -44,13 +44,15 @@ export type Filter<T> = {
   type: T,
   value: any,
   enabled: boolean,
+  serial: number,
 }
 
-export const createFilter = <T extends (FunctionalFilterType | IndexerFilterType)>(type: T): Filter<T> => {
+export const createFilter = <T extends (FunctionalFilterType | IndexerFilterType)>(type: T, serial = 0): Filter<T> => {
   return {
     type,
     value: undefined,
     enabled: false,
+    serial,
   };
 }
 

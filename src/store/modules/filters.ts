@@ -13,7 +13,7 @@ import itemStore from '@/indexer/itemStore';
 import { intersection } from '@/utils';
 
 export interface FilterState {
-  indexerFilter: Filter<IndexerFilterType>[];
+  indexerFilters: Filter<IndexerFilterType>[];
 
   functionalFilters: Filter<FunctionalFilterType>[];
 
@@ -33,7 +33,7 @@ export interface FilterState {
 
 export const initFilters: FilterState = {
 
-  indexerFilter: indexerFilters.map(filter =>  createFilter(filter.type)),
+  indexerFilters: indexerFilters.map(filter =>  createFilter(filter.type)),
 
   functionalFilters: functionalFilters.map(filter => createFilter(filter.type)),
 
@@ -48,7 +48,7 @@ const stateGetter = builder.state();
  * Getters *
  ************/
 const getIndexerFilter = builder.read(state =>
-  (type: string) => state.indexerFilter.find(filter => filter.type === type),
+  (type: string, serial: number = 0) => state.indexerFilters.find(filter => filter.type === type && filter.serial === serial),
 'getIndexerFilter');
 
 const getFunctionalFilter = builder.read(state =>
@@ -56,7 +56,7 @@ const getFunctionalFilter = builder.read(state =>
 'getFunctionalFilter');
 
 const getFilter = builder.read(() =>
-  (type: string) => getIndexerFilter()(type) || getFunctionalFilter()(type),
+  (type: string, serial?: number) => getIndexerFilter()(type, serial) || getFunctionalFilter()(type),
 'getFilter');
 
 /************
@@ -66,6 +66,7 @@ const getFilter = builder.read(() =>
  * Clear filter active status and reset all values
  */
 const clearFilters = builder.dispatch(() => {
+  filters.mutations.setIndexFilters(stateGetter().indexerFilters.filter(f => f.serial === 0));
   filters.mutations.resetFilterValues();
   filters.mutations.setFilterActiveStatus(false);
   filters.mutations.setFilterResults(new Set());
@@ -78,7 +79,7 @@ const clearFilters = builder.dispatch(() => {
 const filterItems = builder.dispatch(async () => {
   filters.mutations.setFilterActiveStatus(true);
   let resultsSet: Set<string> = new Set();
-  const validIndexerFilters = filters.state.indexerFilter.filter(indexerFilter =>
+  const validIndexerFilters = filters.state.indexerFilters.filter(indexerFilter =>
     indexerFilter.value && indexerFilter.enabled);
 
   // first filter by indexer filters
@@ -101,6 +102,24 @@ const filterItems = builder.dispatch(async () => {
 }, 'filterItems');
 
 /**
+ * Add a new filter with a given type
+ */
+const addIndexerFilter = builder.dispatch((context, type: IndexerFilterType) => {
+  const currentFilters = stateGetter().indexerFilters;
+  const nextSerial = Math.max(...currentFilters.filter(f => f.type === type).map(f => f.serial));
+  filters.mutations.setIndexFilters([...currentFilters, createFilter(type, nextSerial + 1)]);
+}, 'addIndexerFilter');
+
+/**
+ * Remove an existing filter with a given type and serial number
+ */
+const removeIndexerFilter = builder.dispatch((context, payload: { type: IndexerFilterType, serial: number }) => {
+  filters.mutations.setIndexFilters(
+    stateGetter().indexerFilters.filter(f => f.type !== payload.type || f.serial !== payload.serial)
+  );
+}, 'removeIndexerFilter');
+
+/**
  * Exported filter module
  */
 export const filters = {
@@ -108,15 +127,15 @@ export const filters = {
   get state() { return stateGetter() },
 
   mutations: {
-    setFilterValue: builder.commit((state: FilterState, payload: { type: string, value: any } ) => {
-      const filter = getFilter()(payload.type);
+    setFilterValue: builder.commit((state: FilterState, payload: { type: string, value: any, serial?: number } ) => {
+      const filter = getFilter()(payload.type, payload.serial);
       if(filter) {
         filter.value = payload.value;
       }
     }, 'setFilterValue'),
 
-    setFilterEnabledDisabled: builder.commit((state, payload: { type: string, value: boolean }) => {
-      const filter = getFilter()(payload.type);
+    setFilterEnabledDisabled: builder.commit((state, payload: { type: string, value: boolean, serial?: number }) => {
+      const filter = getFilter()(payload.type, payload.serial);
       if(filter) {
         filter.enabled = payload.value;
       }
@@ -127,18 +146,23 @@ export const filters = {
     }, 'setFilterActiveStatus'),
 
     resetFilterValues: builder.commit((state) => {
-      [...state.indexerFilter, ...state.functionalFilters].forEach(filter => filter.value = undefined);
+      [...state.indexerFilters, ...state.functionalFilters].forEach(filter => filter.value = undefined);
     }, 'resetFilterValues'),
 
     setFilterResults: builder.commit((state, filteredIds: Set<string>) => {
       state.filterResults = filteredIds;
     }, 'setFilterState'),
 
+    setIndexFilters: builder.commit((state, newIndexFilters: Filter<IndexerFilterType>[]) => {
+      state.indexerFilters = newIndexFilters;
+    }, 'setIndexFilters'),
   },
 
   actions: {
     clearFilters,
     filterItems,
+    addIndexerFilter,
+    removeIndexerFilter,
   },
 
   getters: {

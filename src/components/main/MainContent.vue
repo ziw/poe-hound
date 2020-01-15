@@ -37,10 +37,11 @@ export default class MainContent extends Vue {
     display: flex;
     flex-grow: 1;
     padding: 15px;
-    overflow-y: auto;
 
     &__filter-section {
       padding: 15px;
+      max-height: 660px;
+      overflow-y: auto;
     }
 
     &__stash-section {

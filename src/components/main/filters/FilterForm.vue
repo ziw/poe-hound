@@ -21,9 +21,10 @@
 
     <filter-section :sectionTitle="labels.sections.mods"
       class="filter-form__block--stretch">
-      <text-filter
+      <indexer-filter-group
         class="filter-form__block--stretch"
         :filterType="indexFilterTypes.explicitMods"
+        :maxFilterCount="maxExplicitModsFilter"
         :label="labels.explicitMods"/>
       <text-filter
         class="filter-form__block--stretch"
@@ -160,6 +161,7 @@ import TextFilter from '@/components/main/filters/TextFilter.vue';
 import PrimaryButton from '@/components/shared/PrimaryButton.vue';
 import RangeFilter from '@/components/main/filters/RangeFilter.vue';
 import FilterSection from '@/components/main/filters/FilterSection.vue';
+import IndexerFilterGroup from '@/components/main/filters/IndexerFilterGroup.vue';
 import { FilterBooleanOptions } from '@/constants';
 
 @Component({
@@ -168,6 +170,7 @@ import { FilterBooleanOptions } from '@/constants';
     RangeFilter,
     PrimaryButton,
     FilterSection,
+    IndexerFilterGroup,
   }
 })
 export default class FilterForm extends Vue {
@@ -180,6 +183,7 @@ export default class FilterForm extends Vue {
     FilterBooleanOptions.YES,
     FilterBooleanOptions.NO,
   ];
+  maxExplicitModsFilter = 5;
 
   filterItems() {
     filters.actions.filterItems();
