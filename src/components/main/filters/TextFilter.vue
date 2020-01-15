@@ -31,6 +31,7 @@ const AppProps = Vue.extend({
   props: {
     label: String,
     filterType: String,
+    filterSerial: Number,
     filterOptions: Array as Prop<string[]>,
   }
 });
@@ -55,11 +56,12 @@ export default class TextFilter extends AppProps {
     filters.mutations.setFilterEnabledDisabled({
       type: this.filterType,
       value: true,
+      serial: this.filterSerial,
     });
   }
 
   get filter() {
-    return filters.getters.getFilter()(this.filterType);
+    return filters.getters.getFilter()(this.filterType, this.filterSerial);
   }
 
   onSearch() {
@@ -74,6 +76,7 @@ export default class TextFilter extends AppProps {
     filters.mutations.setFilterValue({
       type: this.filterType,
       value,
+      serial: this.filterSerial,
     });
   }
 }
