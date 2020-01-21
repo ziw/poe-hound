@@ -20,12 +20,14 @@ import { session } from '@/store/modules/session';
 import { Status } from '@/constants';
 import { StashType } from '@/models/stashPage';
 import { CharacterType } from '@/models/character';
+import CurrencyStash from '@/components/main/stash/details/CurrencyStash.vue';
 import NormalStash from '@/components/main/stash/details/NormalStash.vue';
 import QuadStash from '@/components/main/stash/details/QuadStash.vue';
 import CharacterInventory from '@/components/main/stash/details/CharacterInventory.vue';
 
 @Component({
   components: {
+    CurrencyStash,
     NormalStash,
     QuadStash,
     CharacterInventory,
@@ -38,6 +40,7 @@ export default class TabDetail extends Vue {
     [StashType.QuadStash]: 'QuadStash',
     [CharacterType.Character]: 'CharacterInventory',
     [StashType.PremiumStash]: 'NormalStash',
+    [StashType.CurrencyStash]: 'CurrencyStash',
   };
 
   dimension: number = 660;
