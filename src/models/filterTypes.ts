@@ -67,8 +67,13 @@ export const indexerFilters: Array<{
 }> = [
   {
     type: IndexerFilterType.name,
-    getIndexKeys: item => [item.name, item.gemName],
-    shouldIndex: item => Type.of(item).in(ItemType.UNIQUE, ItemType.GEM, ItemType.RELIC)
+    getIndexKeys: item => [ item.name, item.gemName, item.currencyName ],
+    shouldIndex: item => Type.of(item).in(
+      ItemType.UNIQUE,
+      ItemType.GEM,
+      ItemType.RELIC,
+      ItemType.CURRENCY,
+    ),
   },
   {
     type: IndexerFilterType.typeLine,

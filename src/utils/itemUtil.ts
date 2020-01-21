@@ -34,6 +34,7 @@ export const decorateItem = (raw: RawItem): Item => {
     ...raw,
     socketedItems: (raw.socketedItems || []).map(decorateItem),
     gemName: raw.frameType === ItemType.GEM ? raw.typeLine : '',
+    currencyName: raw.frameType === ItemType.CURRENCY ? raw.typeLine : '',
     parsedTypeLine: parseTypeLine(raw),
     ...normalizeItemProperties(raw),
     ...computedSocketsProperties(raw),

@@ -57,6 +57,7 @@ export type SocketProperties = {
 
 export type DecoratedNames = {
   gemName: string;
+  currencyName: string;
   parsedTypeLine: string;
 }
 
