@@ -3,7 +3,9 @@
     <login-logo />
     <img src="@/assets/gradient-border.png"
          class="login-page__divider" alt="">
-    <login-form v-on:login="tryLogin" />
+    <login-form
+      v-on:offlineLogin="offlineLogin"
+      v-on:login="tryLogin" />
   </div>
 
 </template>
@@ -25,6 +27,11 @@ import { session } from '@/store/modules/session';
 })
 export default class LoginPage extends Vue {
 
+  constructor() {
+    super();
+    authentication.createRootCacheDir();
+  }
+
   async tryLogin(sessionId: string){
     try{
       await authentication.login({ sessionId });
@@ -38,6 +45,15 @@ export default class LoginPage extends Vue {
     }catch{
 
     }
+  }
+
+  async offlineLogin(accountName: string) {
+    await authentication.offlineLogin({ accountName });
+    await session.actions.dispatchLoadCharacters();
+    await session.actions.dispatchLoadAllLeagueStashInfo();
+    this.$router.push('/main');
+
+    const currentLeagueName = session.state.currentLeagueName;
   }
 }
 </script>

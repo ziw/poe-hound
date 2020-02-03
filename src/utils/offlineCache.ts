@@ -16,10 +16,8 @@ const toFileName = (requestUrl: string, form ?: {[k:string]: any}): string | und
 }
 
 export default class OfflineCache {
-  constructor(
-    public cacheDir: string
-  ){
-  }
+
+  private cacheDir: string = '';
 
   setCacheDir(dir: string) {
     this.cacheDir = dir;
@@ -38,6 +36,7 @@ export default class OfflineCache {
     if(fileName && await this.isCacheDirValid()){
       return fs.readFile(path.join(this.cacheDir, fileName), 'utf8');
     }
+    return '';
   }
 
   private isCacheDirValid() {
