@@ -5,10 +5,16 @@ import StashPage from '@/models/stashPage';
 import { RawItem } from '@/models/item';
 import OfflineCache from '@/utils/offlineCache';
 import { decorateItem } from '@/utils/itemUtil';
+import { authentication } from '@/store/modules/authentication';
 
-const offlineCacher = new OfflineCache(process.env.VUE_APP_CACHE_DIR as string);
+const offlineCacher = new OfflineCache();
 
-const fetch = (url: string, sessionId: string, method = 'GET', form ?:object)=> {
+const fetch = (url: string, sessionId: string, method = 'GET', form ?:object): Promise<string> => {
+  offlineCacher.setCacheDir(authentication.state.accountCacheDir);
+  const offlineMode = authentication.state.offlineMode;
+  if(offlineMode) {
+    return offlineCacher.read(url, form);
+  }
   return request({
     url,
     form,
@@ -23,13 +29,9 @@ const fetch = (url: string, sessionId: string, method = 'GET', form ?:object)=> 
     if(resp.statusCode === 200){
       offlineCacher.cache(url, resp.body, form);
     }
-    console.log({
-      resp,
-      url,
-    });
-    return resp;
+    return resp.body;
   }).catch(error => {
-    if(error && error.statusCode !== 429 && process.env.VUE_APP_CACHE_DIR){
+    if(error && error.statusCode !== 429){
       return offlineCacher.read(url, form).then(content => ({
         body: content!
       }));
@@ -50,22 +52,22 @@ const buildUrl = (path: string, queryObject?: any) => {
 
 export function authenticate(sessionId: string): Promise<string> {
   return fetch(buildUrl(PATHS.accountNameUrl), sessionId)
-          .then((resp) => JSON.parse(resp.body).accountName);
+          .then((resp) => JSON.parse(resp).accountName);
 }
 
 export function loadCharacters(sessionId: string) {
   return fetch(buildUrl(PATHS.charactersUrl), sessionId)
-          .then((resp) => JSON.parse(resp.body) as Character[]);
+          .then((resp) => JSON.parse(resp) as Character[]);
 }
 
 export function loadInventory(sessionId: string, character: string, accountName: string){
   return fetch(buildUrl(PATHS.inventoryUrl), sessionId, 'POST', { character, accountName })
-          .then((resp) => (JSON.parse(resp.body) as { items: RawItem[] }).items.map(decorateItem));
+          .then((resp) => (JSON.parse(resp) as { items: RawItem[] }).items.map(decorateItem));
 }
 
 export function loadPassiveSkills(sessionId: string, character: string, accountName: string){
   return fetch(buildUrl(PATHS.passiveTreeUrl, { character, accountName }), sessionId)
-          .then(resp => (JSON.parse(resp.body) as { items: RawItem[] }).items.map(decorateItem));
+          .then(resp => (JSON.parse(resp) as { items: RawItem[] }).items.map(decorateItem));
 }
 
 export function loadStash(sessionId: string, tabIndex: string, accountName: string, league: string,) {
@@ -78,7 +80,7 @@ export function loadStash(sessionId: string, tabIndex: string, accountName: stri
     public: false,
   }
   return fetch(buildUrl(PATHS.stashUrl, query), sessionId)
-          .then((resp) => (JSON.parse(resp.body) as { items: RawItem[] }).items.map(decorateItem));
+          .then((resp) => (JSON.parse(resp) as { items: RawItem[] }).items.map(decorateItem));
 }
 
 export function loadLeagueStashInformation(sessionId: string, league: string, accountName: string){
@@ -88,5 +90,5 @@ export function loadLeagueStashInformation(sessionId: string, league: string, ac
     accountName,
   };
   return fetch(buildUrl(PATHS.stashMetadataUrl, query), sessionId)
-          .then((resp) => JSON.parse(resp.body).tabs as StashPage[]);
+          .then((resp) => JSON.parse(resp).tabs as StashPage[]);
 }

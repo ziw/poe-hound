@@ -18,7 +18,7 @@ const router = new Router({
       name: 'main',
       component: Main,
       beforeEnter: (to, from, next) => {
-        if(authentication.state.sessionId){
+        if(authentication.state.offlineMode || authentication.state.sessionId){
           next();
         }else{
           next('/');

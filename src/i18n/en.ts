@@ -2,6 +2,11 @@ const en = {
   login: {
     login_button_label: 'LOGIN',
     login_error_message: 'Your session ID seems to be incorrect. Let’s try that again.',
+    offline_label: 'Use offline mode',
+    offline_tooltip: `Use offline mode to quickly load your character and stash items from last login.
+                      You need to use online mode (session ID) to load an account at least once to use that account in offline mode.`,
+    session_id: 'Session ID:',
+    account_name: 'Account Name:',
   },
   jobs: {
     //job message
