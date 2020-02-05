@@ -70,8 +70,7 @@ export default class TabDetail extends Vue {
 
 <style lang="scss">
   .tab-detail {
-    margin-top: 15px;
+    margin-top: 5px;
     position: relative;
-
   }
 </style>

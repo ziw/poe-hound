@@ -31,6 +31,7 @@ const en = {
     warlord: 'Warlord',
     crusader: 'Crusader',
     search: 'Search',
+    reset: 'Reset',
     clear: 'Clear',
     quality: 'Quality',
     level: 'Gem Level',
