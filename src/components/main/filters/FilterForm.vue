@@ -1,12 +1,7 @@
 <template>
-  <form v-on:submit.prevent="filterItems" class="filter-form">
-    <div class="filter-form__block--stretch">
-      <button type="button"
-        @click="clearFilters">
-        {{ labels.clear }}
-      </button>
-    </div>
-
+  <form class="filter-form"
+    v-on:submit.prevent="filterItems"
+    v-on:reset.prevent="clearFilters">
     <filter-section :sectionTitle="labels.sections.itemNameType"
       class="filter-form__block--stretch">
       <text-filter
@@ -142,7 +137,12 @@
         :label="labels.whiteSocket"/>
     </filter-section>
 
-    <div class="filter-form__submit-btn filter-form__block--stretch">
+    <div class="filter-form__submit-btn filter-form__block">
+      <primary-button type="reset" stretch style-type="square">
+        {{ labels.reset }}
+      </primary-button>
+    </div>
+    <div class="filter-form__submit-btn filter-form__block">
       <primary-button type="submit" stretch style-type="square">
         {{ labels.search }}
       </primary-button>
@@ -202,6 +202,7 @@ export default class FilterForm extends Vue {
 
     &__submit-btn {
       margin-top: 15px;
+      padding: 0 20px;
     }
 
     &__block {

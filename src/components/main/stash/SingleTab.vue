@@ -49,14 +49,15 @@ export default class SingleTab extends AppProps {
     padding: 2px 5px;
     cursor: pointer;
     white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0);
 
     &:hover {
-      border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+      border-color:rgba(255, 255, 255, 0.5);
     }
 
     &__selected,
     &__selected:hover {
-      border-bottom: 1px solid #fff;
+      border-color: rgba(255, 255, 255, 1);
     }
   }
 
