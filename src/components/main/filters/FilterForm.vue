@@ -12,6 +12,11 @@
         class="filter-form__block--stretch"
         :filterType="indexFilterTypes.typeLine"
         :label="labels.itemTypeLine"/>
+      <text-filter
+        class="filter-form__block"
+        :filterType="functionalFilterTypes.category"
+        :filterOptions="itemCategoryOptions"
+        :label="labels.itemCategory"/>
     </filter-section>
 
     <filter-section :sectionTitle="labels.sections.mods"
@@ -163,6 +168,7 @@ import RangeFilter from '@/components/main/filters/RangeFilter.vue';
 import FilterSection from '@/components/main/filters/FilterSection.vue';
 import IndexerFilterGroup from '@/components/main/filters/IndexerFilterGroup.vue';
 import { FilterBooleanOptions } from '@/constants';
+import ItemBase from '@/itemBase.json';
 
 @Component({
   components: {
@@ -184,6 +190,10 @@ export default class FilterForm extends Vue {
     FilterBooleanOptions.NO,
   ];
   maxExplicitModsFilter = 5;
+  itemCategoryOptions = [
+    ...Object.keys(ItemBase.category),
+    ...Object.keys(ItemBase.groupedCategory),
+  ].sort();
 
   filterItems() {
     filters.actions.filterItems();

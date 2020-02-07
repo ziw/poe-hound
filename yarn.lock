@@ -3900,6 +3900,10 @@ hash.js@^1.0.0, hash.js@^1.0.3:
     inherits "^2.0.3"
     minimalistic-assert "^1.0.1"
 
+he@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/he/-/he-1.1.1.tgz#93410fd21b009735151f8868c2f271f3427e23fd"
+
 he@1.2.x, he@^1.1.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
@@ -5229,6 +5233,12 @@ node-emoji@^1.10.0:
 node-forge@0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.9.0.tgz#d624050edbb44874adca12bb9a52ec63cb782579"
+
+node-html-parser@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/node-html-parser/-/node-html-parser-1.2.4.tgz#bff5b403da3c5061d189e922aafb193c8e1f6f92"
+  dependencies:
+    he "1.1.1"
 
 node-ipc@^9.1.1:
   version "9.1.1"

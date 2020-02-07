@@ -1,6 +1,10 @@
 import { FilterBooleanOptions, ValueRange } from '@/constants';
 import { Item } from '@/models/item';
 import { filters } from '@/store/modules/filters';
+import { category, groupedCategory } from '@/itemBase.json';
+
+export type ItemCategory = keyof typeof category;
+export type GroupedItemCategory = keyof typeof groupedCategory;
 
 /**
  * Filter and return an array after removing duplicate values
@@ -59,4 +63,15 @@ export const itemInFilterResults = (item: Item) => {
   const filterResults = filters.state.filterResults;
   const highlighted = filterResults.has(item.id) || (item.socketedItems || []).some(gem => filterResults.has(gem.id));
   return highlighted;
+}
+
+export const matchItemCategory = (item: Item, value: any): boolean => {
+  if(category[value as ItemCategory]) {
+    //match item base type
+    return (category[value as ItemCategory]).some(base => item.parsedTypeLine.includes(base));
+  }else if(groupedCategory[value as GroupedItemCategory]) {
+    //match grouped base type. i.e. Any One Handed Weapon
+    return (groupedCategory[value as GroupedItemCategory]).some(itemCategory => matchItemCategory(item, itemCategory));
+  }
+  return false;
 }
