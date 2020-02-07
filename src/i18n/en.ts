@@ -49,6 +49,7 @@ const en = {
     armor: 'Armor',
     evasion: 'Evasion',
     energyShield: 'Energy Shield',
+    itemCategory: 'Category',
 
     sections: {
       itemNameType: 'Name and Type',

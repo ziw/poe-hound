@@ -1,5 +1,5 @@
 import { Item, ItemType, Influence } from './item';
-import { createFunctionFilter } from '@/utils';
+import { createFunctionFilter, matchItemCategory } from '@/utils';
 import { Type } from '@/utils/enumPicker';
 
 export enum IndexerFilterType {
@@ -38,6 +38,7 @@ export enum FunctionalFilterType {
   maxEvasion = 'maxEvasion',
   minEnergyShield = 'minEnergyShield',
   maxEnergyShield = 'maxEnergyShield',
+  category = 'category',
 }
 
 export type Filter<T> = {
@@ -227,4 +228,8 @@ export const functionalFilters: Array<{
     type: FunctionalFilterType.maxEnergyShield,
     filter: createFunctionFilter.ofMaxValue(item => item.energyShield),
   },
+  {
+    type: FunctionalFilterType.category,
+    filter: matchItemCategory,
+  }
 ];
