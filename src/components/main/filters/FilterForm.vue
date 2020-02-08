@@ -17,6 +17,11 @@
         :filterType="functionalFilterTypes.category"
         :filterOptions="itemCategoryOptions"
         :label="labels.itemCategory"/>
+      <text-filter
+        class="filter-form__block"
+        :filterType="functionalFilterTypes.rarity"
+        :filterOptions="itemRarityOptions"
+        :label="labels.itemRarity"/>
     </filter-section>
 
     <filter-section :sectionTitle="labels.sections.mods"
@@ -169,6 +174,7 @@ import FilterSection from '@/components/main/filters/FilterSection.vue';
 import IndexerFilterGroup from '@/components/main/filters/IndexerFilterGroup.vue';
 import { FilterBooleanOptions } from '@/constants';
 import ItemBase from '@/itemBase.json';
+import { rarityCheck } from '@/utils';
 
 @Component({
   components: {
@@ -194,6 +200,7 @@ export default class FilterForm extends Vue {
     ...Object.keys(ItemBase.category),
     ...Object.keys(ItemBase.groupedCategory),
   ].sort();
+  itemRarityOptions = Object.keys(rarityCheck);
 
   filterItems() {
     filters.actions.filterItems();

@@ -1,5 +1,5 @@
 import { Item, ItemType, Influence } from './item';
-import { createFunctionFilter, matchItemCategory } from '@/utils';
+import { createFunctionFilter, matchItemCategory, matchItemRarity } from '@/utils';
 import { Type } from '@/utils/enumPicker';
 
 export enum IndexerFilterType {
@@ -39,6 +39,7 @@ export enum FunctionalFilterType {
   minEnergyShield = 'minEnergyShield',
   maxEnergyShield = 'maxEnergyShield',
   category = 'category',
+  rarity = 'rarity',
 }
 
 export type Filter<T> = {
@@ -231,5 +232,9 @@ export const functionalFilters: Array<{
   {
     type: FunctionalFilterType.category,
     filter: matchItemCategory,
+  },
+  {
+    type: FunctionalFilterType.rarity,
+    filter: matchItemRarity,
   }
 ];
