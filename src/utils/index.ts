@@ -1,10 +1,19 @@
-import { FilterBooleanOptions, ValueRange } from '@/constants';
-import { Item } from '@/models/item';
+import { FilterBooleanOptions } from '@/constants';
+import { Item, ItemType } from '@/models/item';
 import { filters } from '@/store/modules/filters';
 import { category, groupedCategory } from '@/itemBase.json';
+import { Type } from './enumPicker';
 
 export type ItemCategory = keyof typeof category;
 export type GroupedItemCategory = keyof typeof groupedCategory;
+export const rarityCheck: {[key: string]: (item: Item) => boolean} = {
+  Normal: item => Type.of(item).is(ItemType.NORMAL),
+  Magic: item => Type.of(item).is(ItemType.MAGIC),
+  Rare: item => Type.of(item).is(ItemType.RARE),
+  Unique: item => Type.of(item).in(ItemType.UNIQUE, ItemType.RELIC),
+  Relic: item => Type.of(item).is(ItemType.RELIC),
+  'Any Non-unique': item => Type.of(item).in(ItemType.NORMAL, ItemType.MAGIC, ItemType.RARE),
+};
 
 /**
  * Filter and return an array after removing duplicate values
@@ -74,4 +83,10 @@ export const matchItemCategory = (item: Item, value: any): boolean => {
     return (groupedCategory[value as GroupedItemCategory]).some(itemCategory => matchItemCategory(item, itemCategory));
   }
   return false;
+}
+
+export const matchItemRarity = (item: Item, value: any): boolean => {
+  value = value as keyof typeof rarityCheck;
+  const check = rarityCheck[value] || (() => false);
+  return check(item);
 }

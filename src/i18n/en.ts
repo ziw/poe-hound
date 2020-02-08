@@ -50,6 +50,7 @@ const en = {
     evasion: 'Evasion',
     energyShield: 'Energy Shield',
     itemCategory: 'Category',
+    itemRarity: 'Rarity',
 
     sections: {
       itemNameType: 'Name and Type',
