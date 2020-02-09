@@ -4,6 +4,7 @@ import { IndexerFilterType, FunctionalFilterType, indexerFilters, functionalFilt
 import {
   unique,
 } from '@/utils';
+import { session } from '@/store/modules/session';
 
 class ItemStore {
 
@@ -84,10 +85,11 @@ class ItemStore {
     }
     const filterProp = this.indexProperties.find(prop => prop.type === type);
     const allIds = indexer!.query('');
+    const currentLeage = session.getters.getCurrentLeague()?.name;
 
     const options = allIds.flatMap(id => {
       const item = this.getItemFromId(id);
-      return item ? filterProp!.getIndexKeys(item) : []
+      return (item && (!item.league || item.league === currentLeage))? filterProp?.getIndexKeys(item) ?? [] : []
     });
     return unique(options);
   }
