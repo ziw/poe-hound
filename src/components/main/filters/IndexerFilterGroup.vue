@@ -81,6 +81,7 @@ export default class IndexerFilterGroup extends AppProps {
       serial,
       value: newValue
     });
+    filters.actions.filterItems();
   }
 
   onRangeUpdate(filterInstance: Filter<IndexerFilterType>, e: KeyboardEvent, property: string) {
@@ -95,6 +96,7 @@ export default class IndexerFilterGroup extends AppProps {
       serial,
       value: newValue,
     });
+    filters.actions.filterItems();
   }
 }
 </script>

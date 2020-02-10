@@ -40,7 +40,7 @@ export default class MainContent extends Vue {
 
     &__filter-section {
       padding: 15px;
-      max-height: 660px;
+      max-height: 720px;
       overflow-y: auto;
     }
 
