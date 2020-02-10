@@ -1,13 +1,15 @@
 import { getStoreBuilder } from "vuex-typex";
-import { RootState } from "../store";
-import { MODULES, Status } from "@/constants";
+import { RootState } from "@/store/store";
+import { MODULES } from "@/constants";
 import {
   Filter,
   IndexerFilterType,
   FunctionalFilterType,
   createFilter,
   indexerFilters,
-  functionalFilters
+  functionalFilters,
+  ModFilterValue,
+  getIndexedMods
 } from '@/models/filterTypes';
 import itemStore from '@/indexer/itemStore';
 import { intersection } from '@/utils';
@@ -85,8 +87,25 @@ const filterItems = builder.dispatch(async () => {
   // first filter by indexer filters
   if(validIndexerFilters.length){
     validIndexerFilters.forEach((indexerFilter, i) => {
-      const filteredResult = itemStore.queryIndexerResults(indexerFilter.type, indexerFilter.value);
+      const rawFilterValue = indexerFilter.value;
+      const keyword = rawFilterValue.modId ?? rawFilterValue;
+      const filteredResult = itemStore.queryIndexerResults(indexerFilter.type, keyword);
       resultsSet = i === 0 ? filteredResult : intersection(resultsSet, filteredResult);
+
+      if(rawFilterValue.modId) {
+        const {
+          minValue = Number.MIN_SAFE_INTEGER,
+          maxValue = Number.MAX_SAFE_INTEGER,
+          modId,
+        } = rawFilterValue as ModFilterValue;
+        const rangeMatched = Array.from(resultsSet).filter(id => {
+          const item = itemStore.getItemFromId(id);
+          if(!item) return false;
+          const matchedMod = getIndexedMods(indexerFilter.type, item).find(({ id }) => id === modId);
+          return matchedMod ? (minValue <= matchedMod.averageValue && maxValue >= matchedMod.averageValue) : false;
+        });
+        resultsSet = intersection(resultsSet, new Set(rangeMatched));
+      }
     });
   }else{
     resultsSet = itemStore.getAllItemIds();

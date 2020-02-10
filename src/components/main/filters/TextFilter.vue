@@ -13,7 +13,7 @@
       @search="onSearch"
       :searchable="true"
       :options="this.options"
-      :value="filter.value"></v-select>
+      :value="filterValue"></v-select>
   </div>
 </template>
 
@@ -33,6 +33,7 @@ const AppProps = Vue.extend({
     filterType: String,
     filterSerial: Number,
     filterOptions: Array as Prop<string[]>,
+    useCustomFilterFunction: Boolean,
   }
 });
 
@@ -64,6 +65,11 @@ export default class TextFilter extends AppProps {
     return filters.getters.getFilter()(this.filterType, this.filterSerial);
   }
 
+  get filterValue() {
+    const value = this.filter?.value;
+    return value?.modId ?? value;
+  }
+
   onSearch() {
     if(this.filterOptions){
       return;
@@ -73,6 +79,10 @@ export default class TextFilter extends AppProps {
   }
 
   inputUpdate(value: string) {
+    if(this.useCustomFilterFunction) {
+      this.$emit('filterUpdate', value);
+      return;
+    }
     filters.mutations.setFilterValue({
       type: this.filterType,
       value,

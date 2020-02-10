@@ -42,7 +42,7 @@ export const decorateItem = (raw: RawItem): Item => {
       explicitMods: parseItemMods(raw.explicitMods, ItemModType.Explicit),
       implicitMods: parseItemMods(raw.implicitMods, ItemModType.Implicit),
       craftedMods: parseItemMods(raw.craftedMods, ItemModType.Crafted),
-      enchantedMods: parseItemMods(raw.enchantMods, ItemModType.Enchanted, true),
+      enchantedMods: parseItemMods(raw.enchantMods, ItemModType.Enchanted),
       fracturedMods: parseItemMods(raw.fracturedMods, ItemModType.Fractured),
     }
   };
@@ -159,13 +159,20 @@ const parseItemMods = (rawMods: string[], type: ItemModType, skipParseValue = fa
   return rawMods.map(rawModString => {
     const id = rawModString.replace(regex, '#');
     const values: number[] = [];
-    const averageValue = 0;
+    let averageValue = 0;
 
     if(!skipParseValue) {
       let m;
+      let total = 0;
       while((m = regex.exec(rawModString))!= null ){
-        values.push(parseFloat(m[0]));
+        const val = parseFloat(m[0]);
+        values.push(val);
+        total += val;
       }
+      //TODO. Fix how mod with multiple numbers are calculated. Taking average is an initial solution.
+      //It's missing some edge cases such as when two numbers in a mod are not related at all
+      //i.e. # change to trigger level # molten burst on hit
+      averageValue = Math.floor(total/values.length);
     }
 
     return {
