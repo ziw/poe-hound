@@ -1,4 +1,4 @@
-import { Item, ItemType, Influence } from './item';
+import { Item, ItemType, Influence, ItemMod } from './item';
 import { createFunctionFilter, matchItemCategory, matchItemRarity } from '@/utils';
 import { Type } from '@/utils/enumPicker';
 
@@ -42,11 +42,28 @@ export enum FunctionalFilterType {
   rarity = 'rarity',
 }
 
+export type ModFilterValue = {
+  modId: string,
+  minValue: number | undefined,
+  maxValue: number | undefined,
+};
+
 export type Filter<T> = {
   type: T,
   value: any,
   enabled: boolean,
   serial: number,
+}
+
+export const getIndexedMods = (filterType: IndexerFilterType, item: Item): ItemMod[] => {
+  const { parsedMods } = item;
+  switch(filterType) {
+    case IndexerFilterType.explicitMods: return parsedMods.explicitMods;
+    case IndexerFilterType.implicitMods: return parsedMods.implicitMods;
+    case IndexerFilterType.craftedMods: return parsedMods.craftedMods;
+    case IndexerFilterType.enchantedMods: return parsedMods.enchantedMods;
+    default: return [];
+  }
 }
 
 export const createFilter = <T extends (FunctionalFilterType | IndexerFilterType)>(type: T, serial = 0): Filter<T> => {
