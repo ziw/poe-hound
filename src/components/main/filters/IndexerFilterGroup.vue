@@ -5,9 +5,19 @@
         :key="`${filterInstance.type}.${i}`">
       <text-filter
         class="indexer-filter-group__input"
+        v-on:filterUpdate="filterValue => onFilterUpdate(filterValue, filterInstance)"
         :filterType="filterInstance.type"
         :filterSerial="filterInstance.serial"
+        :useCustomFilterFunction="true"
         :label="i === 0 ? label : undefined"/>
+      <div class="indexer-filter-group__range">
+        <input type="text" class="indexer-filter-group__range-input"
+          v-on:input="e => onRangeUpdate(filterInstance, e, 'minValue')"
+          :placeholder="labels.min">
+        <input type="text" class="indexer-filter-group__range-input"
+          v-on:input="e => onRangeUpdate(filterInstance, e, 'maxValue')"
+          :placeholder="labels.max">
+      </div>
       <div class="indexer-filter-group__control">
         <a-icon type="close"
           v-if="i !== 0"
@@ -27,7 +37,8 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import TextFilter from '@/components/main/filters/TextFilter.vue';
 import { filters } from '@/store/modules/filters';
-import { Filter, IndexerFilterType } from '@/models/filterTypes';
+import { Filter, IndexerFilterType, ModFilterValue } from '@/models/filterTypes';
+import messages from '@/i18n';
 
 const AppProps = Vue.extend({
   props: {
@@ -44,6 +55,8 @@ const AppProps = Vue.extend({
 })
 export default class IndexerFilterGroup extends AppProps {
 
+  labels = messages.filters;
+
   get matchedFilters() {
     return filters.state.indexerFilters.filter(f => f.type === this.filterType);
   }
@@ -57,6 +70,32 @@ export default class IndexerFilterGroup extends AppProps {
     filters.actions.removeIndexerFilter({ type, serial });
   }
 
+  onFilterUpdate(newFilterValue: string, filterInstance: Filter<IndexerFilterType>) {
+    const { type, serial, value: oldValue } = filterInstance;
+    const newValue: ModFilterValue = {
+      ...oldValue,
+      modId: newFilterValue,
+    };
+    filters.mutations.setFilterValue({
+      type,
+      serial,
+      value: newValue
+    });
+  }
+
+  onRangeUpdate(filterInstance: Filter<IndexerFilterType>, e: KeyboardEvent, property: string) {
+    const rangeValue = parseInt((<HTMLInputElement>e.target).value?? '') || undefined;
+    const { type, serial, value: oldValue } = filterInstance;
+    const newValue: ModFilterValue = {
+      ...oldValue,
+      [property]: rangeValue,
+    };
+    filters.mutations.setFilterValue({
+      type,
+      serial,
+      value: newValue,
+    });
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -80,6 +119,22 @@ export default class IndexerFilterGroup extends AppProps {
       i {
         cursor: pointer;
       }
+    }
+
+    &__range {
+      width: 100px;
+      padding: 0 5px;
+      display: flex;
+    }
+
+    &__range-input {
+      margin: 0 5px;
+      width: 35px;
+      height: 30px;
+      border: none;
+      outline: none;
+      background: none;
+      border-bottom: 1px solid #ffffff;
     }
   }
 </style>
