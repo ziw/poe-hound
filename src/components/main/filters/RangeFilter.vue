@@ -58,6 +58,7 @@ export default class RangeFilter extends AppProps {
       type: this.minFilterType,
       value: parseInt(minValue) || undefined,
     });
+    filters.actions.filterItems();
   }
 
   get maxValue() {
@@ -69,6 +70,7 @@ export default class RangeFilter extends AppProps {
       type: this.maxFilterType,
       value: parseInt(maxValue) || undefined,
     });
+    filters.actions.filterItems();
   }
 
 }

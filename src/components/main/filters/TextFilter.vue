@@ -88,6 +88,7 @@ export default class TextFilter extends AppProps {
       value,
       serial: this.filterSerial,
     });
+    filters.actions.filterItems();
   }
 }
 </script>
