@@ -52,8 +52,8 @@ export default class CurrencyStash extends AppProps {
       let x: number, y: number;
       if(Type.of(item).isNot(ItemType.CURRENCY)){
         //this is the item in crafting slot of currency tab
-        x = 5;
-        y = 10;
+        x = (this.unitDimension) * 10;
+        y = (this.unitDimension) * 8;
       }else {
         x = (this.unitDimension) * (index % 12);
         y = (this.unitDimension) * Math.trunc(index / 12);
