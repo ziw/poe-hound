@@ -1,6 +1,6 @@
 import { getStoreBuilder } from "vuex-typex";
 import { RootState } from "@/store/store";
-import { MODULES } from "@/constants";
+import { MODULES, OPTION_ANY } from "@/constants";
 import {
   Filter,
   IndexerFilterType,
@@ -91,7 +91,7 @@ const filterItems = builder.dispatch(async () => {
     validIndexerFilters.forEach((indexerFilter, i) => {
       const rawFilterValue = indexerFilter.value;
       const keyword = rawFilterValue.modId ?? rawFilterValue;
-      const filteredResult = itemStore.queryIndexerResults(indexerFilter.type, keyword);
+      const filteredResult = itemStore.queryIndexerResults(indexerFilter.type, keyword === OPTION_ANY ? '' : keyword);
       resultsSet = i === 0 ? filteredResult : intersection(resultsSet, filteredResult);
 
       if(rawFilterValue.modId) {
