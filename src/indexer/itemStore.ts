@@ -5,6 +5,7 @@ import {
   unique,
 } from '@/utils';
 import { session } from '@/store/modules/session';
+import { OPTION_ANY } from '@/constants';
 
 class ItemStore {
 
@@ -78,7 +79,7 @@ class ItemStore {
    * for this type to be shown in filter dropdown
    * @param type the type of filter
    */
-  getFilterOptions(type: IndexerFilterType): string[] {
+  getFilterOptions(type: IndexerFilterType, supportAnyOption = false): string[] {
     const indexer = this.indexers.get(type);
     if(!indexer){
       return [];
@@ -91,6 +92,9 @@ class ItemStore {
       const item = this.getItemFromId(id);
       return (item && (!item.league || item.league === currentLeage))? filterProp?.getIndexKeys(item) ?? [] : []
     });
+    if(supportAnyOption) {
+      options.unshift(OPTION_ANY);
+    }
     return unique(options);
   }
 

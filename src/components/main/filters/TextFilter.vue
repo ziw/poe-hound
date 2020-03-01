@@ -34,6 +34,7 @@ const AppProps = Vue.extend({
     filterSerial: Number,
     filterOptions: Array as Prop<string[]>,
     useCustomFilterFunction: Boolean,
+    supportAnyOption: Boolean,
   }
 });
 
@@ -75,7 +76,7 @@ export default class TextFilter extends AppProps {
       return;
     }
     //@ts-ignore
-    this.options = itemStore.getFilterOptions(this.filter!.type);
+    this.options = itemStore.getFilterOptions(this.filter!.type, this.supportAnyOption);
   }
 
   inputUpdate(value: string) {

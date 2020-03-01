@@ -37,11 +37,13 @@
         :label="labels.implicitMods"/>
       <text-filter
         class="filter-form__block--stretch"
+        :supportAnyOption="true"
         :filterType="indexFilterTypes.enchantedMods"
         :label="labels.enchantedMods"/>
       <text-filter
         class="filter-form__block--stretch"
         :filterType="indexFilterTypes.craftedMods"
+        :supportAnyOption="true"
         :label="labels.craftedMods"/>
     </filter-section>
 

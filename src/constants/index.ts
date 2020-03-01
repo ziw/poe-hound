@@ -4,6 +4,7 @@ export * from './paths';
 export const COOKIE_NAME = 'POESESSID';
 export const BASE_DIMENSION = 600;
 export const RECOVERY_FLASKS = ['Hybrid Flask', 'Mana Flask', 'Life Flask'];
+export const OPTION_ANY = 'Any';
 
 export enum Status {
   INIT = 'INIT',
@@ -16,9 +17,4 @@ export enum FilterBooleanOptions {
   ANY = 'ANY',
   YES = 'YES',
   NO = 'NO',
-}
-
-export type ValueRange = {
-  min: number,
-  max: number,
 }
