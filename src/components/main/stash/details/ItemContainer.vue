@@ -1,5 +1,5 @@
 <template>
-  <a-tooltip>
+  <a-tooltip :mouseLeaveDelay="0">
     <template slot="title">
       <item-tooltip :item="this.item" />
     </template>
