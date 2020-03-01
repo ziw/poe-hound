@@ -7,6 +7,7 @@ import {
   NormalizedProperties,
   RawItem,
   SocketProperties,
+  ScoketColor,
 } from '@/models/item';
 import { RECOVERY_FLASKS } from '@/constants';
 
@@ -83,7 +84,7 @@ const computedSocketsProperties = (raw: RawItem): SocketProperties  => {
   const numOfSockets = sockets.length;
   let hasAbyssalSocket = false;
   let hasWhiteSocket = false;
-  const linkGroups: { [key: number]: number} = {};
+  const linkGroups: { [key: number]: ScoketColor[] } = {};
   sockets.forEach(({ group, sColour }) => {
     if(sColour === 'A') {
       hasAbyssalSocket = true;
@@ -91,15 +92,17 @@ const computedSocketsProperties = (raw: RawItem): SocketProperties  => {
     if(sColour === 'W') {
       hasWhiteSocket = true;
     }
-    const count = linkGroups[group];
-    linkGroups[group] = count ? count + 1 : 1;
+    const sockets = linkGroups[group];
+    linkGroups[group] = [ ...(sockets ?? []), sColour ];
   });
 
+  const allLinkGroups = Object.values(linkGroups);
   return {
-    numOfLinks: sockets.length ? Math.max(...Object.values(linkGroups)) : 0,
+    numOfLinks: sockets.length ? Math.max(...allLinkGroups.map(sockets => sockets.length)) : 0,
     numOfSockets,
     hasAbyssalSocket,
     hasWhiteSocket,
+    linkGroups: allLinkGroups,
   }
 };
 

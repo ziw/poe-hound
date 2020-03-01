@@ -53,6 +53,7 @@ export type SocketProperties = {
   numOfSockets: number,
   hasAbyssalSocket: boolean,
   hasWhiteSocket: boolean,
+  linkGroups: ScoketColor[][],
 }
 
 export type DecoratedNames = {
@@ -128,9 +129,11 @@ export enum Influence {
   Crusader = 'crusader',
 }
 
+export type ScoketColor = 'R' | 'G' | 'B' | 'W' /* White */ | 'A'  /* Abyss */;
+
 type Socket = {
   group: number,
-  sColour: 'R' | 'G' | 'B' | 'W' /* White */ | 'A'  /* Abyss */
+  sColour: ScoketColor,
 };
 
 export enum ItemModType {

@@ -45,7 +45,10 @@
         {{ corruptedLabel }}
       </div>
     </section>
-    <section v-for="gem in gems" :key="gem.gemName"
+    <section>
+      {{ linkGroups }}
+    </section>
+    <section v-for="(gem, index) in gems" :key="`${gem.gemName}-${index}`"
       class="item-tooltip__font--gem">
       {{`${gem.gemName}  [${gem.level}/${gem.quality ? gem.quality : 0}%]`}}
     </section>
@@ -143,6 +146,10 @@ export default class ItemTooltip extends AppProps {
 
   get influences() {
     return Object.keys(this.item.influences).join(' | ');
+  }
+
+  get linkGroups() {
+    return (this.item.linkGroups || []).map(group => group.join('==')).join(' | ');
   }
 
   private get hasExplicitBlock() {
