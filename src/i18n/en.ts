@@ -36,6 +36,7 @@ const en = {
     quality: 'Quality',
     level: 'Gem Level',
     corrupted: 'Corrupted',
+    identified: 'Identified',
     min: 'min',
     max: 'max',
     numSockets: 'Sockets',
