@@ -93,6 +93,11 @@
         :filterType="functionalFilterTypes.corrupted"
         :filterOptions="booleanWithAnyOptions"
         :label="labels.corrupted"/>
+      <text-filter
+        class="filter-form__block--3"
+        :filterType="functionalFilterTypes.identified"
+        :filterOptions="booleanWithAnyOptions"
+        :label="labels.identified"/>
 
       <range-filter
         class="filter-form__block--3"

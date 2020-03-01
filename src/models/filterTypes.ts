@@ -253,5 +253,9 @@ export const functionalFilters: Array<{
   {
     type: FunctionalFilterType.rarity,
     filter: matchItemRarity,
+  },
+  {
+    type: FunctionalFilterType.identified,
+    filter: createFunctionFilter.ofBooleanValue(item => item.identified),
   }
 ];
