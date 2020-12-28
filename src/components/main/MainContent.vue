@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 import Component from 'vue-class-component';
 import TabBar from '@/components/main/stash/TabBar.vue';
 import TabDetail from '@/components/main/stash/TabDetail.vue';
@@ -23,34 +23,32 @@ import FilterForm from '@/components/main/filters/FilterForm.vue';
     TabBar,
     TabDetail,
     FilterForm,
-  }
+  },
 })
-export default class MainContent extends Vue {
-}
+export default class MainContent extends Vue {}
 </script>
 
 <style lang="scss">
+$stash-section-width: 720px;
 
-  $stash-section-width: 720px;
+.main-content {
+  display: flex;
+  flex-grow: 1;
+  padding: 15px;
 
-  .main-content {
-    display: flex;
-    flex-grow: 1;
+  &__filter-section {
     padding: 15px;
-
-    &__filter-section {
-      padding: 15px;
-      max-height: 720px;
-      overflow-y: auto;
-    }
-
-    &__stash-section {
-      width: $stash-section-width;
-      flex-basis: $stash-section-width;
-      max-width: $stash-section-width;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-    }
+    max-height: 720px;
+    overflow-y: auto;
   }
+
+  &__stash-section {
+    width: $stash-section-width;
+    flex-basis: $stash-section-width;
+    max-width: $stash-section-width;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+}
 </style>

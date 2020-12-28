@@ -1,7 +1,9 @@
 <template>
-  <div :class="{
+  <div
+    :class="{
       'text-filter': true,
-    }">
+    }"
+  >
     <label>
       {{ label }}
     </label>
@@ -13,12 +15,13 @@
       @search="onSearch"
       :searchable="true"
       :options="this.options"
-      :value="filterValue"></v-select>
+      :value="filterValue"
+    ></v-select>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Prop } from 'vue/types/options';
 import { filters } from '@/store/modules/filters';
@@ -35,16 +38,15 @@ const AppProps = Vue.extend({
     filterOptions: Array as Prop<string[]>,
     useCustomFilterFunction: Boolean,
     supportAnyOption: Boolean,
-  }
+  },
 });
 
 @Component({
   components: {
     TextInput,
-  }
+  },
 })
 export default class TextFilter extends AppProps {
-
   /**
    * the auto-complete options to show in the dropdown
    */
@@ -52,7 +54,7 @@ export default class TextFilter extends AppProps {
 
   constructor() {
     super();
-    if(this.filterOptions) {
+    if (this.filterOptions) {
       this.options = this.filterOptions.slice();
     }
     filters.mutations.setFilterEnabledDisabled({
@@ -72,15 +74,18 @@ export default class TextFilter extends AppProps {
   }
 
   onSearch() {
-    if(this.filterOptions){
+    if (this.filterOptions) {
       return;
     }
-    //@ts-ignore
-    this.options = itemStore.getFilterOptions(this.filter!.type, this.supportAnyOption);
+    this.options = itemStore.getFilterOptions(
+      //@ts-ignore
+      this.filter!.type,
+      this.supportAnyOption,
+    );
   }
 
   inputUpdate(value: string) {
-    if(this.useCustomFilterFunction) {
+    if (this.useCustomFilterFunction) {
       this.$emit('filterUpdate', value);
       return;
     }
@@ -95,20 +100,19 @@ export default class TextFilter extends AppProps {
 </script>
 
 <style lang="scss">
-  .text-filter {
+.text-filter {
+  display: flex;
+
+  label {
     display: flex;
-
-    label{
-      display: flex;
-      align-items: center;
-      width: 65px;
-      justify-content: flex-end;
-    }
-
-    &__input {
-      flex-grow: 1;
-      width: 100px;
-    }
+    align-items: center;
+    width: 65px;
+    justify-content: flex-end;
   }
-</style>
 
+  &__input {
+    flex-grow: 1;
+    width: 100px;
+  }
+}
+</style>

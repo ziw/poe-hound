@@ -3,8 +3,8 @@ import { createFunctionFilter, matchItemCategory, matchItemRarity } from '@/util
 import { Type } from '@/utils/enumPicker';
 
 export enum IndexerFilterType {
-  name= 'name',
-  typeLine= 'typeLine',
+  name = 'name',
+  typeLine = 'typeLine',
   craftedMods = 'crafted',
   explicitMods = 'explicit',
   implicitMods = 'implicit',
@@ -43,101 +43,90 @@ export enum FunctionalFilterType {
 }
 
 export type ModFilterValue = {
-  modId: string,
-  minValue: number | undefined,
-  maxValue: number | undefined,
+  modId: string;
+  minValue: number | undefined;
+  maxValue: number | undefined;
 };
 
 export type Filter<T> = {
-  type: T,
-  value: any,
-  enabled: boolean,
-  serial: number,
-}
+  type: T;
+  value: any;
+  enabled: boolean;
+  serial: number;
+};
 
 export const getIndexedMods = (filterType: IndexerFilterType, item: Item): ItemMod[] => {
   const { parsedMods } = item;
-  switch(filterType) {
-    case IndexerFilterType.explicitMods: return parsedMods.explicitMods;
-    case IndexerFilterType.implicitMods: return parsedMods.implicitMods;
-    case IndexerFilterType.craftedMods: return parsedMods.craftedMods;
-    case IndexerFilterType.enchantedMods: return parsedMods.enchantedMods;
-    default: return [];
+  switch (filterType) {
+    case IndexerFilterType.explicitMods:
+      return parsedMods.explicitMods;
+    case IndexerFilterType.implicitMods:
+      return parsedMods.implicitMods;
+    case IndexerFilterType.craftedMods:
+      return parsedMods.craftedMods;
+    case IndexerFilterType.enchantedMods:
+      return parsedMods.enchantedMods;
+    default:
+      return [];
   }
-}
+};
 
-export const createFilter = <T extends (FunctionalFilterType | IndexerFilterType)>(type: T, serial = 0): Filter<T> => {
+export const createFilter = <T extends FunctionalFilterType | IndexerFilterType>(
+  type: T,
+  serial = 0,
+): Filter<T> => {
   return {
     type,
     value: undefined,
     enabled: false,
     serial,
   };
-}
+};
 
 /**
  * A list of filters with type IndexerFilterType whose
  * value needs to be indexed by itemStore before querying.
  */
 export const indexerFilters: Array<{
-  type: IndexerFilterType,
-  getIndexKeys: (item: Item) => string[],
-  shouldIndex?: (item: Item) => boolean,
+  type: IndexerFilterType;
+  getIndexKeys: (item: Item) => string[];
+  shouldIndex?: (item: Item) => boolean;
 }> = [
   {
     type: IndexerFilterType.name,
-    getIndexKeys: item => [ item.name, item.gemName, item.currencyName ],
-    shouldIndex: item => Type.of(item).in(
-      ItemType.UNIQUE,
-      ItemType.GEM,
-      ItemType.RELIC,
-      ItemType.CURRENCY,
-    ),
+    getIndexKeys: (item) => [item.name, item.gemName, item.currencyName],
+    shouldIndex: (item) =>
+      Type.of(item).in(ItemType.UNIQUE, ItemType.GEM, ItemType.RELIC, ItemType.CURRENCY),
   },
   {
     type: IndexerFilterType.typeLine,
-    getIndexKeys: item => [item.parsedTypeLine],
-    shouldIndex: item => Type.of(item).isNot(
-        ItemType.GEM,
-        ItemType.CURRENCY,
-        ItemType.DIVINATION_CARD,
-    ),
+    getIndexKeys: (item) => [item.parsedTypeLine],
+    shouldIndex: (item) =>
+      Type.of(item).isNot(ItemType.GEM, ItemType.CURRENCY, ItemType.DIVINATION_CARD),
   },
   {
     type: IndexerFilterType.implicitMods,
-    getIndexKeys: item => item.parsedMods.implicitMods.map(m => m.id),
-    shouldIndex: item => Type.of(item).isNot(
-      ItemType.GEM,
-      ItemType.CURRENCY,
-      ItemType.DIVINATION_CARD,
-    ),
+    getIndexKeys: (item) => item.parsedMods.implicitMods.map((m) => m.id),
+    shouldIndex: (item) =>
+      Type.of(item).isNot(ItemType.GEM, ItemType.CURRENCY, ItemType.DIVINATION_CARD),
   },
   {
     type: IndexerFilterType.explicitMods,
-    getIndexKeys: item => item.parsedMods.explicitMods.map(m => m.id),
-    shouldIndex: item => Type.of(item).isNot(
-      ItemType.GEM,
-      ItemType.CURRENCY,
-      ItemType.DIVINATION_CARD,
-    ),
+    getIndexKeys: (item) => item.parsedMods.explicitMods.map((m) => m.id),
+    shouldIndex: (item) =>
+      Type.of(item).isNot(ItemType.GEM, ItemType.CURRENCY, ItemType.DIVINATION_CARD),
   },
   {
     type: IndexerFilterType.craftedMods,
-    getIndexKeys: item => item.parsedMods.craftedMods.map(m => m.id),
-    shouldIndex: item => Type.of(item).isNot(
-      ItemType.GEM,
-      ItemType.CURRENCY,
-      ItemType.DIVINATION_CARD,
-    ),
+    getIndexKeys: (item) => item.parsedMods.craftedMods.map((m) => m.id),
+    shouldIndex: (item) =>
+      Type.of(item).isNot(ItemType.GEM, ItemType.CURRENCY, ItemType.DIVINATION_CARD),
   },
   {
     type: IndexerFilterType.enchantedMods,
-    getIndexKeys: item => item.parsedMods.enchantedMods.map(m => m.id),
-    shouldIndex: item => Type.of(item).isNot(
-      ItemType.GEM,
-      ItemType.CURRENCY,
-      ItemType.DIVINATION_CARD,
-    ),
+    getIndexKeys: (item) => item.parsedMods.enchantedMods.map((m) => m.id),
+    shouldIndex: (item) =>
+      Type.of(item).isNot(ItemType.GEM, ItemType.CURRENCY, ItemType.DIVINATION_CARD),
   },
 ];
 
@@ -147,104 +136,104 @@ export const indexerFilters: Array<{
  * to indicate if an item passes this filter.
  */
 export const functionalFilters: Array<{
-  type: FunctionalFilterType,
-  filter: (item: Item, value: any) => boolean,
+  type: FunctionalFilterType;
+  filter: (item: Item, value: any) => boolean;
 }> = [
   {
     type: FunctionalFilterType.shaped,
-    filter: createFunctionFilter.ofBooleanValue(item => item.influences[Influence.Shaper]),
+    filter: createFunctionFilter.ofBooleanValue((item) => item.influences[Influence.Shaper]),
   },
   {
     type: FunctionalFilterType.elder,
-    filter: createFunctionFilter.ofBooleanValue(item => item.influences[Influence.Elder]),
+    filter: createFunctionFilter.ofBooleanValue((item) => item.influences[Influence.Elder]),
   },
   {
     type: FunctionalFilterType.hunter,
-    filter: createFunctionFilter.ofBooleanValue(item => item.influences[Influence.Hunter]),
+    filter: createFunctionFilter.ofBooleanValue((item) => item.influences[Influence.Hunter]),
   },
   {
     type: FunctionalFilterType.redeemer,
-    filter: createFunctionFilter.ofBooleanValue(item => item.influences[Influence.Redeemer]),
+    filter: createFunctionFilter.ofBooleanValue((item) => item.influences[Influence.Redeemer]),
   },
   {
     type: FunctionalFilterType.warlord,
-    filter: createFunctionFilter.ofBooleanValue(item => item.influences[Influence.Warlord]),
+    filter: createFunctionFilter.ofBooleanValue((item) => item.influences[Influence.Warlord]),
   },
   {
     type: FunctionalFilterType.crusader,
-    filter: createFunctionFilter.ofBooleanValue(item => item.influences[Influence.Crusader]),
+    filter: createFunctionFilter.ofBooleanValue((item) => item.influences[Influence.Crusader]),
   },
   {
     type: FunctionalFilterType.corrupted,
-    filter: createFunctionFilter.ofBooleanValue(item => item.corrupted),
+    filter: createFunctionFilter.ofBooleanValue((item) => item.corrupted),
   },
   {
     type: FunctionalFilterType.minQuality,
-    filter: createFunctionFilter.ofMinValue(item => item.quality),
+    filter: createFunctionFilter.ofMinValue((item) => item.quality),
   },
   {
     type: FunctionalFilterType.maxQuality,
-    filter: createFunctionFilter.ofMaxValue(item => item.quality),
+    filter: createFunctionFilter.ofMaxValue((item) => item.quality),
   },
   {
     type: FunctionalFilterType.minLevel,
-    filter: createFunctionFilter.ofMinValue(item => item.level),
+    filter: createFunctionFilter.ofMinValue((item) => item.level),
   },
   {
     type: FunctionalFilterType.maxLevel,
-    filter: createFunctionFilter.ofMaxValue(item => item.level),
+    filter: createFunctionFilter.ofMaxValue((item) => item.level),
   },
   {
     type: FunctionalFilterType.corrupted,
-    filter: createFunctionFilter.ofBooleanValue(item => item.corrupted),
+    filter: createFunctionFilter.ofBooleanValue((item) => item.corrupted),
   },
   {
     type: FunctionalFilterType.minSockets,
-    filter: createFunctionFilter.ofMinValue(item => item.numOfSockets),
+    filter: createFunctionFilter.ofMinValue((item) => item.numOfSockets),
   },
   {
     type: FunctionalFilterType.maxSockets,
-    filter: createFunctionFilter.ofMaxValue(item => item.numOfSockets),
+    filter: createFunctionFilter.ofMaxValue((item) => item.numOfSockets),
   },
   {
     type: FunctionalFilterType.minLinks,
-    filter: createFunctionFilter.ofMinValue(item => item.numOfLinks),
+    filter: createFunctionFilter.ofMinValue((item) => item.numOfLinks),
   },
   {
     type: FunctionalFilterType.maxLinks,
-    filter: createFunctionFilter.ofMaxValue(item => item.numOfLinks),
+    filter: createFunctionFilter.ofMaxValue((item) => item.numOfLinks),
   },
   {
     type: FunctionalFilterType.hasAbyssalSocket,
-    filter: createFunctionFilter.ofBooleanValue(item => item.hasAbyssalSocket),
+    filter: createFunctionFilter.ofBooleanValue((item) => item.hasAbyssalSocket),
   },
   {
     type: FunctionalFilterType.hasWhiteSocket,
-    filter: createFunctionFilter.ofBooleanValue(item => item.hasWhiteSocket),
+    filter: createFunctionFilter.ofBooleanValue((item) => item.hasWhiteSocket),
   },
   {
     type: FunctionalFilterType.minArmor,
-    filter: createFunctionFilter.ofMinValue(item => item.armour),
+    filter: createFunctionFilter.ofMinValue((item) => item.armour),
   },
   {
     type: FunctionalFilterType.maxArmor,
-    filter: createFunctionFilter.ofMaxValue(item => item.armour),
+    filter: createFunctionFilter.ofMaxValue((item) => item.armour),
   },
   {
     type: FunctionalFilterType.minEvasion,
-    filter: createFunctionFilter.ofMinValue(item => item.evasion),
+    filter: createFunctionFilter.ofMinValue((item) => item.evasion),
   },
   {
     type: FunctionalFilterType.maxEvasion,
-    filter: createFunctionFilter.ofMaxValue(item => item.evasion),
+    filter: createFunctionFilter.ofMaxValue((item) => item.evasion),
   },
   {
     type: FunctionalFilterType.minEnergyShield,
-    filter: createFunctionFilter.ofMinValue(item => item.energyShield),
+    filter: createFunctionFilter.ofMinValue((item) => item.energyShield),
   },
   {
     type: FunctionalFilterType.maxEnergyShield,
-    filter: createFunctionFilter.ofMaxValue(item => item.energyShield),
+    filter: createFunctionFilter.ofMaxValue((item) => item.energyShield),
   },
   {
     type: FunctionalFilterType.category,
@@ -256,6 +245,6 @@ export const functionalFilters: Array<{
   },
   {
     type: FunctionalFilterType.identified,
-    filter: createFunctionFilter.ofBooleanValue(item => item.identified),
-  }
+    filter: createFunctionFilter.ofBooleanValue((item) => item.identified),
+  },
 ];

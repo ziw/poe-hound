@@ -3,8 +3,7 @@
     <template slot="title">
       <item-tooltip :item="this.item" />
     </template>
-    <div class="item-container"
-      :style="styleObject">
+    <div class="item-container" :style="styleObject">
       <span v-if="showStackSize">
         {{ item.stackSize }}
       </span>
@@ -13,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 import Component from 'vue-class-component';
 import { session } from '@/store/modules/session';
 import { Prop } from 'vue/types/options';
@@ -42,25 +41,25 @@ const AppProps = Vue.extend({
     h: {
       type: Number,
       default: 0,
-    }
-  }
+    },
+  },
 });
 
 @Component({
   components: {
     ItemTooltip,
-  }
+  },
 })
 export default class ItemContainer extends AppProps {
-
   specialBG: string;
 
-  constructor(){
+  constructor() {
     super();
     const backgroundQuery = `?w=${this.item.w}&h=${this.item.h}&x=${this.item.x}&y=${this.item.y}`;
-    this.specialBG =
-      this.item.shaper ? `http://pathofexile.com/image/inventory/ShaperBackground.png${backgroundQuery}`
-      : this.item.elder ? `http://pathofexile.com/image/inventory/ElderBackground.png${backgroundQuery}`
+    this.specialBG = this.item.shaper
+      ? `http://pathofexile.com/image/inventory/ShaperBackground.png${backgroundQuery}`
+      : this.item.elder
+      ? `http://pathofexile.com/image/inventory/ElderBackground.png${backgroundQuery}`
       : '';
   }
 
@@ -77,21 +76,20 @@ export default class ItemContainer extends AppProps {
       'background-image': `url("${item ? item.icon : ''}"), url('${this.specialBG}')`,
       'background-repeat': 'no-repeat',
       'background-size': `${width}px ${height}px`,
-      'background-color': this.highlighted ? `rgba(255, 255,255,0.5)`: `rgba(0,0,0,0.60)`,
-      'border': this.highlighted ? '1px solid yellow' : '',
+      'background-color': this.highlighted ? `rgba(255, 255,255,0.5)` : `rgba(0,0,0,0.60)`,
+      border: this.highlighted ? '1px solid yellow' : '',
     };
   }
 
   get showStackSize() {
     return this.item && this.item.stackSize;
   }
-
 }
 </script>
 
 <style lang="scss" scoped>
-  .item-container{
-    position: absolute;
-    border: 1px solid white;
-  }
+.item-container {
+  position: absolute;
+  border: 1px solid white;
+}
 </style>

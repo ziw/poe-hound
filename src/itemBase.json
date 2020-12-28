@@ -337,9 +337,7 @@
       "Maelström Staff",
       "Judgement Staff"
     ],
-    "FishingRod": [
-      "Fishing Rod"
-    ],
+    "FishingRod": ["Fishing Rod"],
     "Quiver": [
       "Cured Quiver",
       "Rugged Quiver",
@@ -866,11 +864,6 @@
       "Warstaff",
       "FishingRod"
     ],
-    "Any Armor": [
-      "Gloves",
-      "Boots",
-      "Body Armour",
-      "Helmet"
-    ]
+    "Any Armor": ["Gloves", "Boots", "Body Armour", "Helmet"]
   }
 }

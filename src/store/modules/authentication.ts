@@ -1,7 +1,7 @@
-import { getStoreBuilder, BareActionContext } from "vuex-typex";
-import { RootState } from "../store"
-import { MODULES } from "@/constants";
-import { authenticate } from "@/api/api";
+import { getStoreBuilder, BareActionContext } from 'vuex-typex';
+import { RootState } from '../store';
+import { MODULES } from '@/constants';
+import { authenticate } from '@/api/api';
 import message from '@/i18n';
 import { pushApiJob } from '@/utils/jobQueue';
 import { remote } from 'electron';
@@ -28,28 +28,31 @@ export const initialAuthenticationState: AuthenticationState = {
   accountCacheDir: '',
   offlineMode: false,
   offlineAccounts: [],
-}
+};
 
-const builder = getStoreBuilder<RootState>().module(MODULES.authentication, initialAuthenticationState);
+const builder = getStoreBuilder<RootState>().module(
+  MODULES.authentication,
+  initialAuthenticationState,
+);
 
 //state
 const stateGetter = builder.state();
 
 //mutations
-function setIsLoading(state: AuthenticationState, payload: boolean){
+function setIsLoading(state: AuthenticationState, payload: boolean) {
   state.isLoading = payload;
 }
 
-function setSessionId(state: AuthenticationState, sessionId: string){
+function setSessionId(state: AuthenticationState, sessionId: string) {
   state.sessionId = sessionId;
 }
 
-function setErrorMessage(state: AuthenticationState, error: string){
+function setErrorMessage(state: AuthenticationState, error: string) {
   state.errorMessage = error;
 }
 
-function setAccountName(state: AuthenticationState, accountName: string){
-  state.accountName = accountName
+function setAccountName(state: AuthenticationState, accountName: string) {
+  state.accountName = accountName;
 }
 
 function setRootCacheDir(state: AuthenticationState, dir: string) {
@@ -69,60 +72,80 @@ function setofflineAccounts(state: AuthenticationState, accounts: string[]) {
 }
 
 //actions
-async function login(context: BareActionContext<AuthenticationState, RootState>, payload: { sessionId: string }){
+async function login(
+  context: BareActionContext<AuthenticationState, RootState>,
+  payload: { sessionId: string },
+) {
   authentication.setIsLoading(true);
   authentication.setErrorMessage('');
 
-  try{
+  try {
     const accountName = await pushApiJob(
       () => authenticate(payload.sessionId),
       message.jobs.authenticate_message,
     );
     authentication.setSessionId(payload.sessionId);
     authentication.setAccountName(accountName);
-    await authentication.createAccountCacheDir().catch(() => {/* ignore; TODO */});
-  }catch(e){
+    await authentication.createAccountCacheDir().catch(() => {
+      /* ignore; TODO */
+    });
+  } catch (e) {
     authentication.setErrorMessage(message.login.login_error_message);
-    throw(e);
-  }finally{
+    throw e;
+  } finally {
     authentication.setIsLoading(false);
   }
 }
 
-async function offlineLogin(context: BareActionContext<AuthenticationState, RootState>, payload: { accountName: string }) {
+async function offlineLogin(
+  context: BareActionContext<AuthenticationState, RootState>,
+  payload: { accountName: string },
+) {
   authentication.setOfflineMode(true);
   authentication.setAccountName(payload.accountName);
-  await authentication.createAccountCacheDir().catch(() => {/* ignore; TODO */});
+  await authentication.createAccountCacheDir().catch(() => {
+    /* ignore; TODO */
+  });
 }
 
 async function createRootCacheDir(): Promise<void> {
   const appDataDir = remote.app.getPath('userData');
   const cacheDirPath = join(appDataDir, 'inventoryCache');
-  return fs.mkdir(cacheDirPath, { recursive: true })
-          .then(() => authentication.setRootCacheDir(cacheDirPath))
-          .then(() => loadOfflineAccountsList(cacheDirPath));
+  return fs
+    .mkdir(cacheDirPath, { recursive: true })
+    .then(() => authentication.setRootCacheDir(cacheDirPath))
+    .then(() => loadOfflineAccountsList(cacheDirPath));
 }
 
 async function loadOfflineAccountsList(rootCacheDir: string): Promise<void> {
-  if(rootCacheDir) {
+  if (rootCacheDir) {
     fs.readdir(rootCacheDir)
-      .then(files => files.filter(async fileName => (await fs.lstat(join(rootCacheDir, fileName))).isDirectory))
-      .then(directories => authentication.setofflineAccounts(directories.map(decodeURIComponent)));
+      .then((files) =>
+        files.filter(
+          async (fileName) => (await fs.lstat(join(rootCacheDir, fileName))).isDirectory,
+        ),
+      )
+      .then((directories) =>
+        authentication.setofflineAccounts(directories.map(decodeURIComponent)),
+      );
   }
 }
 
 async function createAccountCacheDir(): Promise<void> {
   const accountName = stateGetter().accountName;
   const rootCacheDir = stateGetter().rootCacheDir;
-  if(accountName && rootCacheDir) {
+  if (accountName && rootCacheDir) {
     const cacheDirPath = join(rootCacheDir, encodeURIComponent(accountName));
-    return fs.mkdir(cacheDirPath, { recursive: true })
-            .then(() => authentication.setAccountCacheDir(cacheDirPath));
+    return fs
+      .mkdir(cacheDirPath, { recursive: true })
+      .then(() => authentication.setAccountCacheDir(cacheDirPath));
   }
 }
 
 export const authentication = {
-  get state() { return stateGetter() },
+  get state() {
+    return stateGetter();
+  },
 
   setIsLoading: builder.commit(setIsLoading),
   setSessionId: builder.commit(setSessionId),
@@ -137,4 +160,4 @@ export const authentication = {
   offlineLogin: builder.dispatch(offlineLogin),
   createRootCacheDir: builder.dispatch(createRootCacheDir),
   createAccountCacheDir: builder.dispatch(createAccountCacheDir),
-}
+};

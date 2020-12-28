@@ -16,10 +16,10 @@ export default interface StashPage {
   itemIds: string[];
 
   colour: {
-    r: number,
-    g: number,
-    b: number,
-  },
+    r: number;
+    g: number;
+    b: number;
+  };
 }
 
 export enum StashType {

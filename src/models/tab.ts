@@ -9,7 +9,6 @@ import { Item } from '@/models/item';
  * Can be backed by either a stashPage or a character
  */
 export default class Tab {
-
   public status: Status = Status.INIT;
   public itemIds: string[] = [];
 
@@ -38,35 +37,27 @@ export default class Tab {
     /**
      * background and border color
      */
-    public color: { r: number, g: number, b: number } = { r: 255, g: 255, b: 255 },
-  ){
-
-  }
+    public color: { r: number; g: number; b: number } = {
+      r: 255,
+      g: 255,
+      b: 255,
+    },
+  ) {}
 
   public static fromCharacter(char: Character, league: string) {
-    return new Tab(
-      char.name,
-      CharacterType.Character,
-      char.name,
-      league,
-    );
+    return new Tab(char.name, CharacterType.Character, char.name, league);
   }
 
   public static fromStashPage(stash: StashPage, league: string) {
-    return new Tab(
-      stash.n,
-      stash.type,
-      stash.i.toString(),
-      league,
-      stash.colour,
-    );
+    return new Tab(stash.n, stash.type, stash.i.toString(), league, stash.colour);
   }
 
   /**
    * returns an array of rendered items, aka items except socketed gems
    */
   get renderedItems(): Item[] {
-    return this.itemIds.map(id => ItemStore.getItemFromId(id))
-              .filter(item => item && item.inventoryId) as Item[];
+    return this.itemIds
+      .map((id) => ItemStore.getItemFromId(id))
+      .filter((item) => item && item.inventoryId) as Item[];
   }
 }

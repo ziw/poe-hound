@@ -1,7 +1,7 @@
 <template>
   <main id="app">
-    <router-view/>
-    <job-banner/>
+    <router-view />
+    <job-banner />
   </main>
 </template>
 
@@ -13,62 +13,59 @@ import JobBanner from '@/components/shared/JobBanner.vue';
 @Component({
   components: {
     JobBanner,
-  }
+  },
 })
-export default class App extends Vue {
-}
+export default class App extends Vue {}
 </script>
 
-
 <style lang="scss">
-
 @font-face {
-    font-family: OpenSans-Regular;
-    src: url('./assets/fonts/OpenSans-Regular.ttf');
-    font-weight: Regular;
+  font-family: OpenSans-Regular;
+  src: url('./assets/fonts/OpenSans-Regular.ttf');
+  font-weight: Regular;
 }
 @font-face {
-    font-family: OpenSans-Italic;
-    src: url('./assets/fonts/OpenSans-Italic.ttf');
-    font-weight: Italic;
+  font-family: OpenSans-Italic;
+  src: url('./assets/fonts/OpenSans-Italic.ttf');
+  font-weight: Italic;
 }
 @font-face {
-    font-family: OpenSans-Light;
-    src: url('./assets/fonts/OpenSans-Light.ttf');
-    font-weight: '300';
+  font-family: OpenSans-Light;
+  src: url('./assets/fonts/OpenSans-Light.ttf');
+  font-weight: '300';
 }
 @font-face {
-    font-family: OpenSans-LightItalic;
-    src: url('./assets/fonts/OpenSans-LightItalic.ttf');
-    font-weight: LightItalic;
+  font-family: OpenSans-LightItalic;
+  src: url('./assets/fonts/OpenSans-LightItalic.ttf');
+  font-weight: LightItalic;
 }
 @font-face {
-    font-family: OpenSans-SemiBold;
-    src: url('./assets/fonts/OpenSans-SemiBold.ttf');
-    font-weight: SemiBold;
+  font-family: OpenSans-SemiBold;
+  src: url('./assets/fonts/OpenSans-SemiBold.ttf');
+  font-weight: SemiBold;
 }
 @font-face {
-    font-family: OpenSans-Bold;
-    src: url('./assets/fonts/OpenSans-Bold.ttf');
-    font-weight: Bold;
+  font-family: OpenSans-Bold;
+  src: url('./assets/fonts/OpenSans-Bold.ttf');
+  font-weight: Bold;
 }
 @font-face {
-    font-family: FontinSmallCaps;
-    src : url('./assets/fonts/fontin-smallcaps-webfont.woff');
-    font-weight: normal;
+  font-family: FontinSmallCaps;
+  src: url('./assets/fonts/fontin-smallcaps-webfont.woff');
+  font-weight: normal;
 }
 
 html {
-    height: 100%;
+  height: 100%;
 }
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    margin: 0;
-    background-image: radial-gradient(100% 100%, #620909 0%, #230202 100%);
-    font-family: OpenSans-Regular;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  margin: 0;
+  background-image: radial-gradient(100% 100%, #620909 0%, #230202 100%);
+  font-family: OpenSans-Regular;
 
   .ant-tooltip {
     max-width: 450px;
@@ -90,16 +87,14 @@ body {
   color: #fff;
   position: relative;
 
-  .vs__dropdown-toggle{
-
+  .vs__dropdown-toggle {
     border: none;
     border-bottom: 1px solid white;
     border-radius: 0;
 
     .form-control,
     .vs__selected-tag,
-    .vs__selected
-    {
+    .vs__selected {
       color: white;
       opacity: 1;
     }
@@ -108,7 +103,7 @@ body {
       fill: white;
     }
 
-    .vs__clear svg{
+    .vs__clear svg {
       fill: white;
     }
   }

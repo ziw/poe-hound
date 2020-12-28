@@ -1,20 +1,21 @@
 <template>
   <div class="character-inventory">
-    <item-container v-for="config in renderingConfigs"
-        :item="config.item"
-        :unitDimension="unitDimension"
-        :highlighted="config.highlighted"
-        :left="config.x"
-        :top="config.y"
-        :w="config.w"
-        :h="config.h"
-        :key="config.item.id" />
+    <item-container
+      v-for="config in renderingConfigs"
+      :item="config.item"
+      :unitDimension="unitDimension"
+      :highlighted="config.highlighted"
+      :left="config.x"
+      :top="config.y"
+      :w="config.w"
+      :h="config.h"
+      :key="config.item.id"
+    />
   </div>
-
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 import Component from 'vue-class-component';
 import { session } from '@/store/modules/session';
 import { Prop } from 'vue/types/options';
@@ -29,18 +30,18 @@ const AppProps = Vue.extend({
   props: {
     renderingTab: Object as Prop<Tab>,
     dimension: Number,
-  }
+  },
 });
 
-const layoutMapping: { [key in InventoryId]?: { x: number, y: number }} = {
+const layoutMapping: { [key in InventoryId]?: { x: number; y: number } } = {
   BodyArmour: { x: 259, y: 101 },
   Gloves: { x: 167, y: 189 },
   Boots: { x: 351, y: 189 },
   Helm: { x: 258, y: 13 },
   Ring: { x: 208, y: 142 },
   Ring2: { x: 351, y: 142 },
-  Weapon: { x: 104, y: 17},
-  Offhand: { x:413, y: 17 },
+  Weapon: { x: 104, y: 17 },
+  Offhand: { x: 413, y: 17 },
   Weapon2: { x: 15, y: 17 },
   Offhand2: { x: 500, y: 17 },
   Belt: { x: 259, y: 231 },
@@ -55,36 +56,37 @@ const getPosition = (item: Item, dimension: number) => {
   return {
     x: position.x * (dimension / BASE_DIMENSION),
     y: position.y * (dimension / BASE_DIMENSION),
-  }
-}
+  };
+};
 
 @Component({
   components: {
     ItemContainer,
-  }
+  },
 })
 export default class CharacterInventory extends AppProps {
-
   get unitDimension() {
     return this.dimension / 14;
   }
 
   get renderingConfigs() {
-    if(!this.renderingTab){
+    if (!this.renderingTab) {
       return [];
     }
 
     const items = this.renderingTab.renderedItems;
-    let jewelCount = 0 ;
+    let jewelCount = 0;
 
-    return items.map(item => {
+    return items.map((item) => {
       let { x, y } = getPosition(item, this.dimension);
-      if(item.inventoryId === InventoryId.Flask
-          || item.inventoryId === InventoryId.MainInventory) {
-            x += (this.unitDimension) * item.x;
-        y += (this.unitDimension) * item.y;
-      }else if(item.inventoryId === InventoryId.PassiveJewels) {
-        x += (this.unitDimension) * (jewelCount++);
+      if (
+        item.inventoryId === InventoryId.Flask ||
+        item.inventoryId === InventoryId.MainInventory
+      ) {
+        x += this.unitDimension * item.x;
+        y += this.unitDimension * item.y;
+      } else if (item.inventoryId === InventoryId.PassiveJewels) {
+        x += this.unitDimension * jewelCount++;
       }
 
       return {
@@ -93,7 +95,7 @@ export default class CharacterInventory extends AppProps {
         y,
         w: item.w,
         h: item.h,
-        highlighted: itemInFilterResults(item)
+        highlighted: itemInFilterResults(item),
       };
     });
   }
@@ -101,9 +103,9 @@ export default class CharacterInventory extends AppProps {
 </script>
 
 <style lang="scss" scoped>
-  .character-inventory {
-    width: 100%;
-    height: 100%;
-    position: relative;
-  }
+.character-inventory {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
 </style>

@@ -39,74 +39,69 @@ export type RawItem = {
 export type NormalizedProperties = {
   quality?: number;
   level?: number;
-  requiredLevel?: number,
-  requiredStr?: number,
-  requiredDex?: number,
-  requiredInt?: number,
-  armour?: number,
-  evasion?: number,
-  energyShield?: number,
-}
+  requiredLevel?: number;
+  requiredStr?: number;
+  requiredDex?: number;
+  requiredInt?: number;
+  armour?: number;
+  evasion?: number;
+  energyShield?: number;
+};
 
 export type SocketProperties = {
-  numOfLinks: number,
-  numOfSockets: number,
-  hasAbyssalSocket: boolean,
-  hasWhiteSocket: boolean,
-  linkGroups: ScoketColor[][],
-}
+  numOfLinks: number;
+  numOfSockets: number;
+  hasAbyssalSocket: boolean;
+  hasWhiteSocket: boolean;
+  linkGroups: ScoketColor[][];
+};
 
 export type DecoratedNames = {
   gemName: string;
   currencyName: string;
   parsedTypeLine: string;
-}
+};
 
-export type Item =
-  RawItem &
+export type Item = RawItem &
   NormalizedProperties &
   DecoratedNames &
-  SocketProperties &
-  {
-    socketedItems: Item[],
+  SocketProperties & {
+    socketedItems: Item[];
     parsedMods: {
-      explicitMods: ItemMod[],
-      implicitMods: ItemMod[],
-      craftedMods: ItemMod[],
-      enchantedMods: ItemMod[],
-      fracturedMods: ItemMod[],
-    }
+      explicitMods: ItemMod[];
+      implicitMods: ItemMod[];
+      craftedMods: ItemMod[];
+      enchantedMods: ItemMod[];
+      fracturedMods: ItemMod[];
+    };
   };
 
 export type ItemLineContent = {
-  name: string,
-  values: ItemPropertyTuple[],
-  displayMode: number,
-  type: number,
-}
+  name: string;
+  values: ItemPropertyTuple[];
+  displayMode: number;
+  type: number;
+};
 
-type ItemPropertyTuple = [
-  string,
-  number,
-];
+type ItemPropertyTuple = [string, number];
 
 export enum InventoryId {
-  Belt= 'Belt',
-  Amulet= 'Amulet',
-  Flask= 'Flask',
-  Boots= 'Boots',
-  Helm= 'Helm',
-  Gloves= 'Gloves',
-  Ring= 'Ring',
-  Ring2= 'Ring2',
-  Weapon= 'Weapon',
-  Weapon2= 'Weapon2',
-  Offhand= 'Offhand',
-  Offhand2= 'Offhand2',
-  BodyArmour= 'BodyArmour',
-  MainInventory= 'MainInventory',
+  Belt = 'Belt',
+  Amulet = 'Amulet',
+  Flask = 'Flask',
+  Boots = 'Boots',
+  Helm = 'Helm',
+  Gloves = 'Gloves',
+  Ring = 'Ring',
+  Ring2 = 'Ring2',
+  Weapon = 'Weapon',
+  Weapon2 = 'Weapon2',
+  Offhand = 'Offhand',
+  Offhand2 = 'Offhand2',
+  BodyArmour = 'BodyArmour',
+  MainInventory = 'MainInventory',
   PassiveJewels = 'PassiveJewels',
-};
+}
 
 export enum ItemType {
   NORMAL = 0,
@@ -129,11 +124,11 @@ export enum Influence {
   Crusader = 'crusader',
 }
 
-export type ScoketColor = 'R' | 'G' | 'B' | 'W' /* White */ | 'A'  /* Abyss */;
+export type ScoketColor = 'R' | 'G' | 'B' | 'W' | /* White */ 'A' /* Abyss */;
 
 type Socket = {
-  group: number,
-  sColour: ScoketColor,
+  group: number;
+  sColour: ScoketColor;
 };
 
 export enum ItemModType {
@@ -145,9 +140,9 @@ export enum ItemModType {
 }
 
 export type ItemMod = {
-  type: ItemModType,
-  id: string,
-  fullText: string,
-  values: number[],
-  averageValue: number,
-}
+  type: ItemModType;
+  id: string;
+  fullText: string;
+  values: number[];
+  averageValue: number;
+};

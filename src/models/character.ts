@@ -1,4 +1,4 @@
-export default interface Character{
+export default interface Character {
   name: string;
   league: string;
   classId: number;
@@ -10,5 +10,5 @@ export default interface Character{
 }
 
 export enum CharacterType {
-  Character= 'Character',
-};
+  Character = 'Character',
+}
