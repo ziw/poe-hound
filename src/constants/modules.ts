@@ -3,4 +3,4 @@ export const MODULES = {
   session: 'session',
   job: 'job',
   filters: 'filters',
-}
+};

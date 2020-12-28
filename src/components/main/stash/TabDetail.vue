@@ -1,19 +1,14 @@
 <template>
-  <div class="tab-detail"
-    :style="styleObject">
+  <div class="tab-detail" :style="styleObject">
     <keep-alive>
-        <component
-          :is="selectedStashRenderer"
-          :dimension="dimension"
-          :renderingTab="renderingTab">
-        </component>
+      <component :is="selectedStashRenderer" :dimension="dimension" :renderingTab="renderingTab">
+      </component>
     </keep-alive>
-
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 import Component from 'vue-class-component';
 import Tab from '@/models/tab';
 import { session } from '@/store/modules/session';
@@ -31,11 +26,10 @@ import CharacterInventory from '@/components/main/stash/details/CharacterInvento
     NormalStash,
     QuadStash,
     CharacterInventory,
-  }
+  },
 })
 export default class TabDetail extends Vue {
-
-  static stashRenderer: { [key in (StashType | CharacterType)]?: string } = {
+  static stashRenderer: { [key in StashType | CharacterType]?: string } = {
     [StashType.NormalStash]: 'NormalStash',
     [StashType.QuadStash]: 'QuadStash',
     [CharacterType.Character]: 'CharacterInventory',
@@ -51,7 +45,7 @@ export default class TabDetail extends Vue {
 
   get selectedStashRenderer() {
     const tab = this.renderingTab;
-    if(tab){
+    if (tab) {
       return TabDetail.stashRenderer[tab.type];
     }
   }
@@ -69,8 +63,8 @@ export default class TabDetail extends Vue {
 </script>
 
 <style lang="scss">
-  .tab-detail {
-    margin-top: 5px;
-    position: relative;
-  }
+.tab-detail {
+  margin-top: 5px;
+  position: relative;
+}
 </style>

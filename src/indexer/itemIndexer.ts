@@ -1,8 +1,7 @@
-import { Item } from "@/models/item";
+import { Item } from '@/models/item';
 import TrieNode from '@/utils/trie';
 
 export default class ItemIndexer {
-
   private trie: TrieNode<string>;
 
   public constructor(
@@ -13,11 +12,11 @@ export default class ItemIndexer {
   }
 
   index(item: Item) {
-    if(!this.shouldIndex(item)){
+    if (!this.shouldIndex(item)) {
       return;
     }
     const mods = this.getIndexingProperties(item);
-    mods.forEach(mod => {
+    mods.forEach((mod) => {
       this.trie.insert(mod, item.id);
     });
   }
@@ -25,5 +24,4 @@ export default class ItemIndexer {
   query(q: string): string[] {
     return this.trie.find(q);
   }
-
 }

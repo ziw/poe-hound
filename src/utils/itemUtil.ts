@@ -45,7 +45,7 @@ export const decorateItem = (raw: RawItem): Item => {
       craftedMods: parseItemMods(raw.craftedMods, ItemModType.Crafted),
       enchantedMods: parseItemMods(raw.enchantMods, ItemModType.Enchanted),
       fracturedMods: parseItemMods(raw.fracturedMods, ItemModType.Fractured),
-    }
+    },
   };
 };
 
@@ -57,53 +57,54 @@ export const decorateItem = (raw: RawItem): Item => {
  */
 const parseTypeLine = (raw: RawItem) => {
   const { descrText, typeLine } = raw;
-  if(descrText && descrText.includes('Right click to drink')) {
+  if (descrText && descrText.includes('Right click to drink')) {
     //item is a flask
-    const matchedRecoveryFlask = RECOVERY_FLASKS.find(flaskBaseName => typeLine.includes(flaskBaseName));
+    const matchedRecoveryFlask = RECOVERY_FLASKS.find((flaskBaseName) =>
+      typeLine.includes(flaskBaseName),
+    );
     const words = typeLine.split(' ');
     const index = words.indexOf('Flask');
-    const flaskNames = matchedRecoveryFlask ?
-                        //recovery flask has an extra base name modifier. e.g. small, large, divine, eternal etc.
-                        [ words[index -2], words[index -1], 'Flask' ]
-
-                        //utility flask
-                        : [ words[index -1], 'Flask' ];
+    const flaskNames = matchedRecoveryFlask
+      ? //recovery flask has an extra base name modifier. e.g. small, large, divine, eternal etc.
+        [words[index - 2], words[index - 1], 'Flask']
+      : //utility flask
+        [words[index - 1], 'Flask'];
     return flaskNames.join(' ');
   }
 
   //non-flask item
   return typeLine;
-}
+};
 
 /**
  * Iterate the sockets field of an item and parse the links/sockets related values
  * @param raw Raw item to parse properties
  */
-const computedSocketsProperties = (raw: RawItem): SocketProperties  => {
+const computedSocketsProperties = (raw: RawItem): SocketProperties => {
   const sockets = raw.sockets || [];
   const numOfSockets = sockets.length;
   let hasAbyssalSocket = false;
   let hasWhiteSocket = false;
   const linkGroups: { [key: number]: ScoketColor[] } = {};
   sockets.forEach(({ group, sColour }) => {
-    if(sColour === 'A') {
+    if (sColour === 'A') {
       hasAbyssalSocket = true;
     }
-    if(sColour === 'W') {
+    if (sColour === 'W') {
       hasWhiteSocket = true;
     }
     const sockets = linkGroups[group];
-    linkGroups[group] = [ ...(sockets ?? []), sColour ];
+    linkGroups[group] = [...(sockets ?? []), sColour];
   });
 
   const allLinkGroups = Object.values(linkGroups);
   return {
-    numOfLinks: sockets.length ? Math.max(...allLinkGroups.map(sockets => sockets.length)) : 0,
+    numOfLinks: sockets.length ? Math.max(...allLinkGroups.map((sockets) => sockets.length)) : 0,
     numOfSockets,
     hasAbyssalSocket,
     hasWhiteSocket,
     linkGroups: allLinkGroups,
-  }
+  };
 };
 
 /**
@@ -112,11 +113,12 @@ const computedSocketsProperties = (raw: RawItem): SocketProperties  => {
  */
 const normalizeItemProperties = (raw: RawItem): NormalizedProperties => {
   const properties: NormalizedProperties = {};
-  if(!raw.properties) {
+  if (!raw.properties) {
     return properties;
   }
 
-  const parsePropValue = (prop: ItemLineContent, defaultValue?: number) => parseInt(prop.values[0][0]) || defaultValue;
+  const parsePropValue = (prop: ItemLineContent, defaultValue?: number) =>
+    parseInt(prop.values[0][0]) || defaultValue;
   const propertyMapper: { [k: string]: keyof NormalizedProperties } = {
     Level: 'level',
     Quality: 'quality',
@@ -133,23 +135,23 @@ const normalizeItemProperties = (raw: RawItem): NormalizedProperties => {
   };
 
   //parse properites. e.g. quality, gem level, evasion, armor or ES
-  (raw.properties || []).forEach(prop => {
+  (raw.properties || []).forEach((prop) => {
     const name = prop.name.replace(/\s+/, '');
     const propKey = propertyMapper[name];
-    if(propKey){
+    if (propKey) {
       properties[propKey] = parsePropValue(prop);
     }
   });
 
   //parse requirements. e.g. character level, str, dex or int
-  (raw.requirements || []).forEach(req => {
+  (raw.requirements || []).forEach((req) => {
     const reqKey = requirementMapper[req.name];
-    if(reqKey) {
+    if (reqKey) {
       properties[reqKey] = parsePropValue(req);
     }
   });
   return properties;
-}
+};
 
 /**
  *
@@ -159,15 +161,15 @@ const normalizeItemProperties = (raw: RawItem): NormalizedProperties => {
  */
 const parseItemMods = (rawMods: string[], type: ItemModType, skipParseValue = false): ItemMod[] => {
   const regex = /(\d+(\.\d+)?)/g;
-  return rawMods.map(rawModString => {
+  return rawMods.map((rawModString) => {
     const id = rawModString.replace(regex, '#');
     const values: number[] = [];
     let averageValue = 0;
 
-    if(!skipParseValue) {
+    if (!skipParseValue) {
       let m;
       let total = 0;
-      while((m = regex.exec(rawModString))!= null ){
+      while ((m = regex.exec(rawModString)) != null) {
         const val = parseFloat(m[0]);
         values.push(val);
         total += val;
@@ -175,7 +177,7 @@ const parseItemMods = (rawMods: string[], type: ItemModType, skipParseValue = fa
       //TODO. Fix how mod with multiple numbers are calculated. Taking average is an initial solution.
       //It's missing some edge cases such as when two numbers in a mod are not related at all
       //i.e. # change to trigger level # molten burst on hit
-      averageValue = Math.floor(total/values.length);
+      averageValue = Math.floor(total / values.length);
     }
 
     return {
@@ -184,6 +186,6 @@ const parseItemMods = (rawMods: string[], type: ItemModType, skipParseValue = fa
       values,
       fullText: rawModString,
       averageValue,
-    }
+    };
   });
-}
+};

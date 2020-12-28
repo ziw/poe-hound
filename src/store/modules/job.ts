@@ -1,6 +1,6 @@
-import { getStoreBuilder, BareActionContext } from "vuex-typex";
-import { RootState } from "../store"
-import { MODULES } from "@/constants";
+import { getStoreBuilder, BareActionContext } from 'vuex-typex';
+import { RootState } from '../store';
+import { MODULES } from '@/constants';
 import { JobStatus } from '@/utils/jobQueue';
 
 export interface JobState {
@@ -16,12 +16,14 @@ export const initialJobState: JobState = {
   currentJobMessage: '',
   currentJobStatus: '',
   pastJobs: [],
-}
+};
 
 const builder = getStoreBuilder<RootState>().module(MODULES.job, initialJobState);
 
 export const job = {
-  get state() { return builder.state()() },
+  get state() {
+    return builder.state()();
+  },
 
   setRemainingJobCount: builder.commit((state, count: number) => {
     state.remainingJobCount = count;

@@ -1,157 +1,178 @@
 <template>
-  <form class="filter-form"
-    v-on:submit.prevent="filterItems"
-    v-on:reset.prevent="clearFilters">
-    <filter-section :sectionTitle="labels.sections.itemNameType"
-      class="filter-form__block--stretch">
+  <form class="filter-form" v-on:submit.prevent="filterItems" v-on:reset.prevent="clearFilters">
+    <filter-section
+      :sectionTitle="labels.sections.itemNameType"
+      class="filter-form__block--stretch"
+    >
       <text-filter
         class="filter-form__block--stretch"
         :filterType="indexFilterTypes.name"
-        :label="labels.itemName"/>
+        :label="labels.itemName"
+      />
       <text-filter
         class="filter-form__block--stretch"
         :filterType="indexFilterTypes.typeLine"
-        :label="labels.itemTypeLine"/>
+        :label="labels.itemTypeLine"
+      />
       <text-filter
         class="filter-form__block"
         :filterType="functionalFilterTypes.category"
         :filterOptions="itemCategoryOptions"
-        :label="labels.itemCategory"/>
+        :label="labels.itemCategory"
+      />
       <text-filter
         class="filter-form__block"
         :filterType="functionalFilterTypes.rarity"
         :filterOptions="itemRarityOptions"
-        :label="labels.itemRarity"/>
+        :label="labels.itemRarity"
+      />
     </filter-section>
 
-    <filter-section :sectionTitle="labels.sections.mods"
-      class="filter-form__block--stretch">
+    <filter-section :sectionTitle="labels.sections.mods" class="filter-form__block--stretch">
       <indexer-filter-group
         class="filter-form__block--stretch"
         :filterType="indexFilterTypes.explicitMods"
         :maxFilterCount="maxExplicitModsFilter"
-        :label="labels.explicitMods"/>
+        :label="labels.explicitMods"
+      />
       <text-filter
         class="filter-form__block--stretch"
         :filterType="indexFilterTypes.implicitMods"
-        :label="labels.implicitMods"/>
+        :label="labels.implicitMods"
+      />
       <text-filter
         class="filter-form__block--stretch"
         :supportAnyOption="true"
         :filterType="indexFilterTypes.enchantedMods"
-        :label="labels.enchantedMods"/>
+        :label="labels.enchantedMods"
+      />
       <text-filter
         class="filter-form__block--stretch"
         :filterType="indexFilterTypes.craftedMods"
         :supportAnyOption="true"
-        :label="labels.craftedMods"/>
+        :label="labels.craftedMods"
+      />
     </filter-section>
 
-    <filter-section :sectionTitle="labels.sections.influence"
-      class="filter-form__block--stretch">
+    <filter-section :sectionTitle="labels.sections.influence" class="filter-form__block--stretch">
       <text-filter
         class="filter-form__block--3"
         :filterType="functionalFilterTypes.shaped"
         :filterOptions="booleanWithAnyOptions"
-        :label="labels.shaped"/>
+        :label="labels.shaped"
+      />
 
       <text-filter
         class="filter-form__block--3"
         :filterType="functionalFilterTypes.elder"
         :filterOptions="booleanWithAnyOptions"
-        :label="labels.elder"/>
+        :label="labels.elder"
+      />
 
       <text-filter
         class="filter-form__block--3"
         :filterType="functionalFilterTypes.hunter"
         :filterOptions="booleanWithAnyOptions"
-        :label="labels.hunter"/>
+        :label="labels.hunter"
+      />
 
       <text-filter
         class="filter-form__block--3"
         :filterType="functionalFilterTypes.redeemer"
         :filterOptions="booleanWithAnyOptions"
-        :label="labels.redeemer"/>
+        :label="labels.redeemer"
+      />
 
       <text-filter
         class="filter-form__block--3"
         :filterType="functionalFilterTypes.warlord"
         :filterOptions="booleanWithAnyOptions"
-        :label="labels.warlord"/>
+        :label="labels.warlord"
+      />
 
       <text-filter
         class="filter-form__block--3"
         :filterType="functionalFilterTypes.crusader"
         :filterOptions="booleanWithAnyOptions"
-        :label="labels.crusader"/>
+        :label="labels.crusader"
+      />
     </filter-section>
 
-    <filter-section :sectionTitle="labels.sections.properties"
-      class="filter-form__block--stretch">
+    <filter-section :sectionTitle="labels.sections.properties" class="filter-form__block--stretch">
       <text-filter
         class="filter-form__block--3"
         :filterType="functionalFilterTypes.corrupted"
         :filterOptions="booleanWithAnyOptions"
-        :label="labels.corrupted"/>
+        :label="labels.corrupted"
+      />
       <text-filter
         class="filter-form__block--3"
         :filterType="functionalFilterTypes.identified"
         :filterOptions="booleanWithAnyOptions"
-        :label="labels.identified"/>
+        :label="labels.identified"
+      />
 
       <range-filter
         class="filter-form__block--3"
         :minFilterType="functionalFilterTypes.minQuality"
         :maxFilterType="functionalFilterTypes.maxQuality"
-        :label="labels.quality"/>
+        :label="labels.quality"
+      />
 
       <range-filter
         class="filter-form__block--3"
         :minFilterType="functionalFilterTypes.minLevel"
         :maxFilterType="functionalFilterTypes.maxLevel"
-        :label="labels.level"/>
+        :label="labels.level"
+      />
       <range-filter
         class="filter-form__block--3"
         :minFilterType="functionalFilterTypes.minArmor"
         :maxFilterType="functionalFilterTypes.maxArmor"
-        :label="labels.armor"/>
+        :label="labels.armor"
+      />
       <range-filter
         class="filter-form__block--3"
         :minFilterType="functionalFilterTypes.minEvasion"
         :maxFilterType="functionalFilterTypes.maxEvasion"
-        :label="labels.evasion"/>
+        :label="labels.evasion"
+      />
       <range-filter
         class="filter-form__block--3"
         :minFilterType="functionalFilterTypes.minEnergyShield"
         :maxFilterType="functionalFilterTypes.maxEnergyShield"
-        :label="labels.energyShield"/>
+        :label="labels.energyShield"
+      />
     </filter-section>
 
-    <filter-section :sectionTitle="labels.sections.sockets"
-      class="filter-form__block--stretch">
+    <filter-section :sectionTitle="labels.sections.sockets" class="filter-form__block--stretch">
       <range-filter
         class="filter-form__block--3"
         :minFilterType="functionalFilterTypes.minSockets"
         :maxFilterType="functionalFilterTypes.maxSockets"
-        :label="labels.numSockets"/>
+        :label="labels.numSockets"
+      />
 
       <range-filter
         class="filter-form__block--3"
         :minFilterType="functionalFilterTypes.minLinks"
         :maxFilterType="functionalFilterTypes.maxLinks"
-        :label="labels.numLinks"/>
+        :label="labels.numLinks"
+      />
 
       <text-filter
         class="filter-form__block--3"
         :filterType="functionalFilterTypes.hasAbyssalSocket"
         :filterOptions="booleanWithAnyOptions"
-        :label="labels.abyssalSocket"/>
+        :label="labels.abyssalSocket"
+      />
 
       <text-filter
         class="filter-form__block--3"
         :filterType="functionalFilterTypes.hasWhiteSocket"
         :filterOptions="booleanWithAnyOptions"
-        :label="labels.whiteSocket"/>
+        :label="labels.whiteSocket"
+      />
     </filter-section>
 
     <div class="filter-form__submit-btn filter-form__block">
@@ -168,7 +189,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 import Component from 'vue-class-component';
 import { session } from '@/store/modules/session';
 import { filters } from '@/store/modules/filters';
@@ -190,10 +211,9 @@ import { rarityCheck } from '@/utils';
     PrimaryButton,
     FilterSection,
     IndexerFilterGroup,
-  }
+  },
 })
 export default class FilterForm extends Vue {
-
   labels = messages.filters;
   indexFilterTypes = IndexerFilterType;
   functionalFilterTypes = FunctionalFilterType;
@@ -220,29 +240,29 @@ export default class FilterForm extends Vue {
 </script>
 
 <style lang="scss" scoped>
-  .filter-form {
-    display: flex;
-    flex-wrap: wrap;
+.filter-form {
+  display: flex;
+  flex-wrap: wrap;
 
-    &__submit-btn {
-      margin-top: 15px;
-      padding: 0 20px;
+  &__submit-btn {
+    margin-top: 15px;
+    padding: 0 20px;
+  }
+
+  &__block {
+    width: 50%;
+
+    &--3 {
+      width: 32%;
     }
 
-    &__block {
-      width: 50%;
+    &--4 {
+      width: 25%;
+    }
 
-      &--3 {
-        width: 32%;
-      }
-
-      &--4 {
-        width: 25%;
-      }
-
-      &--stretch {
-        width: 100%;
-      }
+    &--stretch {
+      width: 100%;
     }
   }
+}
 </style>

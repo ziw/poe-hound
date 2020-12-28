@@ -5,20 +5,20 @@
       @input="onLeagueSwitch"
       :searchable="false"
       :options="leagues"
-      :value="currentLeagueName"></v-select>
+      :value="currentLeagueName"
+    ></v-select>
   </header>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 import Component from 'vue-class-component';
 import { session } from '@/store/modules/session';
 
-@Component({
-})
+@Component({})
 export default class MainHeader extends Vue {
   get leagues() {
-    return session.state.leagues.map(league => league.name);
+    return session.state.leagues.map((league) => league.name);
   }
 
   get currentLeagueName() {
@@ -30,26 +30,23 @@ export default class MainHeader extends Vue {
     session.actions.loadAllCharInventoriesFromLeague(newLeagueName);
     session.actions.loadAllStashItemsFromLeague(newLeagueName);
   }
-
 }
 </script>
 
 <style lang="scss">
-  .main-header {
-    height: 68px;
-    background-image: radial-gradient(100% 100%, #620909 0%, #230202 100%);
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
+.main-header {
+  height: 68px;
+  background-image: radial-gradient(100% 100%, #620909 0%, #230202 100%);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
 
-    &__league-select{
-      width: 150px;
+  &__league-select {
+    width: 150px;
 
-      .clear {
-        display: none;
-      }
+    .clear {
+      display: none;
     }
-
-
   }
+}
 </style>

@@ -1,13 +1,15 @@
 <template>
-  <button class="primary-button"
-      :class="{
-        [`primary-button__${this.size}`]: true,
-        [`primary-button__${this.styleType}`]: true,
-      }"
-      :style="{
-        width: this.stretch ? '100%' : '',
-      }"
-      v-on="$listeners">
+  <button
+    class="primary-button"
+    :class="{
+      [`primary-button__${this.size}`]: true,
+      [`primary-button__${this.styleType}`]: true,
+    }"
+    :style="{
+      width: this.stretch ? '100%' : '',
+    }"
+    v-on="$listeners"
+  >
     <slot></slot>
   </button>
 </template>
@@ -29,24 +31,20 @@ const AppProps = Vue.extend({
     },
 
     stretch: Boolean,
-  }
-})
+  },
+});
 
 @Component({})
-export default class PrimaryButton extends AppProps {
-
-}
-
+export default class PrimaryButton extends AppProps {}
 </script>
 
 <style lang="scss">
-.primary-button{
-
+.primary-button {
   background: none;
   border: none;
   cursor: pointer;
 
-  &__square{
+  &__square {
     background: #ffffff;
     border-radius: 4px;
     font-family: OpenSans-Bold;
@@ -57,20 +55,18 @@ export default class PrimaryButton extends AppProps {
     padding: 8px 12px;
     height: 46px;
 
-    &:hover{
-      color:#ffffff;
-      background:#8b0d0d;
+    &:hover {
+      color: #ffffff;
+      background: #8b0d0d;
     }
 
-    &:disabled{
+    &:disabled {
       opacity: 0.3;
       cursor: not-allowed;
       background: #ffffff;
       color: #8b0d0d;
-      transition: .2s ease-in-out;
+      transition: 0.2s ease-in-out;
     }
   }
-
 }
-
 </style>

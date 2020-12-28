@@ -1,10 +1,10 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from 'vue';
+import Router from 'vue-router';
 import LoginPage from './views/LoginPage.vue';
 import Main from './views/Main.vue';
 import { authentication } from '@/store/modules/authentication';
 
-Vue.use(Router)
+Vue.use(Router);
 
 const router = new Router({
   routes: [
@@ -18,14 +18,14 @@ const router = new Router({
       name: 'main',
       component: Main,
       beforeEnter: (to, from, next) => {
-        if(authentication.state.offlineMode || authentication.state.sessionId){
+        if (authentication.state.offlineMode || authentication.state.sessionId) {
           next();
-        }else{
+        } else {
           next('/');
         }
-      }
+      },
     },
-  ]
-})
+  ],
+});
 
 export default router;

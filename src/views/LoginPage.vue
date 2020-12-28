@@ -1,15 +1,10 @@
 <template>
   <div class="login-page">
     <login-logo />
-    <img src="@/assets/gradient-border.png"
-         class="login-page__divider" alt="">
-    <login-form
-      v-on:offlineLogin="offlineLogin"
-      v-on:login="tryLogin" />
+    <img src="@/assets/gradient-border.png" class="login-page__divider" alt="" />
+    <login-form v-on:offlineLogin="offlineLogin" v-on:login="tryLogin" />
   </div>
-
 </template>
-
 
 <script lang="ts">
 import Vue from 'vue';
@@ -23,17 +18,16 @@ import { session } from '@/store/modules/session';
   components: {
     LoginLogo,
     LoginForm,
-  }
+  },
 })
 export default class LoginPage extends Vue {
-
   constructor() {
     super();
     authentication.createRootCacheDir();
   }
 
-  async tryLogin(sessionId: string){
-    try{
+  async tryLogin(sessionId: string) {
+    try {
       await authentication.login({ sessionId });
       await session.actions.dispatchLoadCharacters();
       await session.actions.dispatchLoadAllLeagueStashInfo();
@@ -42,9 +36,7 @@ export default class LoginPage extends Vue {
       const currentLeagueName = session.state.currentLeagueName;
       await session.actions.loadAllCharInventoriesFromLeague(currentLeagueName);
       await session.actions.loadAllStashItemsFromLeague(currentLeagueName);
-    }catch{
-
-    }
+    } catch {}
   }
 
   async offlineLogin(accountName: string) {
@@ -59,16 +51,15 @@ export default class LoginPage extends Vue {
 </script>
 
 <style lang="scss">
-  .login-page {
-    display: flex;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-    padding: 0px 35px;
+.login-page {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 0px 35px;
 
-    &__divider{
-      margin: 0px 45px;
-    }
-
+  &__divider {
+    margin: 0px 45px;
   }
+}
 </style>

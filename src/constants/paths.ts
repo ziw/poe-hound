@@ -10,9 +10,9 @@ export const PATHS = {
   //query ?league={0}&tabs=0&tabIndex={1}&accountName={2}
   stashUrl: '/character-window/get-stash-items',
 
-   //query ?league={0}&tabs=1&accountName={1}
+  //query ?league={0}&tabs=1&accountName={1}
   stashMetadataUrl: '/character-window/get-stash-items',
 
   //query ?accountName={0}&realm=pc&character={1}
   passiveTreeUrl: '/character-window/get-passive-skills',
-}
+};

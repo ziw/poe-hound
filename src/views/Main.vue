@@ -1,15 +1,13 @@
 <template>
   <main class="main-page">
-    <button @click="logout" class="main-page__logout-button">
-      Log out
-    </button>
+    <button @click="logout" class="main-page__logout-button">Log out</button>
     <main-header></main-header>
     <main-content></main-content>
   </main>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 import Component from 'vue-class-component';
 import MainHeader from '@/components/main/MainHeader.vue';
 import MainContent from '@/components/main/MainContent.vue';
@@ -18,10 +16,9 @@ import MainContent from '@/components/main/MainContent.vue';
   components: {
     MainHeader,
     MainContent,
-  }
+  },
 })
-export default class Main extends Vue{
-
+export default class Main extends Vue {
   logout() {
     this.$router.push('/');
   }
@@ -29,15 +26,13 @@ export default class Main extends Vue{
 </script>
 
 <style lang="scss">
-  .main-page {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    &__logout-button {
-      position: absolute;
-    }
-
+.main-page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  &__logout-button {
+    position: absolute;
   }
+}
 </style>
-

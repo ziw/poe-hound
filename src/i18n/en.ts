@@ -59,7 +59,7 @@ const en = {
       sockets: 'Links and Sockets',
       influence: 'Influence',
       properties: 'Properties',
-    }
+    },
   },
 
   mods: {
@@ -67,7 +67,7 @@ const en = {
     unided: 'Unidentified',
     quality: 'Quality',
     level: 'Level',
-  }
-}
+  },
+};
 
 export default en;

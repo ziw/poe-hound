@@ -23,7 +23,7 @@ class JobQueue {
           console.log(`${left} seconds left`);
           left--;
         }, 1000);
-        return new Promise<void>(resolve => {
+        return new Promise<void>((resolve) => {
           setTimeout(() => {
             clearInterval(countDownId);
             resolve();
@@ -72,10 +72,10 @@ class JobQueue {
     if (this.currentJob) {
       this.currentJob
         .executeCallback()
-        .then(value => {
+        .then((value) => {
           this.currentJob!.resolveWith(value);
         })
-        .catch(error => {
+        .catch((error) => {
           this.currentJob!.rejectWith(error);
         })
         .finally(() => {
@@ -87,7 +87,7 @@ class JobQueue {
 
   private markAsDone() {
     const id = this.currentJob!.id;
-    this.queue = this.queue.filter(job => job.id !== id);
+    this.queue = this.queue.filter((job) => job.id !== id);
     if (this.currentJob) {
       jobModule.addPastJob(this.currentJob.jobStatus);
       this.currentJob = null;
@@ -120,12 +120,9 @@ export type JobStatus = {
  * @param apiTask API call to be invoked
  * @param message job message
  */
-export function pushApiJob<T>(
-  apiTask: () => Promise<T>,
-  message: string,
-): Promise<T> {
+export function pushApiJob<T>(apiTask: () => Promise<T>, message: string): Promise<T> {
   const { done } = queue.pushJob(apiTask, message);
-  return done.catch(error => {
+  return done.catch((error) => {
     console.log(`error`, error);
     if (error && error.statusCode === 429) {
       queue.pause(40);

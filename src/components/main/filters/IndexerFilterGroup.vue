@@ -1,32 +1,45 @@
 <template>
   <div class="indexer-filter-group">
-    <div v-for="(filterInstance, i) in matchedFilters"
-        class="indexer-filter-group__filter"
-        :key="`${filterInstance.type}.${i}`">
+    <div
+      v-for="(filterInstance, i) in matchedFilters"
+      class="indexer-filter-group__filter"
+      :key="`${filterInstance.type}.${i}`"
+    >
       <text-filter
         class="indexer-filter-group__input"
-        v-on:filterUpdate="filterValue => onFilterUpdate(filterValue, filterInstance)"
+        v-on:filterUpdate="(filterValue) => onFilterUpdate(filterValue, filterInstance)"
         :filterType="filterInstance.type"
         :filterSerial="filterInstance.serial"
         :useCustomFilterFunction="true"
-        :label="i === 0 ? label : undefined"/>
+        :label="i === 0 ? label : undefined"
+      />
       <div class="indexer-filter-group__range">
-        <input type="text" class="indexer-filter-group__range-input"
-          v-on:input="e => onRangeUpdate(filterInstance, e, 'minValue')"
-          :placeholder="labels.min">
-        <input type="text" class="indexer-filter-group__range-input"
-          v-on:input="e => onRangeUpdate(filterInstance, e, 'maxValue')"
-          :placeholder="labels.max">
+        <input
+          type="text"
+          class="indexer-filter-group__range-input"
+          v-on:input="(e) => onRangeUpdate(filterInstance, e, 'minValue')"
+          :placeholder="labels.min"
+        />
+        <input
+          type="text"
+          class="indexer-filter-group__range-input"
+          v-on:input="(e) => onRangeUpdate(filterInstance, e, 'maxValue')"
+          :placeholder="labels.max"
+        />
       </div>
       <div class="indexer-filter-group__control">
-        <a-icon type="close"
+        <a-icon
+          type="close"
           v-if="i !== 0"
           @click="removeFilter(filterInstance)"
-          class="indexer-filter-group__control--plus"/>
-        <a-icon type="plus"
-          v-if="(i === (matchedFilters.length -1)) && matchedFilters.length < maxFilterCount "
+          class="indexer-filter-group__control--plus"
+        />
+        <a-icon
+          type="plus"
+          v-if="i === matchedFilters.length - 1 && matchedFilters.length < maxFilterCount"
           @click="addFilter(filterInstance)"
-          class="indexer-filter-group__control--plus"/>
+          class="indexer-filter-group__control--plus"
+        />
       </div>
     </div>
   </div>
@@ -45,20 +58,19 @@ const AppProps = Vue.extend({
     label: String,
     filterType: String,
     maxFilterCount: Number,
-  }
+  },
 });
 
 @Component({
   components: {
-    TextFilter
-  }
+    TextFilter,
+  },
 })
 export default class IndexerFilterGroup extends AppProps {
-
   labels = messages.filters;
 
   get matchedFilters() {
-    return filters.state.indexerFilters.filter(f => f.type === this.filterType);
+    return filters.state.indexerFilters.filter((f) => f.type === this.filterType);
   }
 
   addFilter(filterInstance: Filter<IndexerFilterType>) {
@@ -79,13 +91,13 @@ export default class IndexerFilterGroup extends AppProps {
     filters.mutations.setFilterValue({
       type,
       serial,
-      value: newValue
+      value: newValue,
     });
     filters.actions.filterItems();
   }
 
   onRangeUpdate(filterInstance: Filter<IndexerFilterType>, e: KeyboardEvent, property: string) {
-    const rangeValue = parseInt((<HTMLInputElement>e.target).value?? '') || undefined;
+    const rangeValue = parseInt((<HTMLInputElement>e.target).value ?? '') || undefined;
     const { type, serial, value: oldValue } = filterInstance;
     const newValue: ModFilterValue = {
       ...oldValue,
@@ -101,42 +113,41 @@ export default class IndexerFilterGroup extends AppProps {
 }
 </script>
 <style lang="scss" scoped>
-  .indexer-filter-group {
+.indexer-filter-group {
+  &__filter {
+    display: flex;
+  }
 
-    &__filter {
-      display: flex;
-    }
+  &__input {
+    flex-grow: 1;
+  }
 
-    &__input {
-      flex-grow: 1;
-    }
+  &__control {
+    width: 50px;
+    padding: 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-    &__control {
-      width: 50px;
-      padding: 0 5px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      i {
-        cursor: pointer;
-      }
-    }
-
-    &__range {
-      width: 100px;
-      padding: 0 5px;
-      display: flex;
-    }
-
-    &__range-input {
-      margin: 0 5px;
-      width: 35px;
-      height: 30px;
-      border: none;
-      outline: none;
-      background: none;
-      border-bottom: 1px solid #ffffff;
+    i {
+      cursor: pointer;
     }
   }
+
+  &__range {
+    width: 100px;
+    padding: 0 5px;
+    display: flex;
+  }
+
+  &__range-input {
+    margin: 0 5px;
+    width: 35px;
+    height: 30px;
+    border: none;
+    outline: none;
+    background: none;
+    border-bottom: 1px solid #ffffff;
+  }
+}
 </style>
