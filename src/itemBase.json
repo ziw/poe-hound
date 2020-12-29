@@ -25,7 +25,10 @@
       "Vaal Claw",
       "Imperial Claw",
       "Terror Claw",
-      "Gemini Claw"
+      "Gemini Claw",
+      "Shadow Fangs",
+      "Malign Fangs",
+      "Void Fangs"
     ],
     "Dagger": [
       "Glass Shank",
@@ -37,7 +40,11 @@
       "Trisula",
       "Gutting Knife",
       "Ambusher",
-      "Sai"
+      "Sai",
+      "Hollowpoint Dagger",
+      "Pressurised Dagger",
+      "Pneumatic Dagger",
+      "Ethereal Blade"
     ],
     "Wand": [
       "Driftwood Wand",
@@ -59,10 +66,14 @@
       "Tornado Wand",
       "Prophecy Wand",
       "Profane Wand",
+      "Assembler Wand",
+      "Congregator Wand",
+      "Accumulator Wand",
       "Convoking Wand"
     ],
     "One Hand Sword": [
       "Charan's Sword",
+      "Golden Blade",
       "Rusted Sword",
       "Copper Sword",
       "Sabre",
@@ -88,6 +99,9 @@
       "Eternal Sword",
       "Midnight Blade",
       "Tiger Hook",
+      "Fickle Spiritblade",
+      "Capricious Spiritblade",
+      "Anarchic Spiritblade",
       "Rusted Spike",
       "Whalebone Rapier",
       "Battered Foil",
@@ -139,7 +153,10 @@
       "Vaal Hatchet",
       "Royal Axe",
       "Infernal Axe",
-      "Runic Hatchet"
+      "Runic Hatchet",
+      "Maltreatment Axe",
+      "Disapprobation Axe",
+      "Psychotic Axe"
     ],
     "One Hand Mace": [
       "Driftwood Club",
@@ -163,10 +180,13 @@
       "Tenderizer",
       "Gavel",
       "Legion Hammer",
-      "Pernarch",
+      "Pernach",
       "Auric Mace",
       "Nightmare Mace",
-      "Behemoth Mace"
+      "Behemoth Mace",
+      "Flare Mace",
+      "Crack Mace",
+      "Boom Mace"
     ],
     "Sceptre": [
       "Driftwood Sceptre",
@@ -193,7 +213,10 @@
       "Vaal Sceptre",
       "Carnal Sceptre",
       "Void Sceptre",
-      "Sambar Sceptre"
+      "Sambar Sceptre",
+      "Oscillating Sceptre",
+      "Stabilising Sceptre",
+      "Alternating Sceptre"
     ],
     "Rune Dagger": [
       "Carving Knife",
@@ -210,7 +233,10 @@
       "Ezomyte Dagger",
       "Platinum Kris",
       "Imperial Skean",
-      "Demon Dagger"
+      "Demon Dagger",
+      "Flickerflame Blade",
+      "Flashfire Blade",
+      "Infernal Blade"
     ],
     "Bow": [
       "Crude Bow",
@@ -237,7 +263,10 @@
       "Spine Bow",
       "Imperial Bow",
       "Harbinger Bow",
-      "Maraketh Bow"
+      "Maraketh Bow",
+      "Hedron Bow",
+      "Foundry Bow",
+      "Solarine Bow"
     ],
     "Staff": [
       "Gnarled Branch",
@@ -252,7 +281,10 @@
       "Primordial Staff",
       "Lathi",
       "Imperial Staff",
-      "Eclipse Staff"
+      "Eclipse Staff",
+      "Transformer Staff",
+      "Reciprocation Staff",
+      "Battery Staff"
     ],
     "Two Hand Sword": [
       "Corroded Blade",
@@ -276,7 +308,10 @@
       "Vaal Greatsword",
       "Lion Sword",
       "Infernal Sword",
-      "Exquisite Blade"
+      "Exquisite Blade",
+      "Rebuking Blade",
+      "Blasting Blade",
+      "Banishing Blade"
     ],
     "Two Hand Axe": [
       "Stone Axe",
@@ -300,7 +335,10 @@
       "Vaal Axe",
       "Despot Axe",
       "Void Axe",
-      "Fleshripper"
+      "Fleshripper",
+      "Prime Cleaver",
+      "Honed Cleaver",
+      "Apex Cleaver"
     ],
     "Two Hand Mace": [
       "Driftwood Maul",
@@ -324,7 +362,10 @@
       "Meatgrinder",
       "Imperial Maul",
       "Terror Maul",
-      "Coronal Maul"
+      "Coronal Maul",
+      "Blunt Force Condenser",
+      "Crushing Force Magnifier",
+      "Impact Force Propagator "
     ],
     "Warstaff": [
       "Iron Staff",
@@ -335,7 +376,10 @@
       "Foul Staff",
       "Ezomyte Staff",
       "Maelström Staff",
-      "Judgement Staff"
+      "Judgement Staff",
+      "Capacity Rod",
+      "Potentiality Rod",
+      "Eventuality Rod"
     ],
     "FishingRod": ["Fishing Rod"],
     "Quiver": [
@@ -373,6 +417,9 @@
       "Ezomyte Tower Shield",
       "Colossal Tower Shield",
       "Pinnacle Tower Shield",
+      "Exothermic Tower Shield",
+      "Magmatic Tower Shield",
+      "Heat-attuned Tower Shield",
       "Goathide Buckler",
       "Pine Buckler",
       "Painted Buckler",
@@ -389,6 +436,9 @@
       "Vaal Buckler",
       "Crusader Buckler",
       "Imperial Buckler",
+      "Endothermic Buckler",
+      "Polar Buckler",
+      "Cold-attuned Buckler",
       "Twig Spirit Shield",
       "Yew Spirit Shield",
       "Bone Spirit Shield",
@@ -405,6 +455,9 @@
       "Vaal Spirit Shield",
       "Harmonic Spirit Shield",
       "Titanium Spirit Shield",
+      "Exhausting Spirit Shield",
+      "Subsuming Spirit Shield",
+      "Transfer-attuned Spirit Shield",
       "Rotted Round Shield",
       "Fir Round Shield",
       "Studded Round Shield",
@@ -458,6 +511,8 @@
       "Agate Amulet",
       "Citrine Amulet",
       "Ruby Amulet",
+      "Astrolabe Amulet",
+      "Simplex Amulet",
       "Jet Amulet",
       "Blue Pearl Amulet",
       "Marble Amulet",
@@ -514,6 +569,8 @@
       "Two-Stone Ring",
       "Two-Stone Ring",
       "Unset Ring",
+      "Cogwork Ring",
+      "Geodesic Ring",
       "Jet Ring",
       "Steel Ring",
       "Opal Ring",
@@ -528,6 +585,8 @@
       "Heavy Belt",
       "Cloth Belt",
       "Studded Belt",
+      "Micro-Distillery Belt",
+      "Mechalarm Belt",
       "Vanguard Belt",
       "Crystal Belt",
       "Golden Obi",
@@ -831,6 +890,9 @@
       "Cobalt Jewel",
       "Prismatic Jewel",
       "Timeless Jewel",
+      "Large Cluster Jewel",
+      "Medium Cluster Jewel",
+      "Small Cluster Jewel",
       "Murderous Eye Jewel",
       "Searching Eye Jewel",
       "Hypnotic Eye Jewel",
@@ -841,6 +903,65 @@
       "Searching Eye Jewel",
       "Hypnotic Eye Jewel",
       "Ghastly Eye Jewel"
+    ],
+    "Heist Items": [
+      "Rough Sharpening Stone",
+      "Standard Sharpening Stone",
+      "Fine Sharpening Stone",
+      "Obsidian Sharpening Stone",
+      "Flanged Arrowhead",
+      "Fragmenting Arrowhead",
+      "Hollowpoint Arrowhead",
+      "Precise Arrowhead",
+      "Focal Stone",
+      "Conduit Line",
+      "Aggregator Charm",
+      "Burst Band",
+      "Simple Lockpick",
+      "Standard Lockpick",
+      "Fine Lockpick",
+      "Master Lockpick",
+      "Leather Bracers",
+      "Studded Bracers",
+      "Runed Bracers",
+      "Steel Bracers",
+      "Crude Sensing Charm",
+      "Fine Sensing Charm",
+      "Polished Sensing Charm",
+      "Thaumaturgical Sensing Charm",
+      "Voltaxic Flashpowder",
+      "Trarthan Flashpowder",
+      "Azurite Flashpowder",
+      "Thaumetic Flashpowder",
+      "Crude Ward",
+      "Lustrous Ward",
+      "Shining Ward",
+      "Thaumaturgical Ward",
+      "Essential Keyring",
+      "Versatile Keyring",
+      "Skeleton Keyring",
+      "Grandmaster Keyring",
+      "Eelskin Sole",
+      "Foxhide Sole",
+      "Winged Sole",
+      "Silkweave Sole",
+      "Basic Disguise Kit",
+      "Theatre Disguise Kit",
+      "Espionage Disguise Kit",
+      "Regicide Disguise Kit",
+      "Steel Drill",
+      "Flanged Drill",
+      "Sulphur Blowtorch",
+      "Thaumetic Blowtorch",
+      "Torn Cloak",
+      "Tattered Cloak",
+      "Hooded Cloak",
+      "Whisper-woven Cloak",
+      "Silver Brooch",
+      "Golden Brooch",
+      "Enamel Brooch",
+      "Foliate Brooch",
+      "Thief's Trinket"
     ]
   },
   "groupedCategory": {
