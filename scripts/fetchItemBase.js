@@ -29,6 +29,13 @@ const GROUPED_ITEM_CATEGORIES = {
   Jewellery: ['Amulet', 'Ring', 'Belt'],
   'Any Armor': ['Gloves', 'Boots', 'Body Armour', 'Helmet'],
   Other: ['Jewel', 'AbyssJewel'],
+  Heist: [
+    'HeistEquipmentWeapon',
+    'HeistEquipmentTool',
+    'HeistEquipmentUtility',
+    'HeistEquipmentReward',
+    'Trinket',
+  ],
 };
 const outputCategories = {
   category: {},
@@ -38,23 +45,23 @@ const outputCategories = {
 const readItemCategories = async () => {
   const categories = [];
   Object.entries(GROUPED_ITEM_CATEGORIES).forEach(([category, subCategories]) =>
-    subCategories.forEach((subCategory) => categories.push({ category, subCategory })),
+    subCategories.forEach(subCategory => categories.push({ category, subCategory })),
   );
   for (const entry of categories) {
     const { category, subCategory } = entry;
     const url = `${POEDB_ITEMS_PAGE}/?cn=${subCategory.replace(' ', '+')}`;
     const document = await request(url)
-      .then((body) => parse(body))
+      .then(body => parse(body))
       .catch(() => console.log(`${subCategory} failed`));
     const rows = document.querySelectorAll('tbody tr');
-    rows.forEach((row) => {
+    rows.forEach(row => {
       const baseName = row.querySelector('a').innerHTML || '';
       outputCategories.category[subCategory] = [
         ...(outputCategories.category[subCategory] || []),
         baseName,
       ];
     });
-    await new Promise((r) => setTimeout(r, 3000));
+    await new Promise(r => setTimeout(r, 3000));
   }
 
   //clean up special cases
@@ -64,10 +71,27 @@ const readItemCategories = async () => {
     ...category['Thrusting One Hand Sword'],
   ];
   category['Jewel'] = [...category['Jewel'], ...category['AbyssJewel']];
-  delete category['Thrusting One Hand Sword'];
-  delete groupedCategory['Other'];
-  delete groupedCategory['Jewellery'];
-  delete groupedCategory['Offhand'];
+  category['Heist Items'] = [
+    ...category['HeistEquipmentWeapon'],
+    ...category['HeistEquipmentTool'],
+    ...category['HeistEquipmentUtility'],
+    ...category['HeistEquipmentReward'],
+    ...category['Trinket'],
+  ];
+
+  [
+    'Thrusting One Hand Sword',
+    'HeistEquipmentTool',
+    'HeistEquipmentWeapon',
+    'HeistEquipmentUtility',
+    'HeistEquipmentReward',
+    'Trinket',
+  ].forEach(categoryToCleanup => delete category[categoryToCleanup]);
+
+  ['Other', 'Jewellery', 'Offhand', 'Heist'].forEach(
+    groupedCategoryToCleanup => delete groupedCategory[groupedCategoryToCleanup],
+  );
+
   fs.writeFile(
     path.join(__dirname, '../src', 'itemBase.json'),
     JSON.stringify(outputCategories, undefined, 2),
