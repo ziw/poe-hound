@@ -1,6 +1,5 @@
 <template>
   <main class="main-page">
-    <button @click="logout" class="main-page__logout-button">Log out</button>
     <main-header></main-header>
     <main-content></main-content>
   </main>
@@ -18,11 +17,7 @@ import MainContent from '@/components/main/MainContent.vue';
     MainContent,
   },
 })
-export default class Main extends Vue {
-  logout() {
-    this.$router.push('/');
-  }
-}
+export default class Main extends Vue {}
 </script>
 
 <style lang="scss">
