@@ -7,6 +7,7 @@ const en = {
                       You need to use online mode (session ID) to load an account at least once to use that account in offline mode.`,
     session_id: 'Session ID:',
     account_name: 'Account Name:',
+    logout_button_label: 'Logout',
   },
   jobs: {
     //job message
