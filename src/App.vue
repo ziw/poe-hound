@@ -55,16 +55,10 @@ export default class App extends Vue {}
   font-weight: normal;
 }
 
-html {
-  height: 100%;
-}
 body {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  margin: 0;
   background-image: radial-gradient(100% 100%, #620909 0%, #230202 100%);
+  overflow-y: hidden;
   font-family: OpenSans-Regular;
 
   .ant-tooltip {
@@ -85,7 +79,8 @@ body {
   text-align: center;
   flex-grow: 1;
   color: #fff;
-  position: relative;
+  margin: 0 auto;
+  height: 100%;
 
   .vs__dropdown-toggle {
     border: none;
