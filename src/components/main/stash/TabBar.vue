@@ -31,6 +31,6 @@ export default class TabBar extends Vue {
   overflow-x: auto;
   overflow-y: hidden;
   height: 50px;
-  padding-bottom: 20px;
+  margin-bottom: 20px;
 }
 </style>

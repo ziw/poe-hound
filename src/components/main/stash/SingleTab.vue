@@ -50,6 +50,8 @@ export default class SingleTab extends AppProps {
   cursor: pointer;
   white-space: nowrap;
   border: 1px solid rgba(255, 255, 255, 0);
+  line-height: 1.75;
+  margin-bottom: 3px;
 
   &:hover {
     border-color: rgba(255, 255, 255, 0.5);

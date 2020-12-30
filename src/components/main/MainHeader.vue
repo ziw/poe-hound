@@ -53,6 +53,7 @@ export default class MainHeader extends Vue {
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
+  flex-shrink: 0;
 
   &__league-select {
     width: 150px;

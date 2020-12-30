@@ -20,8 +20,8 @@ protocol.registerSchemesAsPrivileged([
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
-    width: 1400,
-    height: 900,
+    width: 1600,
+    height: 1200,
     webPreferences: {
       //needed since electron^5.0 which changes this default value to false
       nodeIntegration: true,

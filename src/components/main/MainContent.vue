@@ -35,10 +35,11 @@ $stash-section-width: 720px;
   display: flex;
   flex-grow: 1;
   padding: 15px;
+  height: 100%;
 
   &__filter-section {
     padding: 15px;
-    max-height: 720px;
+    margin-right: 10px;
     overflow-y: auto;
   }
 

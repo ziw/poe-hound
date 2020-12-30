@@ -1,8 +1,8 @@
 <template>
-  <main class="main-page">
+  <div class="main-page">
     <main-header></main-header>
     <main-content></main-content>
-  </main>
+  </div>
 </template>
 
 <script lang="ts">
