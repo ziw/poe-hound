@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@types/electron-devtools-installer": "^2.2.0",
-    "@types/node": "^12.12.21",
+    "@types/node": "^14.14.17",
     "@types/request": "^2.48.1",
     "@types/request-promise-native": "^1.0.15",
     "@types/vue-select": "^2.4.0",
