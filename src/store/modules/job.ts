@@ -1,21 +1,17 @@
 import { getStoreBuilder, BareActionContext } from 'vuex-typex';
 import { RootState } from '../store';
 import { MODULES } from '@/constants';
-import { JobStatus } from '@/utils/jobQueue';
+import { JobStatus, JobSummary } from '@/models/job';
+import { CurrentStatus } from '@/utils/enumPicker';
 
 export interface JobState {
-  remainingJobCount: number;
-  currentJobMessage: string;
-  currentJobStatus: string;
-
-  pastJobs: JobStatus[];
+  currentJobId: number;
+  allJobs: JobSummary[];
 }
 
 export const initialJobState: JobState = {
-  remainingJobCount: 0,
-  currentJobMessage: '',
-  currentJobStatus: '',
-  pastJobs: [],
+  currentJobId: -1,
+  allJobs: [],
 };
 
 const builder = getStoreBuilder<RootState>().module(MODULES.job, initialJobState);
@@ -25,19 +21,41 @@ export const job = {
     return builder.state()();
   },
 
-  setRemainingJobCount: builder.commit((state, count: number) => {
-    state.remainingJobCount = count;
-  }, 'setRemainingJobCount'),
+  getCurrentJob: builder.read((state) => {
+    return state.allJobs.find(({ id }) => id === state.currentJobId);
+  }, 'getCurrentJob'),
 
-  setCurrentJobMessage: builder.commit((state, message: string) => {
-    state.currentJobMessage = message;
-  }, 'setCurrentJobMessage'),
+  getCompletedJobs: builder.read(
+    (state) =>
+      state.allJobs.filter((job) =>
+        CurrentStatus.of(job).in(JobStatus.FAILED, JobStatus.ABORTED, JobStatus.SUCCESS),
+      ),
+    'getCompletedJobs',
+  ),
 
-  setCurrentJobStatus: builder.commit((state, status: string) => {
-    state.currentJobStatus = status;
-  }, 'setCurrentJobStatus'),
+  getPendingJobs: builder.read(
+    (state) =>
+      state.allJobs.filter((job) =>
+        CurrentStatus.of(job).in(JobStatus.IN_PROGRESS, JobStatus.IN_QUEUE),
+      ),
+    'getPendingJobs',
+  ),
 
-  addPastJob: builder.commit((state, job: JobStatus) => {
-    state.pastJobs.push(job);
-  }, 'addPastJob'),
+  setCurrentJobId: builder.commit((state, id: number) => {
+    state.currentJobId = id;
+  }, 'setCurrentJobId'),
+
+  addJob: builder.commit((state, newJob: JobSummary) => {
+    state.allJobs.push(newJob);
+  }, 'addJob'),
+
+  updateJob: builder.commit((state, payload: { id: number; newJob: Partial<JobSummary> }) => {
+    const job = state.allJobs.find((job) => job.id === payload.id);
+    if (job) {
+      state.allJobs.splice(state.allJobs.indexOf(job), 1, {
+        ...job,
+        ...payload.newJob,
+      });
+    }
+  }, 'updateJob'),
 };
