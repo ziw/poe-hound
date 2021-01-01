@@ -27,11 +27,11 @@ const AppProps = Vue.extend({});
 @Component({})
 export default class JobBanner extends AppProps {
   get isJobRunning() {
-    return true;
+    return !!job.getCurrentJob();
   }
 
   get currentJobMessage() {
-    return job.getCurrentJob()?.message || 'random job msg';
+    return job.getCurrentJob()?.message;
   }
 
   get allJobsProgress() {

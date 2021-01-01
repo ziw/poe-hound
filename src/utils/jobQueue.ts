@@ -1,4 +1,4 @@
-import { job, job as jobModule } from '@/store/modules/job';
+import { job as jobModule } from '@/store/modules/job';
 import { JobStatus, JobSummary } from '@/models/job';
 import msg from '@/i18n';
 
@@ -81,7 +81,7 @@ class JobQueue {
     }
 
     this.currentJob = this.queue[0];
-    job.setCurrentJobId(this.currentJob.id);
+    jobModule.setCurrentJobId(this.currentJob.id);
     if (this.currentJob) {
       this.currentJob
         .executeCallback()
@@ -103,7 +103,7 @@ class JobQueue {
     this.queue = this.queue.filter((job) => job.id !== id);
     if (this.currentJob) {
       this.currentJob = null;
-      job.setCurrentJobId(-1);
+      jobModule.setCurrentJobId(-1);
     }
   }
 }
