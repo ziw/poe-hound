@@ -69,6 +69,8 @@ const en = {
     quality: 'Quality',
     level: 'Level',
   },
+
+  leagueSelectPlaceholder: 'Select a League',
 };
 
 export default en;

@@ -6,6 +6,7 @@
       :searchable="false"
       :options="leagues"
       :value="currentLeagueName"
+      :placeholder="labels.leagueSelectPlaceholder"
     ></v-select>
     <div class="main-header__right-section">
       <button class="main-header__logout-button" @click="logout">
