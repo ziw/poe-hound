@@ -1,4 +1,5 @@
 import { Item, ItemType } from '@/models/item';
+import { JobSummary } from '@/models/job';
 
 class EnumPicker<T> {
   constructor(private value: T) {}
@@ -27,13 +28,14 @@ class EnumPicker<T> {
   }
 }
 
-const createEnumPicker = <T>(getEnumValue: (item: Item) => T) => {
+const createEnumPicker = <S, T>(getEnumValue: (obj: S) => T) => {
   return {
-    of: (item: Item) => {
-      const enumPicker = new EnumPicker<T>(getEnumValue(item));
+    of: (obj: S) => {
+      const enumPicker = new EnumPicker<T>(getEnumValue(obj));
       return enumPicker;
     },
   };
 };
 
-export const Type = createEnumPicker((item) => item.frameType);
+export const Type = createEnumPicker((item: Item) => item.frameType);
+export const CurrentStatus = createEnumPicker((job: JobSummary) => job.status);

@@ -1,9 +1,10 @@
 import { job as jobModule } from '@/store/modules/job';
+import { JobStatus, JobSummary } from '@/models/job';
 import msg from '@/i18n';
 
 /**
  * A sequential job queue to handle async jobs.
- * Mainly used GGG server request.
+ * Mainly used to queue GGG server requests and handle server throttles & retries.
  */
 class JobQueue {
   private queue: Job<any>[] = [];
@@ -16,13 +17,11 @@ class JobQueue {
    * @param message job message while waiting
    */
   pause(time: number, message: string = msg.jobs.wait_message(time)) {
-    this._push(
+    let countDownId: NodeJS.Timeout;
+    let left = time;
+
+    const { updateMessage } = this._push(
       () => {
-        let left = time;
-        const countDownId = setInterval(() => {
-          console.log(`${left} seconds left`);
-          left--;
-        }, 1000);
         return new Promise<void>((resolve) => {
           setTimeout(() => {
             clearInterval(countDownId);
@@ -33,6 +32,11 @@ class JobQueue {
       message,
       true,
     );
+
+    countDownId = setInterval(() => {
+      left--;
+      updateMessage(msg.jobs.wait_message(left));
+    }, 1000);
   }
 
   private _push<T>(
@@ -41,13 +45,23 @@ class JobQueue {
     cutInLine?: boolean,
   ): JobQueueResult<T> {
     const jobId = this.jobId++;
+
     const done = new Promise<T>((resolve, reject) => {
       const job = new Job<T>(callback, jobMessage, jobId, resolve, reject);
+      jobModule.addJob(job.jobSummary);
       cutInLine ? this.queue.unshift(job) : this.queue.push(job);
       this.run();
     });
+
+    const updateMessage = (message: string) =>
+      jobModule.updateJob({
+        id: jobId,
+        newJob: { message },
+      });
+
     return {
       done,
+      updateMessage,
     };
   }
 
@@ -67,8 +81,7 @@ class JobQueue {
     }
 
     this.currentJob = this.queue[0];
-    this.emitStatus(this.currentJob);
-
+    jobModule.setCurrentJobId(this.currentJob.id);
     if (this.currentJob) {
       this.currentJob
         .executeCallback()
@@ -89,26 +102,15 @@ class JobQueue {
     const id = this.currentJob!.id;
     this.queue = this.queue.filter((job) => job.id !== id);
     if (this.currentJob) {
-      jobModule.addPastJob(this.currentJob.jobStatus);
       this.currentJob = null;
+      jobModule.setCurrentJobId(-1);
     }
-  }
-
-  private emitStatus(currentJob: Job<any>) {
-    const jobMessage = currentJob ? currentJob.message : '';
-    jobModule.setRemainingJobCount(this.queue.length);
-    jobModule.setCurrentJobMessage(jobMessage);
   }
 }
 
 export type JobQueueResult<T> = {
   done: Promise<T>;
-};
-
-export type JobStatus = {
-  id: number;
-  status: string;
-  name: string;
+  updateMessage: (message: string) => void;
 };
 
 /**
@@ -125,7 +127,7 @@ export function pushApiJob<T>(apiTask: () => Promise<T>, message: string): Promi
   return done.catch((error) => {
     console.log(`error`, error);
     if (error && error.statusCode === 429) {
-      queue.pause(40);
+      queue.pause(50);
       return pushApiJob(apiTask, message);
     }
     throw error;
@@ -133,7 +135,7 @@ export function pushApiJob<T>(apiTask: () => Promise<T>, message: string): Promi
 }
 
 class Job<T> {
-  private status: string;
+  private status: JobStatus;
 
   constructor(
     public readonly callback: () => Promise<T>,
@@ -142,30 +144,40 @@ class Job<T> {
     private readonly resolve: (value: T) => void,
     private readonly reject: (errorObject: any) => any,
   ) {
-    this.status = 'Waiting in queue';
+    this.status = JobStatus.IN_QUEUE;
   }
 
   public executeCallback(): Promise<T> {
-    this.status = msg.jobs.in_progress;
+    this.status = JobStatus.IN_PROGRESS;
+    this.syncJobStatus();
     return this.callback();
   }
 
   public resolveWith(value: T) {
-    this.status = msg.jobs.success;
+    this.status = JobStatus.SUCCESS;
+    this.syncJobStatus();
     this.resolve(value);
   }
 
   public rejectWith(error: any) {
-    this.status = msg.jobs.failed;
+    this.status = JobStatus.FAILED;
+    this.syncJobStatus();
     this.reject(error);
   }
 
-  get jobStatus(): JobStatus {
+  get jobSummary(): JobSummary {
     return {
       id: this.id,
       status: this.status,
-      name: this.message,
+      message: this.message,
     };
+  }
+
+  private syncJobStatus() {
+    jobModule.updateJob({
+      id: this.id,
+      newJob: this.jobSummary,
+    });
   }
 }
 
