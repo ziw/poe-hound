@@ -21,12 +21,15 @@ jobs:
       uses: actions/setup-node@v2.1.4
       with:
         node-version: ${{ matrix.node-version }}
-    - uses: borales/actions-yarn@v2.0.0
+    - name: yarn install
+      uses: borales/actions-yarn@v2.0.0
       with:
         cmd: install --non-interactive --force
-    - uses: borales/actions-yarn@v2.0.0
+    - name: install vue-cli
+      uses: borales/actions-yarn@v2.0.0
       with:
         cmd: global add @vue/cli@4.5.9
-    - uses: borales/actions-yarn@v2.0.0
+    - name: yarn build
+      uses: borales/actions-yarn@v2.0.0
       with:
         cmd: build
