@@ -12,7 +12,7 @@ const en = {
   jobs: {
     //job message
     authenticate_message: `Authenticating session ID`,
-    wait_message: (time: number) => `waiting for ${time} seconds`,
+    wait_message: (time: number) => `GGG server request limit hit. Waiting for ${time} seconds...`,
     load_all_characters_message: `Loading characters list`,
     load_stash_metadata_message: (leagueName: string) => `Loading stash tabs in ${leagueName}`,
 

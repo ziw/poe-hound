@@ -20,7 +20,6 @@ class JobQueue {
       () => {
         let left = time;
         const countDownId = setInterval(() => {
-          console.log(`${left} seconds left`);
           left--;
         }, 1000);
         return new Promise<void>((resolve) => {

@@ -38,10 +38,14 @@ export default class JobBanner extends AppProps {
 <style lang="scss">
 .job-banner {
   position: absolute;
-  bottom: 0;
-  width: 100%;
+  bottom: 20px;
+  right: 20px;
+  min-width: 250px;
   z-index: 100;
   height: 0;
+  color: black;
+  background-color: white;
+  border-radius: 2px;
 
   &__visible {
     height: auto;
