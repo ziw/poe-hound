@@ -6222,10 +6222,10 @@ node-forge@^0.10.0:
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.10.0.tgz#32dea2afb3e9926f02ee5ce8794902691a676bf3"
   integrity sha512-PPmu8eEeG9saEUvI97fm4OYxXVB6bFvyNTyiUOBichBpFG8A1Ljw3bY62+5oOjDEMHRnd0Y7HQ+x7uzxOzC6JA==
 
-node-html-parser@^1.2.4:
-  version "1.4.9"
-  resolved "https://registry.yarnpkg.com/node-html-parser/-/node-html-parser-1.4.9.tgz#3c8f6cac46479fae5800725edb532e9ae8fd816c"
-  integrity sha512-UVcirFD1Bn0O+TSmloHeHqZZCxHjvtIeGdVdGMhyZ8/PWlEiZaZ5iJzR189yKZr8p0FXN58BUeC7RHRkf/KYGw==
+node-html-parser@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/node-html-parser/-/node-html-parser-2.0.2.tgz#168c9cfb77ae58fe4038d84862a0fc8f2ad8e3fd"
+  integrity sha512-N2000Ho9dkabvRZcyiwm6zOpdiAzxAxcJ0Z0WNoh/yXHG0YCuiK2WpNQfN+9vheLNY/h/It11Gk7uwT4QTfk9Q==
   dependencies:
     he "1.2.0"
 
